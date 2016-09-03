@@ -166,7 +166,11 @@ namespace Launcher
             ClearDB();
             foreach (string directory in Properties.Settings.Default.FoldersToIndex)
             {
-                UpdateIndex(Search(directory, Properties.Settings.Default.Extensions, searchOption));
+                // Convert.ToBoolean(null) -> false; So this will work even if FoldersToExclude is null;
+                if (!Convert.ToBoolean(Properties.Settings.Default.FoldersToExclude?.Contains(directory)))
+                {
+                    UpdateIndex(Search(directory, Properties.Settings.Default.Extensions, searchOption));
+                }
             }
             Properties.Settings.Default.DateLastIndexed = DateTime.Now;
 

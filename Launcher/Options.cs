@@ -19,6 +19,7 @@ namespace Launcher
         // this type of list signals it's modification which causes our listbox to reread it's
         // contents
         internal BindingList<string> FoldersToIndex { get; set; }
+        internal BindingList<string> FoldersToExclude { get; set; }
 
         Launcher MainWindow { get; }
 
@@ -34,8 +35,26 @@ namespace Launcher
         private void UpdateUIVariables()
         {
             StringCollection locations = Properties.Settings.Default.FoldersToIndex;
-            FoldersToIndex = new BindingList<string>(locations.Cast<string>().ToList<string>());
+            if (locations == null)
+            {
+                FoldersToIndex = new BindingList<string>();
+            }
+            else
+            {
+                FoldersToIndex = new BindingList<string>(locations.Cast<string>().ToList<string>());
+            }
             listBoxLocations.DataSource = FoldersToIndex;
+
+            StringCollection excludedLocations = Properties.Settings.Default.FoldersToExclude;
+            if (excludedLocations == null)
+            {
+                FoldersToExclude = new BindingList<string>();
+            }
+            else
+            {
+                FoldersToExclude = new BindingList<string>(excludedLocations.Cast<string>().ToList<string>());
+            }
+            listBoxExcludedLocations.DataSource = FoldersToExclude;
 
             UpdateIndexingStatus();
 
@@ -95,11 +114,12 @@ namespace Launcher
 
         private void btnAddLocation_Click(object sender, EventArgs e)
         {
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            var dialog = new FolderBrowserDialog();
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
-                if (!FoldersToIndex.Contains(folderBrowserDialog1.SelectedPath))
+                if (!FoldersToIndex.Contains(dialog.SelectedPath))
                 {
-                    FoldersToIndex.Add(folderBrowserDialog1.SelectedPath);
+                    FoldersToIndex.Add(dialog.SelectedPath);
                 }
             }
         }
@@ -107,6 +127,23 @@ namespace Launcher
         private void btnRemoveLocation_Click(object sender, EventArgs e)
         {
             FoldersToIndex.Remove((string)listBoxLocations.SelectedItem);
+        }
+
+        private void btnAddExcludedLocation_Click(object sender, EventArgs e)
+        {
+            var dialog = new FolderBrowserDialog();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                if (!FoldersToExclude.Contains(dialog.SelectedPath))
+                {
+                    FoldersToExclude.Add(dialog.SelectedPath);
+                }
+            }
+        }
+
+        private void btnRemoveExcludedLocation_Click(object sender, EventArgs e)
+        {
+            FoldersToExclude.Remove((string)listBoxExcludedLocations.SelectedItem);
         }
 
         private void btnRebuild_Click(object sender, EventArgs e)
@@ -243,6 +280,8 @@ namespace Launcher
             Properties.Settings.Default.MatchAnywhere = cbMatchAnywhere.Checked;
 
             Properties.Settings.Default.FoldersToIndex = FoldersToIndex.ToStringCollection();
+
+            Properties.Settings.Default.FoldersToExclude = FoldersToExclude.ToStringCollection();
 
             Properties.Settings.Default.MaxHistorySize = (int)spinMaxHistorySize.Value;
 
