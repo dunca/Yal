@@ -73,10 +73,13 @@
             this.btnRemoveLocation = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label5 = new System.Windows.Forms.Label();
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.btnApplyOptions = new System.Windows.Forms.Button();
             this.btnCancelOpt = new System.Windows.Forms.Button();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.listBoxExcludedLocations = new System.Windows.Forms.ListBox();
+            this.btnAddExcludedLocation = new System.Windows.Forms.Button();
+            this.btnRemoveExcluded = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -93,6 +96,7 @@
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -103,7 +107,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(450, 307);
+            this.tabControl1.Size = new System.Drawing.Size(450, 312);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPageGeneral
@@ -483,6 +487,7 @@
             // 
             // tabPageIndexing
             // 
+            this.tabPageIndexing.Controls.Add(this.groupBox6);
             this.tabPageIndexing.Controls.Add(this.btnRebuild);
             this.tabPageIndexing.Controls.Add(this.lblIndexStatus);
             this.tabPageIndexing.Controls.Add(this.label1);
@@ -490,14 +495,14 @@
             this.tabPageIndexing.Controls.Add(this.groupBox1);
             this.tabPageIndexing.Location = new System.Drawing.Point(4, 22);
             this.tabPageIndexing.Name = "tabPageIndexing";
-            this.tabPageIndexing.Size = new System.Drawing.Size(442, 281);
+            this.tabPageIndexing.Size = new System.Drawing.Size(442, 286);
             this.tabPageIndexing.TabIndex = 1;
             this.tabPageIndexing.Text = "Indexing";
             this.tabPageIndexing.UseVisualStyleBackColor = true;
             // 
             // btnRebuild
             // 
-            this.btnRebuild.Location = new System.Drawing.Point(353, 192);
+            this.btnRebuild.Location = new System.Drawing.Point(353, 257);
             this.btnRebuild.Name = "btnRebuild";
             this.btnRebuild.Size = new System.Drawing.Size(75, 23);
             this.btnRebuild.TabIndex = 7;
@@ -508,7 +513,7 @@
             // lblIndexStatus
             // 
             this.lblIndexStatus.AutoSize = true;
-            this.lblIndexStatus.Location = new System.Drawing.Point(76, 197);
+            this.lblIndexStatus.Location = new System.Drawing.Point(76, 262);
             this.lblIndexStatus.Name = "lblIndexStatus";
             this.lblIndexStatus.Size = new System.Drawing.Size(10, 13);
             this.lblIndexStatus.TabIndex = 3;
@@ -517,7 +522,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 197);
+            this.label1.Location = new System.Drawing.Point(5, 262);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(70, 13);
             this.label1.TabIndex = 2;
@@ -526,7 +531,7 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.txtExtensions);
-            this.groupBox2.Location = new System.Drawing.Point(8, 140);
+            this.groupBox2.Location = new System.Drawing.Point(8, 205);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(426, 48);
             this.groupBox2.TabIndex = 1;
@@ -548,19 +553,19 @@
             this.groupBox1.Controls.Add(this.btnRemoveLocation);
             this.groupBox1.Location = new System.Drawing.Point(8, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(426, 131);
+            this.groupBox1.Size = new System.Drawing.Size(426, 100);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Locations";
+            this.groupBox1.Text = "Folders to index";
             // 
             // cbSubdirs
             // 
             this.cbSubdirs.AutoSize = true;
-            this.cbSubdirs.Location = new System.Drawing.Point(149, 103);
+            this.cbSubdirs.Location = new System.Drawing.Point(345, 71);
             this.cbSubdirs.Name = "cbSubdirs";
-            this.cbSubdirs.Size = new System.Drawing.Size(129, 17);
+            this.cbSubdirs.Size = new System.Drawing.Size(76, 17);
             this.cbSubdirs.TabIndex = 5;
-            this.cbSubdirs.Text = "Include subdirectories";
+            this.cbSubdirs.Text = "Subfolders";
             this.cbSubdirs.UseVisualStyleBackColor = true;
             // 
             // listBoxLocations
@@ -584,7 +589,7 @@
             // 
             // btnRemoveLocation
             // 
-            this.btnRemoveLocation.Location = new System.Drawing.Point(345, 65);
+            this.btnRemoveLocation.Location = new System.Drawing.Point(345, 45);
             this.btnRemoveLocation.Name = "btnRemoveLocation";
             this.btnRemoveLocation.Size = new System.Drawing.Size(75, 23);
             this.btnRemoveLocation.TabIndex = 2;
@@ -612,13 +617,9 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "Launcher 1.0";
             // 
-            // folderBrowserDialog1
-            // 
-            this.folderBrowserDialog1.ShowNewFolderButton = false;
-            // 
             // btnApplyOptions
             // 
-            this.btnApplyOptions.Location = new System.Drawing.Point(142, 313);
+            this.btnApplyOptions.Location = new System.Drawing.Point(143, 318);
             this.btnApplyOptions.Name = "btnApplyOptions";
             this.btnApplyOptions.Size = new System.Drawing.Size(75, 23);
             this.btnApplyOptions.TabIndex = 12;
@@ -628,7 +629,7 @@
             // 
             // btnCancelOpt
             // 
-            this.btnCancelOpt.Location = new System.Drawing.Point(232, 313);
+            this.btnCancelOpt.Location = new System.Drawing.Point(233, 318);
             this.btnCancelOpt.Name = "btnCancelOpt";
             this.btnCancelOpt.Size = new System.Drawing.Size(75, 23);
             this.btnCancelOpt.TabIndex = 13;
@@ -636,11 +637,52 @@
             this.btnCancelOpt.UseVisualStyleBackColor = true;
             this.btnCancelOpt.Click += new System.EventHandler(this.btnCancelOpt_Click);
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.listBoxExcludedLocations);
+            this.groupBox6.Controls.Add(this.btnAddExcludedLocation);
+            this.groupBox6.Controls.Add(this.btnRemoveExcluded);
+            this.groupBox6.Location = new System.Drawing.Point(8, 112);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(426, 88);
+            this.groupBox6.TabIndex = 8;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Folders to exclude";
+            // 
+            // listBoxExcludedLocations
+            // 
+            this.listBoxExcludedLocations.FormattingEnabled = true;
+            this.listBoxExcludedLocations.HorizontalScrollbar = true;
+            this.listBoxExcludedLocations.Location = new System.Drawing.Point(6, 19);
+            this.listBoxExcludedLocations.Name = "listBoxExcludedLocations";
+            this.listBoxExcludedLocations.Size = new System.Drawing.Size(333, 56);
+            this.listBoxExcludedLocations.TabIndex = 4;
+            // 
+            // btnAddExcludedLocation
+            // 
+            this.btnAddExcludedLocation.Location = new System.Drawing.Point(345, 19);
+            this.btnAddExcludedLocation.Name = "btnAddExcludedLocation";
+            this.btnAddExcludedLocation.Size = new System.Drawing.Size(75, 23);
+            this.btnAddExcludedLocation.TabIndex = 1;
+            this.btnAddExcludedLocation.Text = "Add";
+            this.btnAddExcludedLocation.UseVisualStyleBackColor = true;
+            this.btnAddExcludedLocation.Click += new System.EventHandler(this.btnAddExcludedLocation_Click);
+            // 
+            // btnRemoveExcluded
+            // 
+            this.btnRemoveExcluded.Location = new System.Drawing.Point(345, 52);
+            this.btnRemoveExcluded.Name = "btnRemoveExcluded";
+            this.btnRemoveExcluded.Size = new System.Drawing.Size(75, 23);
+            this.btnRemoveExcluded.TabIndex = 2;
+            this.btnRemoveExcluded.Text = "Remove";
+            this.btnRemoveExcluded.UseVisualStyleBackColor = true;
+            this.btnRemoveExcluded.Click += new System.EventHandler(this.btnRemoveExcludedLocation_Click);
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(448, 341);
+            this.ClientSize = new System.Drawing.Size(448, 353);
             this.Controls.Add(this.btnCancelOpt);
             this.Controls.Add(this.btnApplyOptions);
             this.Controls.Add(this.tabControl1);
@@ -674,6 +716,7 @@
             this.groupBox1.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -689,7 +732,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox txtExtensions;
         private System.Windows.Forms.CheckBox cbSubdirs;
-        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Label lblIndexStatus;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnRebuild;
@@ -728,5 +770,9 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.NumericUpDown spinMaxHistoryVisible;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.ListBox listBoxExcludedLocations;
+        private System.Windows.Forms.Button btnAddExcludedLocation;
+        private System.Windows.Forms.Button btnRemoveExcluded;
     }
 }
