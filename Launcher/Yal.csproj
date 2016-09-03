@@ -72,11 +72,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileManager.cs" />
-    <Compile Include="Launcher.cs">
+    <Compile Include="Yal.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Launcher.Designer.cs">
-      <DependentUpon>Launcher.cs</DependentUpon>
+    <Compile Include="Yal.Designer.cs">
+      <DependentUpon>Yal.cs</DependentUpon>
     </Compile>
     <Compile Include="MyListExtensions.cs" />
     <Compile Include="Options.cs">
@@ -94,8 +94,8 @@
       <DependentUpon>OutputWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
-    <EmbeddedResource Include="Launcher.resx">
-      <DependentUpon>Launcher.cs</DependentUpon>
+    <EmbeddedResource Include="Yal.resx">
+      <DependentUpon>Yal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Options.resx">
       <DependentUpon>Options.cs</DependentUpon>

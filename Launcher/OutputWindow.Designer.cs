@@ -1,4 +1,4 @@
-﻿namespace Launcher
+﻿namespace Yal
 {
     partial class OutputWindow
     {

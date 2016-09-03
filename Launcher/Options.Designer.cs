@@ -1,4 +1,4 @@
-﻿namespace Launcher
+﻿namespace Yal
 {
     partial class Options
     {
@@ -61,6 +61,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.trackBarOpacity = new System.Windows.Forms.TrackBar();
             this.tabPageIndexing = new System.Windows.Forms.TabPage();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.listBoxExcludedLocations = new System.Windows.Forms.ListBox();
+            this.btnAddExcludedLocation = new System.Windows.Forms.Button();
+            this.btnRemoveExcluded = new System.Windows.Forms.Button();
             this.btnRebuild = new System.Windows.Forms.Button();
             this.lblIndexStatus = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -76,10 +80,6 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.btnApplyOptions = new System.Windows.Forms.Button();
             this.btnCancelOpt = new System.Windows.Forms.Button();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.listBoxExcludedLocations = new System.Windows.Forms.ListBox();
-            this.btnAddExcludedLocation = new System.Windows.Forms.Button();
-            this.btnRemoveExcluded = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -93,10 +93,10 @@
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarOpacity)).BeginInit();
             this.tabPageIndexing.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -117,7 +117,7 @@
             this.tabPageGeneral.Controls.Add(this.groupBox3);
             this.tabPageGeneral.Location = new System.Drawing.Point(4, 22);
             this.tabPageGeneral.Name = "tabPageGeneral";
-            this.tabPageGeneral.Size = new System.Drawing.Size(442, 281);
+            this.tabPageGeneral.Size = new System.Drawing.Size(442, 286);
             this.tabPageGeneral.TabIndex = 0;
             this.tabPageGeneral.Text = "General";
             this.tabPageGeneral.UseVisualStyleBackColor = true;
@@ -500,6 +500,47 @@
             this.tabPageIndexing.Text = "Indexing";
             this.tabPageIndexing.UseVisualStyleBackColor = true;
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.listBoxExcludedLocations);
+            this.groupBox6.Controls.Add(this.btnAddExcludedLocation);
+            this.groupBox6.Controls.Add(this.btnRemoveExcluded);
+            this.groupBox6.Location = new System.Drawing.Point(8, 112);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(426, 88);
+            this.groupBox6.TabIndex = 8;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Folders to exclude";
+            // 
+            // listBoxExcludedLocations
+            // 
+            this.listBoxExcludedLocations.FormattingEnabled = true;
+            this.listBoxExcludedLocations.HorizontalScrollbar = true;
+            this.listBoxExcludedLocations.Location = new System.Drawing.Point(6, 19);
+            this.listBoxExcludedLocations.Name = "listBoxExcludedLocations";
+            this.listBoxExcludedLocations.Size = new System.Drawing.Size(333, 56);
+            this.listBoxExcludedLocations.TabIndex = 4;
+            // 
+            // btnAddExcludedLocation
+            // 
+            this.btnAddExcludedLocation.Location = new System.Drawing.Point(345, 19);
+            this.btnAddExcludedLocation.Name = "btnAddExcludedLocation";
+            this.btnAddExcludedLocation.Size = new System.Drawing.Size(75, 23);
+            this.btnAddExcludedLocation.TabIndex = 1;
+            this.btnAddExcludedLocation.Text = "Add";
+            this.btnAddExcludedLocation.UseVisualStyleBackColor = true;
+            this.btnAddExcludedLocation.Click += new System.EventHandler(this.btnAddExcludedLocation_Click);
+            // 
+            // btnRemoveExcluded
+            // 
+            this.btnRemoveExcluded.Location = new System.Drawing.Point(345, 52);
+            this.btnRemoveExcluded.Name = "btnRemoveExcluded";
+            this.btnRemoveExcluded.Size = new System.Drawing.Size(75, 23);
+            this.btnRemoveExcluded.TabIndex = 2;
+            this.btnRemoveExcluded.Text = "Remove";
+            this.btnRemoveExcluded.UseVisualStyleBackColor = true;
+            this.btnRemoveExcluded.Click += new System.EventHandler(this.btnRemoveExcludedLocation_Click);
+            // 
             // btnRebuild
             // 
             this.btnRebuild.Location = new System.Drawing.Point(353, 257);
@@ -603,7 +644,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(442, 281);
+            this.tabPage1.Size = new System.Drawing.Size(442, 286);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "About";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -611,11 +652,11 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(185, 125);
+            this.label5.Location = new System.Drawing.Point(160, 125);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(70, 13);
+            this.label5.Size = new System.Drawing.Size(123, 13);
             this.label5.TabIndex = 0;
-            this.label5.Text = "Launcher 1.0";
+            this.label5.Text = "YetAnotherLauncher 1.0";
             // 
             // btnApplyOptions
             // 
@@ -637,47 +678,6 @@
             this.btnCancelOpt.UseVisualStyleBackColor = true;
             this.btnCancelOpt.Click += new System.EventHandler(this.btnCancelOpt_Click);
             // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.listBoxExcludedLocations);
-            this.groupBox6.Controls.Add(this.btnAddExcludedLocation);
-            this.groupBox6.Controls.Add(this.btnRemoveExcluded);
-            this.groupBox6.Location = new System.Drawing.Point(8, 112);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(426, 88);
-            this.groupBox6.TabIndex = 8;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Folders to exclude";
-            // 
-            // listBoxExcludedLocations
-            // 
-            this.listBoxExcludedLocations.FormattingEnabled = true;
-            this.listBoxExcludedLocations.HorizontalScrollbar = true;
-            this.listBoxExcludedLocations.Location = new System.Drawing.Point(6, 19);
-            this.listBoxExcludedLocations.Name = "listBoxExcludedLocations";
-            this.listBoxExcludedLocations.Size = new System.Drawing.Size(333, 56);
-            this.listBoxExcludedLocations.TabIndex = 4;
-            // 
-            // btnAddExcludedLocation
-            // 
-            this.btnAddExcludedLocation.Location = new System.Drawing.Point(345, 19);
-            this.btnAddExcludedLocation.Name = "btnAddExcludedLocation";
-            this.btnAddExcludedLocation.Size = new System.Drawing.Size(75, 23);
-            this.btnAddExcludedLocation.TabIndex = 1;
-            this.btnAddExcludedLocation.Text = "Add";
-            this.btnAddExcludedLocation.UseVisualStyleBackColor = true;
-            this.btnAddExcludedLocation.Click += new System.EventHandler(this.btnAddExcludedLocation_Click);
-            // 
-            // btnRemoveExcluded
-            // 
-            this.btnRemoveExcluded.Location = new System.Drawing.Point(345, 52);
-            this.btnRemoveExcluded.Name = "btnRemoveExcluded";
-            this.btnRemoveExcluded.Size = new System.Drawing.Size(75, 23);
-            this.btnRemoveExcluded.TabIndex = 2;
-            this.btnRemoveExcluded.Text = "Remove";
-            this.btnRemoveExcluded.UseVisualStyleBackColor = true;
-            this.btnRemoveExcluded.Click += new System.EventHandler(this.btnRemoveExcludedLocation_Click);
-            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -691,7 +691,7 @@
             this.Name = "Options";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Launcher options";
+            this.Text = "YetAnotherLauncher options";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Options_FormClosed);
             this.tabControl1.ResumeLayout(false);
             this.tabPageGeneral.ResumeLayout(false);
@@ -710,13 +710,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarOpacity)).EndInit();
             this.tabPageIndexing.ResumeLayout(false);
             this.tabPageIndexing.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.groupBox6.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

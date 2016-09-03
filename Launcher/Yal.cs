@@ -12,7 +12,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace Launcher
+namespace Yal
 {
     // https://msdn.microsoft.com/en-us/library/windows/desktop/ms646309(v=vs.85).aspx
     public enum FsModifier

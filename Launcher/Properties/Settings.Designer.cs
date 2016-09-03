@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Launcher.Properties {
+namespace Yal.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -43,7 +43,7 @@ namespace Launcher.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("exe,lnk")]
+        [global::System.Configuration.DefaultSettingValueAttribute("exe,lnk,txt,pdf,mkv,mp4,avi,mp3,doc,docx,ppt,pptx,odt,odp,xls,xlsx")]
         public string Extensions {
             get {
                 return ((string)(this["Extensions"]));
@@ -164,9 +164,9 @@ namespace Launcher.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("WIN")]
-        public global::Launcher.FsModifier FocusModifier {
+        public global::Yal.FsModifier FocusModifier {
             get {
-                return ((global::Launcher.FsModifier)(this["FocusModifier"]));
+                return ((global::Yal.FsModifier)(this["FocusModifier"]));
             }
             set {
                 this["FocusModifier"] = value;

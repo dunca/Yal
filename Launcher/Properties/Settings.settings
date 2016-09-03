@@ -12,7 +12,7 @@
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
     <Setting Name="Extensions" Type="System.String" Scope="User">
-      <Value Profile="(Default)">exe,lnk</Value>
+      <Value Profile="(Default)">exe,lnk,txt,pdf,mkv,mp4,avi,mp3,doc,docx,ppt,pptx,odt,odp,xls,xlsx</Value>
     </Setting>
     <Setting Name="Subdirectories" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

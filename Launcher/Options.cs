@@ -12,7 +12,7 @@ using System.IO;
 using Microsoft.Win32;
 using System.Text.RegularExpressions;
 
-namespace Launcher
+namespace Yal
 {
     public partial class Options : Form
     {

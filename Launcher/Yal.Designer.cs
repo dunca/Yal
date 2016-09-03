@@ -1,4 +1,4 @@
-﻿namespace Launcher
+﻿namespace Yal
 {
     partial class Launcher
     {
@@ -94,7 +94,7 @@
             // 
             this.notifyIcon.ContextMenuStrip = this.launcherContextStrip;
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
-            this.notifyIcon.Text = "Launcher";
+            this.notifyIcon.Text = "Click to show YetAnotherLauncher";
             this.notifyIcon.Visible = true;
             this.notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseClick);
             // 
@@ -113,7 +113,7 @@
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Launcher";
+            this.Text = "Yal";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Launcher_FormClosing);
             this.Shown += new System.EventHandler(this.Launcher_Shown);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Launcher_MouseDown);
