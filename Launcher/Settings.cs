@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Launcher.Properties {
+namespace Yal.Properties {
     
     
     // This class allows you to handle specific events on the settings class:

@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Collections.Specialized;
 
-namespace Launcher
+namespace Yal
 {
     static class FileManager
     {
