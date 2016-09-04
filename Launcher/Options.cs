@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.IO;
 using Microsoft.Win32;
 using System.Text.RegularExpressions;
+using PluginInterfaces;
 
 namespace Yal
 {
@@ -100,6 +101,25 @@ namespace Yal
             spinMaxHistorySize.Value = Properties.Settings.Default.MaxHistorySize;
 
             spinMaxHistoryVisible.Value = Properties.Settings.Default.MaxHistoryVisible;
+
+            foreach (IPlugin plugin in MainWindow.PluginInstances)
+            {
+                var tab = new TabPage() { Text = plugin.Name };
+                tabControlPlugins.TabPages.Add(tab);
+
+                var panel = new Panel() { Dock = DockStyle.Top, Height = this.Height / 12 }; 
+                var pluginInfo = new Label() { TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill,
+                                               BackColor = plugin.GetUserControl().BackColor };
+                panel.Controls.Add(pluginInfo);
+
+                pluginInfo.Text = string.Join(" ", plugin.Name, plugin.Version, string.Concat("- ", plugin.Description));
+
+                tab.Controls.AddRange(new Control[] {panel , plugin.GetUserControl() });
+                
+                // if we don't bring it to front, it will most likely ignore and cover other controls
+                plugin.GetUserControl().BringToFront();
+                plugin.GetUserControl().Dock = DockStyle.Fill;
+            }
         }
 
         internal void UpdateIndexingStatus()
@@ -286,6 +306,8 @@ namespace Yal
             Properties.Settings.Default.MaxHistorySize = (int)spinMaxHistorySize.Value;
 
             Properties.Settings.Default.MaxHistoryVisible = (int)spinMaxHistoryVisible.Value;
+
+            MainWindow.PluginInstances.ForEach(plugin => plugin.SaveSettings());
         }
 
         private bool ValidFileExtensions()

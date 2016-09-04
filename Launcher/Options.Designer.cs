@@ -75,7 +75,9 @@
             this.listBoxLocations = new System.Windows.Forms.ListBox();
             this.btnAddLocation = new System.Windows.Forms.Button();
             this.btnRemoveLocation = new System.Windows.Forms.Button();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPagePlugins = new System.Windows.Forms.TabPage();
+            this.tabControlPlugins = new System.Windows.Forms.TabControl();
+            this.tabPageAbout = new System.Windows.Forms.TabPage();
             this.label5 = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.btnApplyOptions = new System.Windows.Forms.Button();
@@ -96,14 +98,16 @@
             this.groupBox6.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tabPagePlugins.SuspendLayout();
+            this.tabPageAbout.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPageGeneral);
             this.tabControl1.Controls.Add(this.tabPageIndexing);
-            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPagePlugins);
+            this.tabControl1.Controls.Add(this.tabPageAbout);
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -638,16 +642,36 @@
             this.btnRemoveLocation.UseVisualStyleBackColor = true;
             this.btnRemoveLocation.Click += new System.EventHandler(this.btnRemoveLocation_Click);
             // 
-            // tabPage1
+            // tabPagePlugins
             // 
-            this.tabPage1.Controls.Add(this.label5);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(442, 286);
-            this.tabPage1.TabIndex = 2;
-            this.tabPage1.Text = "About";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPagePlugins.Controls.Add(this.tabControlPlugins);
+            this.tabPagePlugins.Location = new System.Drawing.Point(4, 22);
+            this.tabPagePlugins.Name = "tabPagePlugins";
+            this.tabPagePlugins.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPagePlugins.Size = new System.Drawing.Size(442, 286);
+            this.tabPagePlugins.TabIndex = 3;
+            this.tabPagePlugins.Text = "Plugins";
+            this.tabPagePlugins.UseVisualStyleBackColor = true;
+            // 
+            // tabControlPlugins
+            // 
+            this.tabControlPlugins.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlPlugins.Location = new System.Drawing.Point(3, 3);
+            this.tabControlPlugins.Name = "tabControlPlugins";
+            this.tabControlPlugins.SelectedIndex = 0;
+            this.tabControlPlugins.Size = new System.Drawing.Size(436, 280);
+            this.tabControlPlugins.TabIndex = 0;
+            // 
+            // tabPageAbout
+            // 
+            this.tabPageAbout.Controls.Add(this.label5);
+            this.tabPageAbout.Location = new System.Drawing.Point(4, 22);
+            this.tabPageAbout.Name = "tabPageAbout";
+            this.tabPageAbout.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageAbout.Size = new System.Drawing.Size(442, 286);
+            this.tabPageAbout.TabIndex = 2;
+            this.tabPageAbout.Text = "About";
+            this.tabPageAbout.UseVisualStyleBackColor = true;
             // 
             // label5
             // 
@@ -683,9 +707,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(448, 353);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnCancelOpt);
             this.Controls.Add(this.btnApplyOptions);
-            this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Options";
@@ -715,8 +739,9 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.tabPagePlugins.ResumeLayout(false);
+            this.tabPageAbout.ResumeLayout(false);
+            this.tabPageAbout.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -764,7 +789,7 @@
         private System.Windows.Forms.Button btnApplyOptions;
         private System.Windows.Forms.Button btnCancelOpt;
         private System.Windows.Forms.CheckBox cbMatchAnywhere;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPageAbout;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.NumericUpDown spinMaxHistorySize;
         private System.Windows.Forms.Label label9;
@@ -774,5 +799,7 @@
         private System.Windows.Forms.ListBox listBoxExcludedLocations;
         private System.Windows.Forms.Button btnAddExcludedLocation;
         private System.Windows.Forms.Button btnRemoveExcluded;
+        private System.Windows.Forms.TabPage tabPagePlugins;
+        private System.Windows.Forms.TabControl tabControlPlugins;
     }
 }
