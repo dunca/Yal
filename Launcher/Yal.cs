@@ -11,6 +11,7 @@ using System.IO;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using PluginInterfaces;
 
 namespace Yal
 {
@@ -27,7 +28,7 @@ namespace Yal
     {
         const int HOTKEY_REG_ID = 1;
         const int WM_HOTKEY = 0x312;  // message code that occurs when hotkeys are detected
-
+        
         Timer searchDelayTimer;
         Timer trimHistoryTimer;
         bool LmbIsDown { get; set; }
@@ -36,7 +37,8 @@ namespace Yal
 
         OutputWindow outputWindow;
         internal Options optionsWindow;
-        
+        internal List<IPlugin> PluginInstances;
+
         public Launcher()
         {
             InitializeComponent();
@@ -58,6 +60,8 @@ namespace Yal
             trimHistoryTimer.Tick += TrimHistoryTimer_Tick;
 
             Properties.Settings.Default.FoldersToIndex = FileManager.ProcessRawPaths();
+
+            PluginInstances = PluginLoader.InstantiatePlugins(PluginLoader.Load("plugins"));
         }
 
         private void TrimHistoryTimer_Tick(object sender, EventArgs e)
@@ -312,19 +316,58 @@ namespace Yal
 
         private void PerformSearch()
         {
-            if (txtSearch.Text != string.Empty && FileManager.QueryIndexDb(txtSearch.Text, Properties.Settings.Default.MaxFetched,
-                                                                           outputWindow.listViewOutput.Items, 
-                                                                           outputWindow.imageList1.Images))
+            //foreach (var plugin in PluginInstances)
+            //{
+            //    string ret;
+            //    if (plugin.TryParseInput(txtSearch.Text, out ret))
+            //    {
+            //        outputWindow.listViewOutput.Items.Insert(0, ret);
+            //        outputWindow.Visible = true;
+            //    }
+            //}
+
+            if (txtSearch.Text != string.Empty)
             {
-                outputWindow.ResizeToFitContent();
-                outputWindow.Show();
-                outputWindow.listViewOutput.Items[0].Selected = true;
-                this.txtSearch.Focus();  // 'Show()'-ing a window focuses on it by default. We don't want that in this case;
+                outputWindow.imageList1.Images?.Clear();
+                outputWindow.listViewOutput.Items.Clear();
+
+                int iconIndex = 0;
+                foreach (var plugin in PluginInstances)
+                {
+                    string ret;
+                    if (plugin.TryParseInput(txtSearch.Text, out ret))
+                    {
+                        var lvi = new ListViewItem(new string[] { ret, plugin.Name });
+                        if (plugin.PluginIcon != null)
+                        {
+                            outputWindow.imageList1.Images.Add(plugin.PluginIcon);
+                            lvi.ImageIndex = iconIndex;
+                            iconIndex++;
+                        }
+                        outputWindow.listViewOutput.Items.Add(lvi);
+                    }
+                }
+
+                if (FileManager.QueryIndexDb(txtSearch.Text, Properties.Settings.Default.MaxFetched,
+                                             outputWindow.listViewOutput.Items,
+                                             outputWindow.imageList1.Images))
+                {
+                    outputWindow.listViewOutput.Items[0].Selected = true;
+                    outputWindow.ResizeToFitContent();
+                    outputWindow.Show();
+                    this.txtSearch.Focus();  // 'Show()'-ing a window focuses on it by default. We don't want that in this case;
+                }
+
+                if (outputWindow.listViewOutput.Items.Count == 0)
+                {
+                    outputWindow.Hide();
+                }
             }
             else
             {
                 outputWindow.Hide();
             }
+
             searchDelayTimer.Stop();
         }
 
@@ -364,6 +407,20 @@ namespace Yal
         private void StartSelectedItem()
         {
             outputWindow.Hide();
+
+            // the first item in each row
+            string item = outputWindow.listViewOutput.SelectedItems[0].SubItems[0].Text;
+
+            // the 2nd item in each row. Usually a plugin name or a file path
+            string subitem = outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text;
+            foreach (var plugin in PluginInstances)
+            {
+                if (subitem == plugin.Name)
+                {
+                    plugin.HandleExecution(item);
+                    return;
+                }
+            }
 
             // get the full path of the currently selected item
             string filePath = outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text;

@@ -120,10 +120,10 @@ namespace Yal
         }
 
         internal static bool QueryIndexDb(string partialFileName, int fetchLimit, ListView.ListViewItemCollection items, 
-                                          ImageList.ImageCollection images = null)
+                                          ImageList.ImageCollection images)
         {
-            items.Clear();
-            images?.Clear();
+            //items.Clear();
+            //images?.Clear();
             using (var connection = GetDbConnection())
             {
                 (new SQLiteCommand($"ATTACH '{historyDb}' as HISTORY", connection)).ExecuteNonQuery();
@@ -134,7 +134,8 @@ namespace Yal
                 command.Parameters.AddWithValue("@limit", fetchLimit);
                 command.Parameters.AddWithValue("@snip", string.Concat(partialFileName, "%"));
                 SQLiteDataReader response = command.ExecuteReader();
-                int index = 0;
+
+                int iconIndex = images.Count; // plugins could also have images, so we can't start form 0
                 while (response.Read())
                 {
                     var name = response["NAME"].ToString();
@@ -145,9 +146,9 @@ namespace Yal
                     var fullPath = response["FULLPATH"].ToString();
                     images?.Add(GetFileIcon(fullPath));
                     var listItem = new ListViewItem(new string[] { name, fullPath },
-                                                    imageIndex: index);
+                                                    imageIndex: iconIndex);
                     items.Add(listItem);
-                    index++;
+                    iconIndex++;
                 }
             }
             return items.Count > 0;
