@@ -51,7 +51,7 @@ namespace Yal
 
         internal static void UpdateHistory(string snippet, string fileName, string fullPath)
         {
-             using (var connection = GetDbConnection(historyDb))
+            using (var connection = GetDbConnection(historyDb))
             {
                 SQLiteCommand nonQuery;
                 var command = new SQLiteCommand($"select count(snippet) from HISTORY where SNIPPET == @snippet and FULLPATH == @fullpath",
@@ -122,8 +122,6 @@ namespace Yal
         internal static bool QueryIndexDb(string partialFileName, int fetchLimit, ListView.ListViewItemCollection items, 
                                           ImageList.ImageCollection images)
         {
-            //items.Clear();
-            //images?.Clear();
             using (var connection = GetDbConnection())
             {
                 (new SQLiteCommand($"ATTACH '{historyDb}' as HISTORY", connection)).ExecuteNonQuery();

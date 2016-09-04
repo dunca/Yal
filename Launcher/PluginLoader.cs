@@ -12,11 +12,6 @@ namespace Yal
 {
     internal static class PluginLoader
     {
-        private static IPlugin GetPluginInstance(Type pluginType)
-        {
-            return Activator.CreateInstance(pluginType) as IPlugin;
-        }
-
         internal static List<IPlugin> InstantiatePlugins(List<Type> pluginTypes)
         {
             var pluginInstances = new List<IPlugin>();
@@ -39,7 +34,6 @@ namespace Yal
             {
                 assemblies.Add(Assembly.LoadFrom(dll));
             }
-
 
             var pluginTypes = new List<Type>();
             var interfaceName = typeof(IPlugin).FullName;
