@@ -65,15 +65,14 @@
             this.cbReplaceClipboard.Text = "Copy result to clipboard if Enter is presses";
             this.cbReplaceClipboard.UseVisualStyleBackColor = true;
             // 
-            // CalcPluginUC
+            // YalCalcUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.cbReplaceClipboard);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.numericUpDownDecimalPlaces);
-            this.Name = "CalcPluginUC";
+            this.Name = "YalCalcUC";
             this.Size = new System.Drawing.Size(390, 241);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDecimalPlaces)).EndInit();
             this.ResumeLayout(false);
