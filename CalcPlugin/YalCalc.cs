@@ -18,6 +18,7 @@ namespace YalCalc
         public string Description { get; }
         public Icon PluginIcon { get; }
         public List<string> Activators { get; }
+        public bool FileLikeOutput { get; }
 
         private YalCalcUC CalcPluginInstance { get; set; }
 
@@ -37,6 +38,7 @@ namespace YalCalc
             {
                 //MessageBox.Show((Directory.GetCurrentDirectory()));
             }
+            FileLikeOutput = false;
 
             Activators = new List<string>() { "=" };
         }

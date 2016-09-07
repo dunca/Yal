@@ -11,6 +11,7 @@ namespace PluginInterfaces
         string Description { get; }
         Icon PluginIcon { get; }
         List<string> Activators { get; }
+        bool FileLikeOutput { get; }
 
         void SaveSettings();
         UserControl GetUserControl();
