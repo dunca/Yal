@@ -17,6 +17,7 @@ namespace YalCalc
         public string Version { get; }
         public string Description { get; }
         public Icon PluginIcon { get; }
+        public List<string> Activators { get; }
 
         private YalCalcUC CalcPluginInstance { get; set; }
 
@@ -27,6 +28,7 @@ namespace YalCalc
             Name = "YalCalc";
             Version = "1.0";
             Description = "Perform simple calculations using Yal";
+
             try
             {
                 PluginIcon = Icon.ExtractAssociatedIcon(string.Concat(Directory.GetCurrentDirectory(), @"\plugins\icons\", Name, ".ico"));
@@ -35,6 +37,8 @@ namespace YalCalc
             {
                 //MessageBox.Show((Directory.GetCurrentDirectory()));
             }
+
+            Activators = new List<string>() { "=" };
         }
 
         public void SaveSettings()
@@ -56,7 +60,7 @@ namespace YalCalc
             var dt = new DataTable();
             try
             {
-                double result = Convert.ToDouble(dt.Compute(input, ""));
+                double result = Convert.ToDouble(dt.Compute(input.Substring(1), filter: ""));
                 output = Convert.ToString(Math.Round(result, Properties.Settings.Default.DecimalPlaces));
                 return true;
             }

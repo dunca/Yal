@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace PluginInterfaces
@@ -9,7 +10,8 @@ namespace PluginInterfaces
         string Version { get; }
         string Description { get; }
         Icon PluginIcon { get; }
-        
+        List<string> Activators { get; }
+
         void SaveSettings();
         UserControl GetUserControl();
         bool TryParseInput(string input, out string output);

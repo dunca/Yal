@@ -334,17 +334,20 @@ namespace Yal
                 int iconIndex = 0;
                 foreach (var plugin in PluginInstances)
                 {
-                    string ret;
-                    if (plugin.TryParseInput(txtSearch.Text, out ret))
+                    if (plugin.Activators.Any(activator => txtSearch.Text.StartsWith(activator)))
                     {
-                        var lvi = new ListViewItem(new string[] { ret, plugin.Name });
-                        if (plugin.PluginIcon != null)
+                        string ret;
+                        if (plugin.TryParseInput(txtSearch.Text, out ret))
                         {
-                            outputWindow.imageList1.Images.Add(plugin.PluginIcon);
-                            lvi.ImageIndex = iconIndex;
-                            iconIndex++;
+                            var lvi = new ListViewItem(new string[] { ret, plugin.Name });
+                            if (plugin.PluginIcon != null)
+                            {
+                                outputWindow.imageList1.Images.Add(plugin.PluginIcon);
+                                lvi.ImageIndex = iconIndex;
+                                iconIndex++;
+                            }
+                            outputWindow.listViewOutput.Items.Add(lvi);
                         }
-                        outputWindow.listViewOutput.Items.Add(lvi);
                     }
                 }
 
@@ -406,6 +409,11 @@ namespace Yal
 
         private void StartSelectedItem()
         {
+            if (outputWindow.listViewOutput.SelectedItems.Count == 0)
+            {
+                return;
+            }
+
             outputWindow.Hide();
 
             // the first item in each row
