@@ -1,0 +1,132 @@
+using System;
+using System.Collections.Specialized;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace YalWeb
+{
+    public partial class YalWebUC : UserControl
+    {
+        public YalWebUC()
+        {
+            InitializeComponent();
+
+            ParseEntries();
+
+            //dataGridView1.CellValueChanged += dataGridView1_CellValueChanged;
+        }
+
+        private void ParseEntries()
+        {
+            //foreach (string line in Properties.Settings.Default.Entries)
+            //{
+            //    listViewEntries.Items.Add(new ListViewItem(line.Split('|')));
+            //}
+
+            var col1 = new DataGridViewTextBoxColumn();
+            col1.HeaderText = "Name";
+
+            var col2 = new DataGridViewTextBoxColumn();
+            col2.HeaderText = "Query URL";
+            col2.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            dataGridView1.Columns.AddRange(col1, col2);
+
+            bool defaultExists = false;
+            for (int i = 0; i < Properties.Settings.Default.Entries.Count; i++)
+            {
+                var split = Properties.Settings.Default.Entries[i].Split('|');
+                var name = split[0];
+                var url = split[1];
+                dataGridView1.Rows.Add(name, url);
+
+                if (name == Properties.Settings.Default.DefaultEntry)
+                {
+                    defaultExists = true;
+                    SetDefaultRow(dataGridView1.Rows[i]);
+                }
+            }
+            if (!defaultExists && Properties.Settings.Default.DefaultEntry != "")
+            { // just in case the default is set to something it doesn't actually exist in the list of available options
+                Properties.Settings.Default.DefaultEntry = "";
+            }
+        }
+
+        private void SetDefaultRow(DataGridViewRow row)
+        {
+            string value = row.Cells[0].Value?.ToString() ?? "";
+           
+            //if (value == string.Empty || row.Cells[1].Value == null)
+            //{
+            //    MessageBox.Show("Can't set a row with empty columns as default", "Error", MessageBoxButtons.OK,
+            //                    MessageBoxIcon.Error);
+            //}
+            //else
+            //{
+                lblDefault.Text = value;
+                Properties.Settings.Default.DefaultEntry = value;
+            //}
+        }
+
+        internal void SaveSettings()
+        {
+            var sc = new StringCollection();
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                sc.Add(string.Join("|", row.Cells[0].Value?.ToString() ?? "", row.Cells[1].Value?.ToString() ?? ""));
+            }
+            Properties.Settings.Default.Entries = sc;
+            Properties.Settings.Default.Save();
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.Rows.Count > 0)
+            {
+                var row = dataGridView1.SelectedRows[0];
+                if (row.Cells[0].Value?.ToString() == Properties.Settings.Default.DefaultEntry || dataGridView1.Rows.Count == 1)
+                {
+                    lblDefault.Text = "not set";
+                    Properties.Settings.Default.DefaultEntry = "";
+                }
+                dataGridView1.Rows.Remove(row);
+            }
+        }
+
+        private void btnAddEntry_Click(object sender, EventArgs e)
+        {
+            dataGridView1.Rows.Add();
+        }
+
+        private void btnSetDefault_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count == 1)
+            {
+                SetDefaultRow(dataGridView1.SelectedRows[0]);
+            }
+            else
+            {
+                MessageBox.Show("Select a row first!", this.Name, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            
+        }
+
+        //private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    object cellValue = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+        //    if (cellValue == null)
+        //    {
+        //        MessageBox.Show($"Cell value cannot be empty!", "Error",
+        //                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                
+        //        if ()
+        //    }
+        //}
+    }
+}
