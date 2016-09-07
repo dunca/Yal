@@ -334,8 +334,11 @@ namespace Yal
                 int iconIndex = 0;
                 foreach (var plugin in PluginInstances)
                 {
-                    if (plugin.Activators.Any(activator => txtSearch.Text.StartsWith(activator, StringComparison.InvariantCultureIgnoreCase) 
-                                                           || activator.StartsWith(txtSearch.Text, StringComparison.InvariantCultureIgnoreCase)))
+                    //if (plugin.Activators.Any(activator => txtSearch.Text.StartsWith(activator, StringComparison.InvariantCultureIgnoreCase) 
+                    //                                       || activator.StartsWith(txtSearch.Text, StringComparison.InvariantCultureIgnoreCase)))
+                    if ((!plugin.FileLikeOutput && plugin.Activators.Any(activator => txtSearch.Text.StartsWith(activator, StringComparison.InvariantCultureIgnoreCase)))
+                        || (plugin.FileLikeOutput && plugin.Activators.Any(activator => activator.StartsWith(txtSearch.Text, StringComparison.InvariantCultureIgnoreCase))))
+
                     {
                         string ret;
                         if (plugin.TryParseInput(txtSearch.Text, out ret))

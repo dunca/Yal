@@ -18,6 +18,7 @@ namespace YalControlPanel
         public string Description { get; }
         public Icon PluginIcon { get; }
         public List<string> Activators { get; }
+        public bool FileLikeOutput { get; }
 
         private Dictionary<string, string> ControlPanelItems { get; }
         private YalControlPanelUC ControlPanelPluginInstance { get; set; }
@@ -38,6 +39,7 @@ namespace YalControlPanel
             {
                 //MessageBox.Show((Directory.GetCurrentDirectory()));
             }
+            FileLikeOutput = true;
 
             ControlPanelItems = new Dictionary<string, string>();
 

@@ -19,6 +19,7 @@ namespace YalWeb
         public string Description { get; }
         public Icon PluginIcon { get; }
         public List<string> Activators { get; }
+        public bool FileLikeOutput { get; }
 
         private YalWebUC WebPluginInstance { get; set; }
         private Dictionary<string, string> Entries;
@@ -39,6 +40,7 @@ namespace YalWeb
             {
                 //MessageBox.Show((Directory.GetCurrentDirectory()));
             }
+            FileLikeOutput = false;
 
             Entries = new Dictionary<string, string>();
             foreach (string item in Properties.Settings.Default.Entries)
@@ -73,7 +75,8 @@ namespace YalWeb
 
         public void HandleExecution(string input)
         {
-            string url = Entries[Properties.Settings.Default.DefaultEntry].Replace("%1", input);
+            string providerName = input.Substring(0, input.IndexOf(' '));
+            string url = Entries[providerName].Replace("%1", input.Substring(input.IndexOf(' ') + 1));
             try
             {
                 Process.Start(url);
