@@ -18,8 +18,10 @@ namespace YalWeb
         public string Version { get; }
         public string Description { get; }
         public Icon PluginIcon { get; }
+        public List<string> Activators { get; }
 
         private YalWebUC WebPluginInstance { get; set; }
+        private Dictionary<string, string> Entries;
 
         //public string Activator { get; }
 
@@ -28,6 +30,7 @@ namespace YalWeb
             Name = "YalWeb";
             Version = "1.0";
             Description = "Yal plugin that allows you to quickly search the web using your favorite search engine";
+
             try
             {
                 PluginIcon = Icon.ExtractAssociatedIcon(string.Concat(Directory.GetCurrentDirectory(), @"\plugins\icons\", Name, ".ico"));
@@ -36,6 +39,15 @@ namespace YalWeb
             {
                 //MessageBox.Show((Directory.GetCurrentDirectory()));
             }
+
+            Entries = new Dictionary<string, string>();
+            foreach (string item in Properties.Settings.Default.Entries)
+            {
+                var group = item.Split('|');
+                Entries.Add(group[0], group[1]);
+            }
+
+            Activators = Entries.Keys.ToList();
         }
 
         public void SaveSettings()
@@ -61,17 +73,7 @@ namespace YalWeb
 
         public void HandleExecution(string input)
         {
-            string urlPart = string.Empty;
-            foreach (string item in Properties.Settings.Default.Entries)
-            {
-                var group = item.Split('|');
-                if (group[0] == Properties.Settings.Default.DefaultEntry)
-                {
-                    urlPart = group[1];
-                    break;
-                }
-            }
-            string url = urlPart.Replace("%1", input);
+            string url = Entries[Properties.Settings.Default.DefaultEntry].Replace("%1", input);
             try
             {
                 Process.Start(url);
