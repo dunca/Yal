@@ -317,6 +317,8 @@ namespace Yal
 
             Properties.Settings.Default.MaxHistoryVisible = (int)spinMaxHistoryVisible.Value;
 
+            Properties.Settings.Default.PluginSelectionsInHistory = cbPluginSelectionsInHistory.Checked;
+
             Properties.Settings.Default.MaxVisiblePluginItems = (int)spinMaxVisiblePluginItems.Value;
 
             MainWindow.PluginInstances.ForEach(plugin => plugin.SaveSettings());
