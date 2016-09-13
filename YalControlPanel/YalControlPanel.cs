@@ -156,7 +156,7 @@ Work Folders;Microsoft.WorkFolders;8.1,10
         {
             foreach (string activator in Activators)
             {
-                if (matchAnywhere? activator.IndexOf(input, StringComparison.InvariantCultureIgnoreCase) > 0 : 
+                if (matchAnywhere? activator.IndexOf(input, StringComparison.InvariantCultureIgnoreCase) > -1 : 
                                    activator.StartsWith(input, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return activator;
