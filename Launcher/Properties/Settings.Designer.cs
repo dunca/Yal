@@ -317,5 +317,17 @@ namespace Yal.Properties {
                 this["FoldersToExclude"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool PluginSelectionsInHistory {
+            get {
+                return ((bool)(this["PluginSelectionsInHistory"]));
+            }
+            set {
+                this["PluginSelectionsInHistory"] = value;
+            }
+        }
     }
 }
