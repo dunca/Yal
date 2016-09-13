@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YalWeb", "YalWeb\YalWeb.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YalControlPanel", "YalControlPanel\YalControlPanel.csproj", "{70DB3B6C-1847-483C-A1D6-718325ECA9AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{4C584613-E0BC-41A9-A5B1-944B96CD7915}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dummy", "Dummy\Dummy.csproj", "{34BA5CD7-80FE-4FDF-87B6-85B151836128}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{70DB3B6C-1847-483C-A1D6-718325ECA9AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70DB3B6C-1847-483C-A1D6-718325ECA9AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70DB3B6C-1847-483C-A1D6-718325ECA9AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C584613-E0BC-41A9-A5B1-944B96CD7915}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C584613-E0BC-41A9-A5B1-944B96CD7915}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C584613-E0BC-41A9-A5B1-944B96CD7915}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C584613-E0BC-41A9-A5B1-944B96CD7915}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34BA5CD7-80FE-4FDF-87B6-85B151836128}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34BA5CD7-80FE-4FDF-87B6-85B151836128}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34BA5CD7-80FE-4FDF-87B6-85B151836128}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34BA5CD7-80FE-4FDF-87B6-85B151836128}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

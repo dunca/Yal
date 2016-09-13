@@ -12,6 +12,7 @@ using System.IO;
 using Microsoft.Win32;
 using System.Text.RegularExpressions;
 using PluginInterfaces;
+using Utilities;
 
 namespace Yal
 {
@@ -184,14 +185,19 @@ namespace Yal
                     {
                         rk.SetValue(MainWindow.Text, appPath);
 
-                        using (RegistryKey rk2 = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion"))
+                        //using (RegistryKey rk2 = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion"))
+                        //{
+                        //    object value = rk2.GetValue("ProductName");
+                        //    if (value != null && Regex.IsMatch(value.ToString(), @"^Windows 10[\w\s]+$"))
+                        //    {
+                        //        MessageBox.Show("On Windows 10 you need to enable 'Launcher' from within Task Manager/Startup",
+                        //                        "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        //    }
+                        //}
+                        if (Utils.GetOsVersion() == "10")
                         {
-                            object value = rk2.GetValue("ProductName");
-                            if (value != null && Regex.IsMatch(value.ToString(), @"^Windows 10[\w\s]+$"))
-                            {
-                                MessageBox.Show("On Windows 10 you need to enable 'Launcher' from within Task Manager/Startup",
-                                                "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            }
+                            MessageBox.Show("On Windows 10 you need to enable 'Yal' from within Task Manager/Startup",
+                                            "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
                 }
