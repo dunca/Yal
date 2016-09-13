@@ -66,7 +66,7 @@ namespace YalWeb
             return WebPluginInstance;
         }
 
-        public bool TryParseInput(string input, out string output)
+        public bool TryParseInput(string input, out string output, bool matchAnywhere)
         {
             // this plugin is always able to return results (if the user's pc is connected & the search urls work)
             output = input;

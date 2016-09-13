@@ -57,7 +57,7 @@ namespace YalCalc
             return CalcPluginInstance;
         }
 
-        public bool TryParseInput(string input, out string output)
+        public bool TryParseInput(string input, out string output, bool matchAnywhere)
         {
             var dt = new DataTable();
             try
