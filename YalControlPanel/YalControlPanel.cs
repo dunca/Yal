@@ -128,11 +128,11 @@ Work Folders;Microsoft.WorkFolders;8.1,10
             return ControlPanelPluginInstance;
         }
 
-        public bool TryParseInput(string input, out string output, bool matchAnywhere)
+        public bool TryParseInput(string input, out string[] output, bool matchAnywhere)
         {
-            output = "";
-            string ret = GetMatchingActivator(input, matchAnywhere);
-            if (ret == null)
+            output = null;
+            string[] ret = GetMatchingActivators(input, matchAnywhere);
+            if (ret.Length == 0)
             {
                 return false;
             }
@@ -152,17 +152,18 @@ Work Folders;Microsoft.WorkFolders;8.1,10
             }
         }
 
-        private string GetMatchingActivator(string input, bool matchAnywhere)
+        private string[] GetMatchingActivators(string input, bool matchAnywhere)
         {
+            var items = new List<string>();
             foreach (string activator in Activators)
             {
                 if (matchAnywhere? activator.IndexOf(input, StringComparison.InvariantCultureIgnoreCase) > -1 : 
                                    activator.StartsWith(input, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return activator;
+                    items.Add(activator);
                 }
             }
-            return null;
+            return items.ToArray();
         }
     }
 }

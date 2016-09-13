@@ -341,17 +341,20 @@ namespace Yal
                                                                                                                                     activator.StartsWith(txtSearch.Text, StringComparison.InvariantCultureIgnoreCase))))
 
                     {
-                        string ret;
-                        if (plugin.TryParseInput(txtSearch.Text, out ret, Properties.Settings.Default.MatchAnywhere))
+                        string[] items;
+                        if (plugin.TryParseInput(txtSearch.Text, out items, Properties.Settings.Default.MatchAnywhere))
                         {
-                            var lvi = new ListViewItem(new string[] { ret, plugin.Name });
-                            if (plugin.PluginIcon != null)
+                            foreach (var item in items)
                             {
-                                outputWindow.imageList1.Images.Add(plugin.PluginIcon);
-                                lvi.ImageIndex = iconIndex;
-                                iconIndex++;
+                                var lvi = new ListViewItem(new string[] { item, plugin.Name });
+                                if (plugin.PluginIcon != null)
+                                {
+                                    outputWindow.imageList1.Images.Add(plugin.PluginIcon);
+                                    lvi.ImageIndex = iconIndex;
+                                    iconIndex++;
+                                }
+                                outputWindow.listViewOutput.Items.Add(lvi);
                             }
-                            outputWindow.listViewOutput.Items.Add(lvi);
                         }
                     }
                 }

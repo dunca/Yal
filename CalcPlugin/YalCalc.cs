@@ -57,19 +57,19 @@ namespace YalCalc
             return CalcPluginInstance;
         }
 
-        public bool TryParseInput(string input, out string output, bool matchAnywhere)
+        public bool TryParseInput(string input, out string[] output, bool matchAnywhere)
         {
             var dt = new DataTable();
             try
             {
                 double result = Convert.ToDouble(dt.Compute(input.Substring(1), filter: ""));
-                output = Convert.ToString(Math.Round(result, Properties.Settings.Default.DecimalPlaces));
+                output = new string[] { Convert.ToString(Math.Round(result, Properties.Settings.Default.DecimalPlaces)) };
                 return true;
             }
             catch
             {
             }
-            output = "";
+            output = null;
             return false;
         }
 
