@@ -344,6 +344,7 @@ namespace Yal
                         string[] items;
                         if (plugin.TryParseInput(txtSearch.Text, out items, Properties.Settings.Default.MatchAnywhere))
                         {
+                            int count = 1;
                             foreach (var item in items)
                             {
                                 var lvi = new ListViewItem(new string[] { item, plugin.Name });
@@ -354,6 +355,12 @@ namespace Yal
                                     iconIndex++;
                                 }
                                 outputWindow.listViewOutput.Items.Add(lvi);
+
+                                if (count == Properties.Settings.Default.MaxVisiblePluginItems)
+                                {
+                                    break;
+                                }
+                                count++;
                             }
                         }
                     }

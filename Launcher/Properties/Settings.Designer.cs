@@ -329,5 +329,17 @@ namespace Yal.Properties {
                 this["PluginSelectionsInHistory"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int MaxVisiblePluginItems {
+            get {
+                return ((int)(this["MaxVisiblePluginItems"]));
+            }
+            set {
+                this["MaxVisiblePluginItems"] = value;
+            }
+        }
     }
 }
