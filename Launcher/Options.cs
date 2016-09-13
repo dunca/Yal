@@ -105,6 +105,8 @@ namespace Yal
 
             cbPluginSelectionsInHistory.Checked = Properties.Settings.Default.PluginSelectionsInHistory;
 
+            spinMaxVisiblePluginItems.Value = Properties.Settings.Default.MaxVisiblePluginItems;
+
             foreach (IPlugin plugin in MainWindow.PluginInstances)
             {
                 var tab = new TabPage() { Text = plugin.Name };
@@ -314,6 +316,8 @@ namespace Yal
             Properties.Settings.Default.MaxHistorySize = (int)spinMaxHistorySize.Value;
 
             Properties.Settings.Default.MaxHistoryVisible = (int)spinMaxHistoryVisible.Value;
+
+            Properties.Settings.Default.MaxVisiblePluginItems = (int)spinMaxVisiblePluginItems.Value;
 
             MainWindow.PluginInstances.ForEach(plugin => plugin.SaveSettings());
         }
