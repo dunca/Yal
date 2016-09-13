@@ -337,11 +337,12 @@ namespace Yal
                     //if (plugin.Activators.Any(activator => txtSearch.Text.StartsWith(activator, StringComparison.InvariantCultureIgnoreCase) 
                     //                                       || activator.StartsWith(txtSearch.Text, StringComparison.InvariantCultureIgnoreCase)))
                     if ((!plugin.FileLikeOutput && plugin.Activators.Any(activator => txtSearch.Text.StartsWith(activator, StringComparison.InvariantCultureIgnoreCase)))
-                        || (plugin.FileLikeOutput && plugin.Activators.Any(activator => activator.StartsWith(txtSearch.Text, StringComparison.InvariantCultureIgnoreCase))))
+                        || (plugin.FileLikeOutput && plugin.Activators.Any(activator => Properties.Settings.Default.MatchAnywhere ? activator.IndexOf(txtSearch.Text, StringComparison.InvariantCultureIgnoreCase) > 0 : 
+                                                                                                                                    activator.StartsWith(txtSearch.Text, StringComparison.InvariantCultureIgnoreCase))))
 
                     {
                         string ret;
-                        if (plugin.TryParseInput(txtSearch.Text, out ret))
+                        if (plugin.TryParseInput(txtSearch.Text, out ret, Properties.Settings.Default.MatchAnywhere))
                         {
                             var lvi = new ListViewItem(new string[] { ret, plugin.Name });
                             if (plugin.PluginIcon != null)

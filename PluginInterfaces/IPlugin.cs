@@ -15,7 +15,7 @@ namespace PluginInterfaces
 
         void SaveSettings();
         UserControl GetUserControl();
-        bool TryParseInput(string input, out string output);
+        bool TryParseInput(string input, out string output, bool matchAnywhere);
         void HandleExecution(string input);
     }
 }

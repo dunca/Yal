@@ -128,10 +128,10 @@ Work Folders;Microsoft.WorkFolders;8.1,10
             return ControlPanelPluginInstance;
         }
 
-        public bool TryParseInput(string input, out string output)
+        public bool TryParseInput(string input, out string output, bool matchAnywhere)
         {
             output = "";
-            string ret = GetMatchingActivator(input);
+            string ret = GetMatchingActivator(input, matchAnywhere);
             if (ret == null)
             {
                 return false;
@@ -143,20 +143,21 @@ Work Folders;Microsoft.WorkFolders;8.1,10
             }
         }
 
-        public void HandleExecution(string input)
+        public void HandleExecution(string name)
         {
-            string ret = GetMatchingActivator(input);
-            if (ret != null)
+            //string ret = GetMatchingActivator(input);
+            if (name != null)
             {
-                Process.Start(controlPath, $"/name {ControlPanelItems[ret]}");
+                Process.Start(controlPath, $"/name {ControlPanelItems[name]}");
             }
         }
 
-        private string GetMatchingActivator(string input)
+        private string GetMatchingActivator(string input, bool matchAnywhere)
         {
             foreach (string activator in Activators)
             {
-                if (activator.StartsWith(input, StringComparison.InvariantCultureIgnoreCase))
+                if (matchAnywhere? activator.IndexOf(input, StringComparison.InvariantCultureIgnoreCase) > 0 : 
+                                   activator.StartsWith(input, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return activator;
                 }
