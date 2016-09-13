@@ -142,19 +142,30 @@ namespace Yal
                         name = Path.GetFileNameWithoutExtension(name);
                     }
                     var fullPath = response["FULLPATH"].ToString();
-                    images?.Add(GetFileIcon(fullPath));
-                    var listItem = new ListViewItem(new string[] { name, fullPath },
-                                                    imageIndex: iconIndex) { ToolTipText = fullPath };
-                    items.Add(listItem);
-                    iconIndex++;
+                    Icon icon;
+                    if (GetFileIcon(fullPath, out icon))  // to avoid exceptions when the file is deleted but it's still in the db
+                    {
+                        images?.Add(icon);
+                        var listItem = new ListViewItem(new string[] { name, fullPath },
+                                                        imageIndex: iconIndex)
+                        { ToolTipText = fullPath };
+                        items.Add(listItem);
+                        iconIndex++;
+                    }
                 }
             }
             return items.Count > 0;
         }
 
-        private static Icon GetFileIcon(string fullName)
+        private static bool GetFileIcon(string fullName, out Icon icon)
         {
-            return Icon.ExtractAssociatedIcon(fullName);
+            if (File.Exists(fullName))
+            {
+                icon =  Icon.ExtractAssociatedIcon(fullName);
+                return true;
+            }
+            icon = null;
+            return false;
         }
 
         internal static void RebuildIndex()
