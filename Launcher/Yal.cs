@@ -431,6 +431,11 @@ namespace Yal
                 if (subitem == plugin.Name)
                 {
                     plugin.HandleExecution(item);
+
+                    if (plugin.FileLikeOutput && Properties.Settings.Default.PluginSelectionsInHistory)
+                    {
+                        FileManager.UpdateHistory(txtSearch.Text, item, plugin.Name);
+                    }
                     return;
                 }
             }

@@ -103,6 +103,8 @@ namespace Yal
 
             spinMaxHistoryVisible.Value = Properties.Settings.Default.MaxHistoryVisible;
 
+            cbPluginSelectionsInHistory.Checked = Properties.Settings.Default.PluginSelectionsInHistory;
+
             foreach (IPlugin plugin in MainWindow.PluginInstances)
             {
                 var tab = new TabPage() { Text = plugin.Name };
@@ -327,6 +329,16 @@ namespace Yal
                 }
             }
             return true;
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
