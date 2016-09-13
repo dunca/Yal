@@ -144,7 +144,7 @@ namespace Yal
                     var fullPath = response["FULLPATH"].ToString();
                     images?.Add(GetFileIcon(fullPath));
                     var listItem = new ListViewItem(new string[] { name, fullPath },
-                                                    imageIndex: iconIndex);
+                                                    imageIndex: iconIndex) { ToolTipText = fullPath };
                     items.Add(listItem);
                     iconIndex++;
                 }

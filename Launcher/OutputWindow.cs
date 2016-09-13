@@ -21,6 +21,8 @@ namespace Yal
             MainWindow = mainWindow;
 
             CreateLVColumns();
+
+            listViewOutput.ShowItemToolTips = true;
         }
 
         private void CreateLVColumns()
@@ -37,6 +39,11 @@ namespace Yal
             // there's no scrollbar
             int neededRows = Math.Min(Properties.Settings.Default.MaxVisible, listViewOutput.Items.Count);
             this.Size = new Size(this.Size.Width, (neededRows * listViewOutput.TileSize.Height) + 5); // add 5px to the heigh to compensate for borders
+        }
+
+        private void listViewOutput_MouseEnter(object sender, EventArgs e)
+        {
+            listViewOutput.Focus();
         }
     }
 }
