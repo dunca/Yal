@@ -222,10 +222,12 @@ namespace Yal
         /// <returns></returns>
         private static bool PersonalizePath(string oldPath, out string newPath)
         {
+            
+            // newPath = oldPath;
+            
+            // 1st try
             //int oldStop = -1;
-            newPath = oldPath;
             //var vars = new List<string>();
-
             //while (true)
             //{
             //    int start = oldPath.IndexOf("%", oldStop + 1);
@@ -239,11 +241,13 @@ namespace Yal
             //    oldStop = stop;
             //}
 
-            foreach (Match match in envVarRegex.Matches(oldPath))
-            {
-                string envVar = match.Groups[1].Value;
-                newPath = oldPath.Replace($"%{envVar}%", Environment.GetEnvironmentVariable(envVar));
-            }
+            // 2nd try
+            //foreach (Match match in envVarRegex.Matches(oldPath))
+            //{
+            //    string envVar = match.Groups[1].Value;
+            //    newPath = oldPath.Replace($"%{envVar}%", Environment.GetEnvironmentVariable(envVar));
+            //}
+            newPath = envVarRegex.Replace(oldPath, match => Environment.GetEnvironmentVariable(match.Groups[1].Value));
 
             if (Directory.Exists(newPath))
             {
