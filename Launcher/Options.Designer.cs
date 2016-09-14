@@ -342,6 +342,7 @@
             // cbPluginSelectionsInHistory
             // 
             this.cbPluginSelectionsInHistory.AutoSize = true;
+            this.cbPluginSelectionsInHistory.Enabled = false;
             this.cbPluginSelectionsInHistory.Location = new System.Drawing.Point(6, 50);
             this.cbPluginSelectionsInHistory.Name = "cbPluginSelectionsInHistory";
             this.cbPluginSelectionsInHistory.Size = new System.Drawing.Size(194, 17);
@@ -761,7 +762,7 @@
             // 
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Image = global::Launcher.Properties.Resources.ICON;
+            this.pictureBox1.Image = global::Yal.Properties.Resources.ICON;
             this.pictureBox1.Location = new System.Drawing.Point(3, 3);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(436, 320);
