@@ -16,12 +16,19 @@ namespace Yal
     {
         internal const string indexDb = "index.sqlite";
         internal const string historyDb = "history.sqlite";
-        private static string queryTemplate = @"select distinct name, fullpath from 
-                                                (select NAME, FULLPATH, HITS as STATIC from HISTORY where SNIPPET like @snip
-                                                union 
-                                                select NAME, FULLPATH, 0 as STATIC from CATALOG where NAME like @query 
-                                                order by STATIC desc, NAME asc) limit @limit";
-        private static string insertTemplate = "insert into CATALOG (NAME, FULLPATH) values (@name, @fullpath)";
+        private const string fileQuery = @"select distinct name, fullpath from 
+                                         (select NAME, FULLPATH, HITS as STATIC from HISTORY where SNIPPET like @snip
+                                         union 
+                                         select NAME, FULLPATH, 0 as STATIC from CATALOG where NAME like @query 
+                                         order by STATIC desc, NAME asc) limit @limit";
+
+        private const string indexInsert = "insert into CATALOG (NAME, FULLPATH) values (@name, @fullpath)";
+        private const string historyInsert = "insert into HISTORY (SNIPPET, NAME, FULLPATH, LASTACCESSED) values (@snippet, @name, @fullpath, datetime('now'))";
+        private const string historyTrim = "delete from HISTORY where LASTACCESSED in (select LASTACCESSED from HISTORY order by LASTACCESSED limit @limit)";
+        private const string catalogTable = "create table CATALOG (NAME string, FULLPATH string)";
+        private const string historyTable = "create table HISTORY (SNIPPET string, NAME string, FULLPATH string, HITS integer default 1, LASTACCESSED datetime)";
+        private const string historyUpdate = "update HISTORY set HITS = HITS + 1, LASTACCESSED = datetime('now') where SNIPPET == @snippet and FULLPATH == @fullpath";
+        private const string historyQuery = "select count(snippet) from HISTORY where SNIPPET == @snippet and FULLPATH == @fullpath";
 
         private static IEnumerable<string> Search(string path, string pattern = "exe,lnk", 
                                                   SearchOption searchOption = SearchOption.TopDirectoryOnly)
@@ -41,7 +48,7 @@ namespace Yal
                     {
                         continue;
                     }
-                    var command = new SQLiteCommand(insertTemplate, connection);
+                    var command = new SQLiteCommand(indexInsert, connection);
                     command.Parameters.AddWithValue("@name", Path.GetFileName(file));
                     command.Parameters.AddWithValue("@fullpath", file);
                     command.ExecuteNonQuery();
@@ -54,19 +61,16 @@ namespace Yal
             using (var connection = GetDbConnection(historyDb))
             {
                 SQLiteCommand nonQuery;
-                var command = new SQLiteCommand($"select count(snippet) from HISTORY where SNIPPET == @snippet and FULLPATH == @fullpath",
-                                                connection);
+                var command = new SQLiteCommand(historyQuery, connection);
                 command.Parameters.AddWithValue("@snippet", snippet);
                 command.Parameters.AddWithValue("@fullpath", fullPath);
                 if (Convert.ToBoolean(command.ExecuteScalar()))  // snippet + fileName combo already in DB
                 { // update the existing value
-                    nonQuery = new SQLiteCommand($"update HISTORY set HITS = HITS + 1, LASTACCESSED = datetime('now') where SNIPPET == @snippet and FULLPATH == @fullpath",
-                                                 connection);
+                    nonQuery = new SQLiteCommand(historyUpdate, connection);
                 }
                 else
                 {
-                    nonQuery = new SQLiteCommand($"insert into HISTORY (SNIPPET, NAME, FULLPATH, LASTACCESSED) values (@snippet, @name, @fullpath, datetime('now'))",
-                                                 connection);
+                    nonQuery = new SQLiteCommand(historyInsert, connection);
                     nonQuery.Parameters.AddWithValue("@name", fileName);
                 }
                 nonQuery.Parameters.AddWithValue("@snippet", snippet);
@@ -99,15 +103,7 @@ namespace Yal
             SQLiteConnection.CreateFile(dbName);
             using (var connection = GetDbConnection(dbName))
             {
-                SQLiteCommand command;
-                if (dbName == indexDb)
-                {
-                    command = new SQLiteCommand("create table CATALOG (NAME string, FULLPATH string)", connection);
-                }
-                else
-                {
-                    command = new SQLiteCommand("create table HISTORY (SNIPPET string, NAME string, FULLPATH string, HITS integer default 1, LASTACCESSED datetime)", connection);
-                }
+                var command = new SQLiteCommand(dbName == indexDb ? catalogTable : historyTable, connection);
                 command.ExecuteNonQuery();
             }
         }
@@ -126,7 +122,7 @@ namespace Yal
             {
                 (new SQLiteCommand($"ATTACH '{historyDb}' as HISTORY", connection)).ExecuteNonQuery();
 
-                var command = new SQLiteCommand(queryTemplate, connection);
+                var command = new SQLiteCommand(fileQuery, connection);
                 var query = string.Concat(Properties.Settings.Default.MatchAnywhere ? "%" : "", partialFileName, "%");
                 command.Parameters.AddWithValue("@query", query);
                 command.Parameters.AddWithValue("@limit", fetchLimit);
@@ -266,7 +262,7 @@ namespace Yal
                 int historySize = DbRowCount(historyDb);
                 if ( historySize > Properties.Settings.Default.MaxHistorySize)
                 {
-                    var command = new SQLiteCommand("delete from HISTORY where LASTACCESSED in (select LASTACCESSED from HISTORY order by LASTACCESSED limit @limit)", connection);
+                    var command = new SQLiteCommand(historyTrim, connection);
                     command.Parameters.AddWithValue("@limit", historySize - Properties.Settings.Default.MaxHistorySize);
                     command.ExecuteNonQuery();
                 }
