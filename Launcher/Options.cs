@@ -78,7 +78,7 @@ namespace Yal
             comboBoxHKMod.SelectedItem = Properties.Settings.Default.FocusModifier;
 
             var items = (Keys[])Enum.GetValues(typeof(Keys));
-            comboBoxHKKey.DataSource = items.Where(x => Keys.A <= x && x <= Keys.Z).ToArray();
+            comboBoxHKKey.DataSource = items.Where(x => x == Keys.Space || (Keys.A <= x && x <= Keys.Z)).ToArray();
             comboBoxHKKey.SelectedItem = Properties.Settings.Default.FocusKey;
 
             cbAutoIndexing.Checked = Properties.Settings.Default.AutoIndexing;
