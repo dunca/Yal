@@ -495,5 +495,10 @@ namespace Yal
                 ActivateLauncher();
             }
         }
+
+        private void rebuildToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FileManager.RebuildIndex();
+        }
     }
 }
