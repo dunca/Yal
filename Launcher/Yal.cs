@@ -458,8 +458,8 @@ namespace Yal
                                     "Issue", MessageBoxButtons.YesNo, MessageBoxIcon.Error)
                     == DialogResult.Yes)
                 {
-                    FileManager.RemoveFromDb(filePath, FileManager.indexDb);
-                    FileManager.RemoveFromDb(filePath, FileManager.historyDb);
+                    FileManager.RemoveFromDb(filePath, FileManager.indexDbInfo);
+                    FileManager.RemoveFromDb(filePath, FileManager.historyDbInfo);
                 }
             }
             else
