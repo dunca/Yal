@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Collections.Specialized;
+using System.Text.RegularExpressions;
 
 namespace Yal
 {
@@ -44,6 +45,7 @@ namespace Yal
         private const string historyTrim = "delete from HISTORY where LASTACCESSED in (select LASTACCESSED from HISTORY order by LASTACCESSED limit @limit)";
         private const string historyUpdate = "update HISTORY set HITS = HITS + 1, LASTACCESSED = datetime('now') where SNIPPET == @snippet and FULLPATH == @fullpath";
         private const string historyQuery = "select count(snippet) from HISTORY where SNIPPET == @snippet and FULLPATH == @fullpath";
+        private static Regex envVarRegex = new Regex(@"%([\w\d]+)%");
 
         private static IEnumerable<string> Search(string path, string pattern = "exe,lnk", 
                                                   SearchOption searchOption = SearchOption.TopDirectoryOnly)
@@ -220,26 +222,27 @@ namespace Yal
         /// <returns></returns>
         private static bool PersonalizePath(string oldPath, out string newPath)
         {
-            int oldStop = -1;
+            //int oldStop = -1;
             newPath = oldPath;
-            var vars = new List<string>();
+            //var vars = new List<string>();
 
-            while (true)
-            {
-                int start = oldPath.IndexOf("%", oldStop + 1);
-                int stop = oldPath.IndexOf("%", start + 1);
-                if (start < 0 || stop < 0)
-                {
-                    break;
-                }
-                // copy just the variable, without the starting and ending '%'
-                vars.Add(oldPath.Substring(start + 1, stop - start - 1));
-                oldStop = stop;
-            }
+            //while (true)
+            //{
+            //    int start = oldPath.IndexOf("%", oldStop + 1);
+            //    int stop = oldPath.IndexOf("%", start + 1);
+            //    if (start < 0 || stop < 0)
+            //    {
+            //        break;
+            //    }
+            //    // copy just the variable, without the starting and ending '%'
+            //    vars.Add(oldPath.Substring(start + 1, stop - start - 1));
+            //    oldStop = stop;
+            //}
 
-            foreach (var variable in vars)
+            foreach (Match match in envVarRegex.Matches(oldPath))
             {
-                newPath = oldPath.Replace($"%{variable}%", Environment.GetEnvironmentVariable(variable));
+                string envVar = match.Groups[1].Value;
+                newPath = oldPath.Replace($"%{envVar}%", Environment.GetEnvironmentVariable(envVar));
             }
 
             if (Directory.Exists(newPath))
