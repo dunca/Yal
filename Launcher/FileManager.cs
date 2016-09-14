@@ -12,10 +12,27 @@ using System.Collections.Specialized;
 
 namespace Yal
 {
+    struct DbInfo
+    {
+        public readonly string fileName;
+        public readonly string tableName;
+        public readonly string createTableTemplate;
+
+        public DbInfo(string file, string table, string tableTemplate)
+        {
+            fileName = file;
+            tableName = table;
+            createTableTemplate = tableTemplate;
+        }
+    }
+
     static class FileManager
     {
-        internal const string indexDb = "index.sqlite";
-        internal const string historyDb = "history.sqlite";
+        internal static DbInfo indexDbInfo = new DbInfo("index.sqlite", "CATALOG", 
+                                                        "create table CATALOG (NAME string, FULLPATH string)");
+        internal static DbInfo historyDbInfo = new DbInfo("history.sqlite", "HISTORY", 
+                                                          "create table HISTORY (SNIPPET string, NAME string, FULLPATH string, HITS integer default 1, LASTACCESSED datetime)");
+
         private const string fileQuery = @"select distinct name, fullpath from 
                                          (select NAME, FULLPATH, HITS as STATIC from HISTORY where SNIPPET like @snip
                                          union 
@@ -25,8 +42,6 @@ namespace Yal
         private const string indexInsert = "insert into CATALOG (NAME, FULLPATH) values (@name, @fullpath)";
         private const string historyInsert = "insert into HISTORY (SNIPPET, NAME, FULLPATH, LASTACCESSED) values (@snippet, @name, @fullpath, datetime('now'))";
         private const string historyTrim = "delete from HISTORY where LASTACCESSED in (select LASTACCESSED from HISTORY order by LASTACCESSED limit @limit)";
-        private const string catalogTable = "create table CATALOG (NAME string, FULLPATH string)";
-        private const string historyTable = "create table HISTORY (SNIPPET string, NAME string, FULLPATH string, HITS integer default 1, LASTACCESSED datetime)";
         private const string historyUpdate = "update HISTORY set HITS = HITS + 1, LASTACCESSED = datetime('now') where SNIPPET == @snippet and FULLPATH == @fullpath";
         private const string historyQuery = "select count(snippet) from HISTORY where SNIPPET == @snippet and FULLPATH == @fullpath";
 
@@ -40,7 +55,7 @@ namespace Yal
 
         private static void UpdateIndex(IEnumerable<string> files)
         {
-            using (var connection = GetDbConnection())
+            using (var connection = GetDbConnection(indexDbInfo))
             {
                 foreach (string file in files)
                 {
@@ -58,7 +73,7 @@ namespace Yal
 
         internal static void UpdateHistory(string snippet, string fileName, string fullPath)
         {
-            using (var connection = GetDbConnection(historyDb))
+            using (var connection = GetDbConnection(historyDbInfo))
             {
                 SQLiteCommand nonQuery;
                 var command = new SQLiteCommand(historyQuery, connection);
@@ -79,38 +94,37 @@ namespace Yal
             }
         }
 
-        private static void ClearDB(string dbName = indexDb)
+        private static void ClearDB(DbInfo dbInfo)
         {
-            using (var connection = GetDbConnection(dbName))
+            using (var connection = GetDbConnection(dbInfo))
             {
-                var table = dbName == indexDb ? "CATALOG" : "HISTORY";
-                (new SQLiteCommand($"delete from {table}", connection)).ExecuteNonQuery();
+                (new SQLiteCommand($"delete from {dbInfo.tableName}", connection)).ExecuteNonQuery();
             }
         }
 
-        internal static bool RemoveFromDb(string fullPath, string dbName)
+        internal static bool RemoveFromDb(string fullPath, DbInfo dbInfo)
         {
-            using (var connection = GetDbConnection(dbName))
+            using (var connection = GetDbConnection(dbInfo))
             {
-                var command = new SQLiteCommand($"delete from {(dbName == indexDb ? "CATALOG" : "HISTORY")} where FULLPATH == @fullpath", connection);
+                var command = new SQLiteCommand($"delete from {dbInfo.tableName} where FULLPATH == @fullpath", connection);
                 command.Parameters.AddWithValue("@fullpath", fullPath);
                 return Convert.ToBoolean(command.ExecuteNonQuery());
             }
         }
 
-        private static void CreateDatabase(string dbName = indexDb)
+        private static void CreateDatabase(DbInfo dbInfo)
         {
-            SQLiteConnection.CreateFile(dbName);
-            using (var connection = GetDbConnection(dbName))
+            SQLiteConnection.CreateFile(dbInfo.fileName);
+            using (var connection = GetDbConnection(dbInfo))
             {
-                var command = new SQLiteCommand(dbName == indexDb ? catalogTable : historyTable, connection);
+                var command = new SQLiteCommand(dbInfo.createTableTemplate, connection);
                 command.ExecuteNonQuery();
             }
         }
 
-        private static SQLiteConnection GetDbConnection(string dbName = indexDb)
+        private static SQLiteConnection GetDbConnection(DbInfo dbInfo)
         {
-            var connection = new SQLiteConnection($"Data Source={dbName};Version=3;");
+            var connection = new SQLiteConnection($"Data Source={dbInfo.fileName};Version=3;");
             connection.Open();
             return connection;
         }
@@ -118,9 +132,9 @@ namespace Yal
         internal static bool QueryIndexDb(string partialFileName, int fetchLimit, ListView.ListViewItemCollection items, 
                                           ImageList.ImageCollection images)
         {
-            using (var connection = GetDbConnection())
+            using (var connection = GetDbConnection(indexDbInfo))
             {
-                (new SQLiteCommand($"ATTACH '{historyDb}' as HISTORY", connection)).ExecuteNonQuery();
+                (new SQLiteCommand($"ATTACH '{historyDbInfo.fileName}' as HISTORY", connection)).ExecuteNonQuery();
 
                 var command = new SQLiteCommand(fileQuery, connection);
                 var query = string.Concat(Properties.Settings.Default.MatchAnywhere ? "%" : "", partialFileName, "%");
@@ -169,7 +183,7 @@ namespace Yal
             var searchOption = Properties.Settings.Default.Subdirectories ?
                                SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
-            ClearDB();
+            ClearDB(indexDbInfo);
             foreach (string directory in Properties.Settings.Default.FoldersToIndex)
             {
                 // Convert.ToBoolean(null) -> false; So this will work even if FoldersToExclude is null;
@@ -189,11 +203,11 @@ namespace Yal
             //}
         }
 
-        internal static int DbRowCount(string dbName = indexDb)
+        internal static int DbRowCount(DbInfo dbInfo)
         {
-            using (var connection = GetDbConnection(dbName))
+            using (var connection = GetDbConnection(dbInfo))
             {
-                var command = new SQLiteCommand($"select count(name) from {(dbName == indexDb ? "CATALOG" : "HISTORY")}", connection);
+                var command = new SQLiteCommand($"select count(NAME) from {dbInfo.tableName}", connection);
                 return Convert.ToInt32(command.ExecuteScalar());
             }
         }
@@ -257,9 +271,9 @@ namespace Yal
 
         internal static void TrimHistory()
         {
-            using (var connection = GetDbConnection(historyDb))
+            using (var connection = GetDbConnection(historyDbInfo))
             {
-                int historySize = DbRowCount(historyDb);
+                int historySize = DbRowCount(historyDbInfo);
                 if ( historySize > Properties.Settings.Default.MaxHistorySize)
                 {
                     var command = new SQLiteCommand(historyTrim, connection);

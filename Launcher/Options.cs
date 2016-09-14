@@ -129,7 +129,7 @@ namespace Yal
 
         internal void UpdateIndexingStatus()
         {
-            lblIndexStatus.Text = $"{FileManager.DbRowCount()} items indexed at {Properties.Settings.Default.DateLastIndexed}";
+            lblIndexStatus.Text = $"{FileManager.DbRowCount(FileManager.indexDbInfo)} items indexed at {Properties.Settings.Default.DateLastIndexed}";
         }
 
         private void Options_FormClosed(object sender, FormClosedEventArgs e)
