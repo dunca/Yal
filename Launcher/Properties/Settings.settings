@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Launcher.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Yal.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="FoldersToIndex" Type="System.Collections.Specialized.StringCollection" Scope="User">
@@ -39,10 +39,10 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="FocusKey" Type="System.Windows.Forms.Keys" Scope="User">
-      <Value Profile="(Default)">Z</Value>
+      <Value Profile="(Default)">Space</Value>
     </Setting>
     <Setting Name="FocusModifier" Type="Launcher.FsModifier" Scope="User">
-      <Value Profile="(Default)">WIN</Value>
+      <Value Profile="(Default)">ALT</Value>
     </Setting>
     <Setting Name="AutoIndexingInterval" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">10</Value>

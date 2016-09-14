@@ -151,7 +151,7 @@ namespace Yal.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Z")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Space")]
         public global::System.Windows.Forms.Keys FocusKey {
             get {
                 return ((global::System.Windows.Forms.Keys)(this["FocusKey"]));
@@ -163,7 +163,7 @@ namespace Yal.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("WIN")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ALT")]
         public global::Yal.FsModifier FocusModifier {
             get {
                 return ((global::Yal.FsModifier)(this["FocusModifier"]));
