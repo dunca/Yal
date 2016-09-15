@@ -53,24 +53,29 @@ namespace Yal
         {
             if (e.Button == MouseButtons.Right)
             {
-                var contextMenu = new ContextMenuStrip();
-
-                var runItem = new ToolStripMenuItem("Run");
-                runItem.Click += RunItem_Click;
-
-                var runAsAdminItem = new ToolStripMenuItem("Run as administrator");
-                runAsAdminItem.Click += RunAsAdminItem_Click;
-
-                if (File.Exists(listViewOutput.SelectedItems[0].SubItems[1].Text))
-                {
-                    var openDirItem = new ToolStripMenuItem("Open containing directory");
-                    openDirItem.Click += OpenDirItem_Click;
-                    contextMenu.Items.AddRange(new ToolStripItem[] { openDirItem, new ToolStripSeparator() });
-                }
-
-                contextMenu.Items.AddRange(new ToolStripItem[] { runItem, runAsAdminItem });
-                contextMenu.Show(Cursor.Position);
+                BuildContextMenu(Cursor.Position);
             }
+        }
+
+        internal void BuildContextMenu(Point location)
+        {
+            var contextMenu = new ContextMenuStrip();
+
+            var runItem = new ToolStripMenuItem("Run");
+            runItem.Click += RunItem_Click;
+
+            var runAsAdminItem = new ToolStripMenuItem("Run as administrator");
+            runAsAdminItem.Click += RunAsAdminItem_Click;
+
+            if (File.Exists(listViewOutput.SelectedItems[0].SubItems[1].Text))
+            {
+                var openDirItem = new ToolStripMenuItem("Open containing directory");
+                openDirItem.Click += OpenDirItem_Click;
+                contextMenu.Items.AddRange(new ToolStripItem[] { openDirItem, new ToolStripSeparator() });
+            }
+
+            contextMenu.Items.AddRange(new ToolStripItem[] { runItem, runAsAdminItem });
+            contextMenu.Show(location);
         }
 
         private void OpenDirItem_Click(object sender, EventArgs e)

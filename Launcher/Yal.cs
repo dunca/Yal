@@ -425,14 +425,25 @@ namespace Yal
             {
                 if (e.Modifiers == Keys.Control)
                 {
-                    if (e.KeyCode == Keys.D && outputWindow.listViewOutput.SelectedItems.Count != 0)
+                    if (outputWindow.listViewOutput.SelectedItems.Count != 0)
                     {
-                        Utils.OpenFileDirectory(outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text);
+                        if (e.KeyCode == Keys.D)
+                        {
+                            Utils.OpenFileDirectory(outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text);
+                        }
+                        else if (e.KeyCode == Keys.P)
+                        {
+                            ListViewItem item = outputWindow.listViewOutput.SelectedItems[0];
+                            Point location = new Point(outputWindow.Location.X + item.Position.X + (outputWindow.listViewOutput.TileSize.Width/2),
+                                                       outputWindow.Location.Y + item.Position.Y + (outputWindow.listViewOutput.TileSize.Height/2));
+                            outputWindow.BuildContextMenu(location);
+                        }
                     }
                     else if (e.KeyCode == Keys.O)
                     {
                         ShowOptionsWindow();
                     }
+
                     return;
                 }
 
