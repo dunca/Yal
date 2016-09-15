@@ -205,7 +205,14 @@ namespace Yal
             // focus on our form when the hotkey (Win+Z by default) is pressed
             if (m.Msg == WM_HOTKEY)
             {
-                ActivateLauncher();
+                if (this.Visible)
+                {
+                    this.Hide();
+                }
+                else
+                {
+                    ActivateLauncher();
+                }
             }
         }
 
