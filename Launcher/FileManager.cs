@@ -34,7 +34,7 @@ namespace Yal
         internal static DbInfo historyDbInfo = new DbInfo("history.sqlite", "HISTORY", 
                                                           "create table HISTORY (SNIPPET string, NAME string, FULLPATH string, HITS integer default 1, LASTACCESSED datetime)");
 
-        private const string fileQuery = @"select distinct name, fullpath from 
+        private const string fileQuery = @"select distinct name, fullpath, static from 
                                          (select NAME, FULLPATH, HITS as STATIC from HISTORY where SNIPPET like @snip
                                          union 
                                          select NAME, FULLPATH, 0 as STATIC from CATALOG where NAME like @query 
@@ -149,6 +149,15 @@ namespace Yal
                 while (response.Read())
                 {
                     var name = response["NAME"].ToString();
+
+                    // This options skips the history entries that with names that don't start with the
+                    // specified characters, when the 'MatchAnywhere' option is disabled
+                    if (!Properties.Settings.Default.MatchAnywhere && Convert.ToInt32(response["STATIC"]) > 0 &&
+                        !name.StartsWith(partialFileName, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        continue;
+                    }
+                    
                     if (!Properties.Settings.Default.ExtensionInFileName)
                     {
                         name = Path.GetFileNameWithoutExtension(name);
