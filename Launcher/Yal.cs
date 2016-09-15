@@ -448,7 +448,6 @@ namespace Yal
                 return;
             }
 
-            this.Hide();
             outputWindow.Hide();
 
             // the first item in each row
