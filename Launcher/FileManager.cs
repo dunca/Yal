@@ -35,7 +35,7 @@ namespace Yal
                                                           "create table HISTORY (SNIPPET string, NAME string, FULLPATH string, HITS integer default 1, LASTACCESSED datetime)");
 
         private const string fileQuery = @"select distinct name, fullpath from 
-                                         (select NAME, FULLPATH, HITS as STATIC from HISTORY where SNIPPET like @snip
+                                         (select NAME, FULLPATH, HITS as STATIC from HISTORY where {0} like @snip
                                          union 
                                          select NAME, FULLPATH, 0 as STATIC from CATALOG where NAME like @query 
                                          order by STATIC desc, NAME asc) limit @limit";
@@ -138,7 +138,7 @@ namespace Yal
             {
                 (new SQLiteCommand($"ATTACH '{historyDbInfo.fileName}' as HISTORY", connection)).ExecuteNonQuery();
 
-                var command = new SQLiteCommand(fileQuery, connection);
+                var command = new SQLiteCommand(string.Format(fileQuery, Properties.Settings.Default.MatchAnywhere ? "SNIPPET" : "NAME"), connection);
                 var query = string.Concat(Properties.Settings.Default.MatchAnywhere ? "%" : "", partialFileName, "%");
                 command.Parameters.AddWithValue("@query", query);
                 command.Parameters.AddWithValue("@limit", fetchLimit);
