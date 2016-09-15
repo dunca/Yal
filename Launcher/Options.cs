@@ -107,6 +107,8 @@ namespace Yal
 
             spinMaxVisiblePluginItems.Value = Properties.Settings.Default.MaxVisiblePluginItems;
 
+            cbFuzzyMatching.Checked = Properties.Settings.Default.FuzzyMatching;
+
             foreach (IPlugin plugin in MainWindow.PluginInstances)
             {
                 var tab = new TabPage() { Text = plugin.Name };
@@ -320,6 +322,8 @@ namespace Yal
             Properties.Settings.Default.PluginSelectionsInHistory = cbPluginSelectionsInHistory.Checked;
 
             Properties.Settings.Default.MaxVisiblePluginItems = (int)spinMaxVisiblePluginItems.Value;
+
+            Properties.Settings.Default.FuzzyMatching = cbFuzzyMatching.Checked;
 
             MainWindow.PluginInstances.ForEach(plugin => plugin.SaveSettings());
         }

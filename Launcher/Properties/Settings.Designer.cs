@@ -341,5 +341,17 @@ namespace Yal.Properties {
                 this["MaxVisiblePluginItems"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FuzzyMatching {
+            get {
+                return ((bool)(this["FuzzyMatching"]));
+            }
+            set {
+                this["FuzzyMatching"] = value;
+            }
+        }
     }
 }
