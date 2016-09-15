@@ -221,9 +221,9 @@
             this.cbMatchAnywhere.AutoSize = true;
             this.cbMatchAnywhere.Location = new System.Drawing.Point(6, 99);
             this.cbMatchAnywhere.Name = "cbMatchAnywhere";
-            this.cbMatchAnywhere.Size = new System.Drawing.Size(196, 17);
+            this.cbMatchAnywhere.Size = new System.Drawing.Size(192, 17);
             this.cbMatchAnywhere.TabIndex = 12;
-            this.cbMatchAnywhere.Text = "Match anywhere in the entry\'s name";
+            this.cbMatchAnywhere.Text = "Match anywhere in the item\'s name";
             this.cbMatchAnywhere.UseVisualStyleBackColor = true;
             // 
             // cbShowExt
@@ -347,9 +347,9 @@
             this.cbPluginSelectionsInHistory.Enabled = false;
             this.cbPluginSelectionsInHistory.Location = new System.Drawing.Point(6, 49);
             this.cbPluginSelectionsInHistory.Name = "cbPluginSelectionsInHistory";
-            this.cbPluginSelectionsInHistory.Size = new System.Drawing.Size(194, 17);
+            this.cbPluginSelectionsInHistory.Size = new System.Drawing.Size(193, 17);
             this.cbPluginSelectionsInHistory.TabIndex = 15;
-            this.cbPluginSelectionsInHistory.Text = "Keep plugin selections in the history";
+            this.cbPluginSelectionsInHistory.Text = "Keep plugin resulted items in history";
             this.cbPluginSelectionsInHistory.UseVisualStyleBackColor = true;
             // 
             // spinMaxHistorySize
@@ -487,9 +487,9 @@
             this.cbCtrlMove.AutoSize = true;
             this.cbCtrlMove.Location = new System.Drawing.Point(4, 160);
             this.cbCtrlMove.Name = "cbCtrlMove";
-            this.cbCtrlMove.Size = new System.Drawing.Size(169, 17);
+            this.cbCtrlMove.Size = new System.Drawing.Size(184, 17);
             this.cbCtrlMove.TabIndex = 6;
-            this.cbCtrlMove.Text = "Only move with CTRL pressed";
+            this.cbCtrlMove.Text = "Only move while CTRL is pressed";
             this.cbCtrlMove.UseVisualStyleBackColor = true;
             // 
             // cbTopMost
@@ -701,7 +701,7 @@
             this.tabPagePlugins.Location = new System.Drawing.Point(4, 22);
             this.tabPagePlugins.Name = "tabPagePlugins";
             this.tabPagePlugins.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePlugins.Size = new System.Drawing.Size(442, 326);
+            this.tabPagePlugins.Size = new System.Drawing.Size(442, 350);
             this.tabPagePlugins.TabIndex = 3;
             this.tabPagePlugins.Text = "Plugins";
             this.tabPagePlugins.UseVisualStyleBackColor = true;
@@ -712,7 +712,7 @@
             this.tabControlPlugins.Location = new System.Drawing.Point(3, 3);
             this.tabControlPlugins.Name = "tabControlPlugins";
             this.tabControlPlugins.SelectedIndex = 0;
-            this.tabControlPlugins.Size = new System.Drawing.Size(436, 320);
+            this.tabControlPlugins.Size = new System.Drawing.Size(436, 344);
             this.tabControlPlugins.TabIndex = 0;
             // 
             // tabPageAbout
@@ -722,7 +722,7 @@
             this.tabPageAbout.Location = new System.Drawing.Point(4, 22);
             this.tabPageAbout.Name = "tabPageAbout";
             this.tabPageAbout.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageAbout.Size = new System.Drawing.Size(442, 326);
+            this.tabPageAbout.Size = new System.Drawing.Size(442, 350);
             this.tabPageAbout.TabIndex = 2;
             this.tabPageAbout.Text = "About";
             this.tabPageAbout.UseVisualStyleBackColor = true;
@@ -730,7 +730,7 @@
             // label5
             // 
             this.label5.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label5.Location = new System.Drawing.Point(3, 310);
+            this.label5.Location = new System.Drawing.Point(3, 334);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(436, 13);
             this.label5.TabIndex = 0;
@@ -744,7 +744,7 @@
             this.pictureBox1.Image = global::Yal.Properties.Resources.ICON;
             this.pictureBox1.Location = new System.Drawing.Point(3, 3);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(436, 320);
+            this.pictureBox1.Size = new System.Drawing.Size(436, 344);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
