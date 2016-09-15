@@ -33,12 +33,12 @@
             this.launcherContextStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.showLauncherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RebuildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.timerAutoIndexing = new System.Windows.Forms.Timer(this.components);
-            this.RebuildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.launcherContextStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,7 +59,7 @@
             // 
             this.showLauncherToolStripMenuItem.Name = "showLauncherToolStripMenuItem";
             this.showLauncherToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
-            this.showLauncherToolStripMenuItem.Text = "Show launcher";
+            this.showLauncherToolStripMenuItem.Text = "Show Yal";
             this.showLauncherToolStripMenuItem.Visible = false;
             this.showLauncherToolStripMenuItem.Click += new System.EventHandler(this.showLauncherToolStripMenuItem_Click);
             // 
@@ -70,6 +70,14 @@
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.optionsToolStripMenuItem.Text = "Options";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
+            // 
+            // RebuildToolStripMenuItem
+            // 
+            this.RebuildToolStripMenuItem.Name = "RebuildToolStripMenuItem";
+            this.RebuildToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.RebuildToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.RebuildToolStripMenuItem.Text = "Rebuild index";
+            this.RebuildToolStripMenuItem.Click += new System.EventHandler(this.rebuildToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -100,14 +108,6 @@
             this.notifyIcon.Text = "Click to show YetAnotherLauncher";
             this.notifyIcon.Visible = true;
             this.notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseClick);
-            // 
-            // RebuildToolStripMenuItem
-            // 
-            this.RebuildToolStripMenuItem.Name = "RebuildToolStripMenuItem";
-            this.RebuildToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.RebuildToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
-            this.RebuildToolStripMenuItem.Text = "Rebuild index";
-            this.RebuildToolStripMenuItem.Click += new System.EventHandler(this.rebuildToolStripMenuItem_Click);
             // 
             // Launcher
             // 
