@@ -40,14 +40,16 @@ namespace Yal
                                          select NAME, FULLPATH, 0 as STATIC from CATALOG where NAME like @query 
                                          order by STATIC desc, NAME asc) limit @limit";
 
+        // used to replace environment variable placeholders inside the app's default indexing paths, with their actual values
+        private static Regex envVarRegex = new Regex(@"%([\w\d]+)%");
+
         private const string indexInsert = "insert into CATALOG (NAME, FULLPATH) values (@name, @fullpath)";
         private const string historyInsert = "insert into HISTORY (SNIPPET, NAME, FULLPATH, LASTACCESSED) values (@snippet, @name, @fullpath, datetime('now'))";
         private const string historyTrim = "delete from HISTORY where LASTACCESSED in (select LASTACCESSED from HISTORY order by LASTACCESSED limit @limit)";
         private const string historyUpdate = "update HISTORY set HITS = HITS + 1, LASTACCESSED = datetime('now') where SNIPPET == @snippet and FULLPATH == @fullpath";
         private const string historyQuery = "select count(snippet) from HISTORY where SNIPPET == @snippet and FULLPATH == @fullpath";
-        private static Regex envVarRegex = new Regex(@"%([\w\d]+)%");
-
-        private static IEnumerable<string> Search(string path, string pattern = "exe,lnk", 
+        
+        private static IEnumerable<string> Search(string path, string pattern, 
                                                   SearchOption searchOption = SearchOption.TopDirectoryOnly)
         {
             string[] patterns = pattern.Split(',');
@@ -61,6 +63,7 @@ namespace Yal
             {
                 foreach (string file in files)
                 {
+                    // it seems that Path.GetFileName() and other methods can't deal with files that have really long paths/names
                     if (file.Length > 260)
                     {
                         continue;
@@ -138,14 +141,17 @@ namespace Yal
             {
                 (new SQLiteCommand($"ATTACH '{historyDbInfo.fileName}' as HISTORY", connection)).ExecuteNonQuery();
 
-                var command = new SQLiteCommand(string.Format(fileQuery, Properties.Settings.Default.MatchAnywhere ? "SNIPPET" : "NAME"), connection);
+                // if 'MatchAnywhere' is on, match just the recorded chars at the time the entry was first added to the db 
+                // (eg. 'edi' for 'Resource Editor') otherwise, match just the entry's name
+                var command = new SQLiteCommand(string.Format(fileQuery, Properties.Settings.Default.MatchAnywhere ? "SNIPPET" : "NAME"), 
+                                                connection);
                 var query = string.Concat(Properties.Settings.Default.MatchAnywhere ? "%" : "", partialFileName, "%");
                 command.Parameters.AddWithValue("@query", query);
                 command.Parameters.AddWithValue("@limit", fetchLimit);
                 command.Parameters.AddWithValue("@snip", string.Concat(partialFileName, "%"));
                 SQLiteDataReader response = command.ExecuteReader();
 
-                int iconIndex = images.Count; // plugins could also have images, so we can't start form 0
+                int iconIndex = images.Count; // plugins could also have images (see Yal.cs/PerformSearch()), so we can't start form 0
                 while (response.Read())
                 {
                     var name = response["NAME"].ToString();
@@ -159,8 +165,7 @@ namespace Yal
                     {
                         images?.Add(icon);
                         var listItem = new ListViewItem(new string[] { name, fullPath },
-                                                        imageIndex: iconIndex)
-                        { ToolTipText = fullPath };
+                                                        imageIndex: iconIndex) { ToolTipText = fullPath };
                         items.Add(listItem);
                         iconIndex++;
                     }
