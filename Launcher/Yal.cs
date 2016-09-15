@@ -413,7 +413,8 @@ namespace Yal
             }
             else if (e.KeyCode == Keys.Enter)
             {
-                StartSelectedItem();
+                // the user can hold CTRL+SHIFT+ENTER to run the item with elevated rights
+                StartSelectedItem(e.Modifiers == (Keys.Shift | Keys.Control));
             }
         }
 
@@ -422,7 +423,7 @@ namespace Yal
             StartSelectedItem();
         }
 
-        private void StartSelectedItem()
+        private void StartSelectedItem(bool elevatedRights = false)
         {
             if (outputWindow.listViewOutput.SelectedItems.Count == 0)
             {
@@ -452,7 +453,16 @@ namespace Yal
 
             // get the full path of the currently selected item
             string filePath = outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text;
-            if (Process.Start(filePath) == null)
+            var startInfo = new ProcessStartInfo(filePath);
+
+            if (elevatedRights)
+            {
+                // http://stackoverflow.com/questions/133379/elevating-process-privilege-programatically
+                startInfo.Verb = "runas";
+                startInfo.UseShellExecute = true;
+            }
+
+            if (Process.Start(startInfo) == null)
             {
                 if (MessageBox.Show("Couldn't start process. Remove entry from the database?",
                                     "Issue", MessageBoxButtons.YesNo, MessageBoxIcon.Error)
