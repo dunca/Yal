@@ -86,6 +86,7 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.btnApplyOptions = new System.Windows.Forms.Button();
             this.btnCancelOpt = new System.Windows.Forms.Button();
+            this.cbFuzzyMatching = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -117,7 +118,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(450, 352);
+            this.tabControl1.Size = new System.Drawing.Size(450, 376);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPageGeneral
@@ -127,7 +128,7 @@
             this.tabPageGeneral.Controls.Add(this.groupBox3);
             this.tabPageGeneral.Location = new System.Drawing.Point(4, 22);
             this.tabPageGeneral.Name = "tabPageGeneral";
-            this.tabPageGeneral.Size = new System.Drawing.Size(442, 326);
+            this.tabPageGeneral.Size = new System.Drawing.Size(442, 350);
             this.tabPageGeneral.TabIndex = 0;
             this.tabPageGeneral.Text = "General";
             this.tabPageGeneral.UseVisualStyleBackColor = true;
@@ -138,7 +139,6 @@
             this.groupBox5.Controls.Add(this.label11);
             this.groupBox5.Controls.Add(this.spinMaxHistoryVisible);
             this.groupBox5.Controls.Add(this.label10);
-            this.groupBox5.Controls.Add(this.cbMatchAnywhere);
             this.groupBox5.Controls.Add(this.cbShowExt);
             this.groupBox5.Controls.Add(this.label8);
             this.groupBox5.Controls.Add(this.spinSearchDelay);
@@ -146,9 +146,9 @@
             this.groupBox5.Controls.Add(this.label7);
             this.groupBox5.Controls.Add(this.spinMaxFetch);
             this.groupBox5.Controls.Add(this.label6);
-            this.groupBox5.Location = new System.Drawing.Point(214, 132);
+            this.groupBox5.Location = new System.Drawing.Point(214, 179);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(218, 190);
+            this.groupBox5.Size = new System.Drawing.Size(218, 166);
             this.groupBox5.TabIndex = 6;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Output window";
@@ -219,7 +219,7 @@
             // cbMatchAnywhere
             // 
             this.cbMatchAnywhere.AutoSize = true;
-            this.cbMatchAnywhere.Location = new System.Drawing.Point(6, 171);
+            this.cbMatchAnywhere.Location = new System.Drawing.Point(6, 99);
             this.cbMatchAnywhere.Name = "cbMatchAnywhere";
             this.cbMatchAnywhere.Size = new System.Drawing.Size(186, 17);
             this.cbMatchAnywhere.TabIndex = 12;
@@ -326,15 +326,17 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.cbFuzzyMatching);
             this.groupBox4.Controls.Add(this.cbPluginSelectionsInHistory);
             this.groupBox4.Controls.Add(this.spinMaxHistorySize);
             this.groupBox4.Controls.Add(this.spinAutoIndexInterval);
-            this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Controls.Add(this.cbAutoIndexing);
+            this.groupBox4.Controls.Add(this.cbMatchAnywhere);
+            this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Controls.Add(this.checkBoxAutostart);
             this.groupBox4.Location = new System.Drawing.Point(214, 5);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(219, 123);
+            this.groupBox4.Size = new System.Drawing.Size(219, 169);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "System settings";
@@ -343,7 +345,7 @@
             // 
             this.cbPluginSelectionsInHistory.AutoSize = true;
             this.cbPluginSelectionsInHistory.Enabled = false;
-            this.cbPluginSelectionsInHistory.Location = new System.Drawing.Point(6, 50);
+            this.cbPluginSelectionsInHistory.Location = new System.Drawing.Point(6, 49);
             this.cbPluginSelectionsInHistory.Name = "cbPluginSelectionsInHistory";
             this.cbPluginSelectionsInHistory.Size = new System.Drawing.Size(194, 17);
             this.cbPluginSelectionsInHistory.TabIndex = 15;
@@ -352,7 +354,7 @@
             // 
             // spinMaxHistorySize
             // 
-            this.spinMaxHistorySize.Location = new System.Drawing.Point(151, 98);
+            this.spinMaxHistorySize.Location = new System.Drawing.Point(151, 145);
             this.spinMaxHistorySize.Maximum = new decimal(new int[] {
             500,
             0,
@@ -369,7 +371,7 @@
             // 
             // spinAutoIndexInterval
             // 
-            this.spinAutoIndexInterval.Location = new System.Drawing.Point(151, 74);
+            this.spinAutoIndexInterval.Location = new System.Drawing.Point(151, 122);
             this.spinAutoIndexInterval.Maximum = new decimal(new int[] {
             300,
             0,
@@ -392,7 +394,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 102);
+            this.label9.Location = new System.Drawing.Point(6, 149);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(115, 13);
             this.label9.TabIndex = 13;
@@ -401,7 +403,7 @@
             // cbAutoIndexing
             // 
             this.cbAutoIndexing.AutoSize = true;
-            this.cbAutoIndexing.Location = new System.Drawing.Point(6, 76);
+            this.cbAutoIndexing.Location = new System.Drawing.Point(6, 124);
             this.cbAutoIndexing.Name = "cbAutoIndexing";
             this.cbAutoIndexing.Size = new System.Drawing.Size(135, 17);
             this.cbAutoIndexing.TabIndex = 12;
@@ -433,7 +435,7 @@
             this.groupBox3.Controls.Add(this.trackBarOpacity);
             this.groupBox3.Location = new System.Drawing.Point(9, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(200, 316);
+            this.groupBox3.Size = new System.Drawing.Size(200, 339);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Look and feel";
@@ -550,7 +552,7 @@
             this.tabPageIndexing.Controls.Add(this.groupBox1);
             this.tabPageIndexing.Location = new System.Drawing.Point(4, 22);
             this.tabPageIndexing.Name = "tabPageIndexing";
-            this.tabPageIndexing.Size = new System.Drawing.Size(442, 326);
+            this.tabPageIndexing.Size = new System.Drawing.Size(442, 350);
             this.tabPageIndexing.TabIndex = 1;
             this.tabPageIndexing.Text = "Indexing";
             this.tabPageIndexing.UseVisualStyleBackColor = true;
@@ -598,7 +600,7 @@
             // 
             // btnRebuild
             // 
-            this.btnRebuild.Location = new System.Drawing.Point(353, 300);
+            this.btnRebuild.Location = new System.Drawing.Point(350, 312);
             this.btnRebuild.Name = "btnRebuild";
             this.btnRebuild.Size = new System.Drawing.Size(75, 23);
             this.btnRebuild.TabIndex = 7;
@@ -609,7 +611,7 @@
             // lblIndexStatus
             // 
             this.lblIndexStatus.AutoSize = true;
-            this.lblIndexStatus.Location = new System.Drawing.Point(76, 305);
+            this.lblIndexStatus.Location = new System.Drawing.Point(73, 317);
             this.lblIndexStatus.Name = "lblIndexStatus";
             this.lblIndexStatus.Size = new System.Drawing.Size(10, 13);
             this.lblIndexStatus.TabIndex = 3;
@@ -618,7 +620,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 305);
+            this.label1.Location = new System.Drawing.Point(5, 317);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(70, 13);
             this.label1.TabIndex = 2;
@@ -749,7 +751,7 @@
             // 
             // btnApplyOptions
             // 
-            this.btnApplyOptions.Location = new System.Drawing.Point(147, 354);
+            this.btnApplyOptions.Location = new System.Drawing.Point(146, 378);
             this.btnApplyOptions.Name = "btnApplyOptions";
             this.btnApplyOptions.Size = new System.Drawing.Size(75, 23);
             this.btnApplyOptions.TabIndex = 12;
@@ -759,7 +761,7 @@
             // 
             // btnCancelOpt
             // 
-            this.btnCancelOpt.Location = new System.Drawing.Point(226, 354);
+            this.btnCancelOpt.Location = new System.Drawing.Point(227, 378);
             this.btnCancelOpt.Name = "btnCancelOpt";
             this.btnCancelOpt.Size = new System.Drawing.Size(75, 23);
             this.btnCancelOpt.TabIndex = 13;
@@ -767,11 +769,21 @@
             this.btnCancelOpt.UseVisualStyleBackColor = true;
             this.btnCancelOpt.Click += new System.EventHandler(this.btnCancelOpt_Click);
             // 
+            // cbFuzzyMatching
+            // 
+            this.cbFuzzyMatching.AutoSize = true;
+            this.cbFuzzyMatching.Location = new System.Drawing.Point(6, 74);
+            this.cbFuzzyMatching.Name = "cbFuzzyMatching";
+            this.cbFuzzyMatching.Size = new System.Drawing.Size(99, 17);
+            this.cbFuzzyMatching.TabIndex = 16;
+            this.cbFuzzyMatching.Text = "Fuzzy matching";
+            this.cbFuzzyMatching.UseVisualStyleBackColor = true;
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(448, 380);
+            this.ClientSize = new System.Drawing.Size(448, 403);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnCancelOpt);
             this.Controls.Add(this.btnApplyOptions);
@@ -871,5 +883,6 @@
         private System.Windows.Forms.NumericUpDown spinMaxVisiblePluginItems;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.CheckBox cbFuzzyMatching;
     }
 }

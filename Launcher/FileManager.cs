@@ -42,6 +42,7 @@ namespace Yal
 
         // used to replace environment variable placeholders inside the app's default indexing paths, with their actual values
         private static Regex envVarRegex = new Regex(@"%([\w\d]+)%");
+        private static Regex searchPatternRegex = new Regex(@"([\w\d])");
 
         private const string indexInsert = "insert into CATALOG (NAME, FULLPATH) values (@name, @fullpath)";
         private const string historyInsert = "insert into HISTORY (SNIPPET, NAME, FULLPATH, LASTACCESSED) values (@snippet, @name, @fullpath, datetime('now'))";
@@ -143,9 +144,13 @@ namespace Yal
 
                 // if 'MatchAnywhere' is on, match just the recorded chars at the time the entry was first added to the db 
                 // (eg. 'edi' for 'Resource Editor') otherwise, match just the entry's name
-                var command = new SQLiteCommand(string.Format(fileQuery, Properties.Settings.Default.MatchAnywhere ? "SNIPPET" : "NAME"), 
+                var command = new SQLiteCommand(string.Format(fileQuery, Properties.Settings.Default.MatchAnywhere ||
+                                                                         Properties.Settings.Default.FuzzyMatching ? "SNIPPET" : "NAME"), 
                                                 connection);
-                var query = string.Concat(Properties.Settings.Default.MatchAnywhere ? "%" : "", partialFileName, "%");
+                string pattern = Properties.Settings.Default.FuzzyMatching ? searchPatternRegex.Replace(partialFileName, 
+                                                                                                        match => string.Concat(match, "%")) : 
+                                                                             string.Concat(partialFileName, "%");
+                var query = string.Concat(Properties.Settings.Default.MatchAnywhere ? "%" : "", pattern);
                 command.Parameters.AddWithValue("@query", query);
                 command.Parameters.AddWithValue("@limit", fetchLimit);
                 command.Parameters.AddWithValue("@snip", string.Concat(partialFileName, "%"));
