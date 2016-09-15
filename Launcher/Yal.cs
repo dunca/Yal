@@ -211,6 +211,7 @@ namespace Yal
 
         private void ActivateLauncher()
         {
+            this.Show();
             this.Activate();
 
             if (optionsWindow == null)
@@ -448,6 +449,7 @@ namespace Yal
                 return;
             }
 
+            this.Hide();
             outputWindow.Hide();
 
             // the first item in each row
