@@ -281,7 +281,10 @@ namespace Yal
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            optionsWindow = new Options(this);
+            if (optionsWindow == null)
+            {
+                optionsWindow = new Options(this);
+            }
             optionsWindow.Show();
         }
 
