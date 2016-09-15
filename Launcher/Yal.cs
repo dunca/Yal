@@ -65,6 +65,15 @@ namespace Yal
             PluginInstances = PluginLoader.InstantiatePlugins(PluginLoader.Load("plugins"));
         }
 
+        private void ShowOptionsWindow()
+        {
+            if (optionsWindow == null)
+            {
+                optionsWindow = new Options(this);
+            }
+            optionsWindow.Show();
+        }
+
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == (Keys.Control | Keys.D) && outputWindow.listViewOutput.SelectedItems.Count != 0)
@@ -281,11 +290,7 @@ namespace Yal
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (optionsWindow == null)
-            {
-                optionsWindow = new Options(this);
-            }
-            optionsWindow.Show();
+            ShowOptionsWindow();
         }
 
         private void txtSearch_KeyDown(object sender, KeyEventArgs e)
@@ -418,9 +423,16 @@ namespace Yal
             bool isAlpha = e.KeyCode >= Keys.A && e.KeyCode <= Keys.Z;
             if (isAlpha)
             {
-                if (e.KeyCode == Keys.D && e.Modifiers == Keys.Control && outputWindow.listViewOutput.SelectedItems.Count != 0)
+                if (e.Modifiers == Keys.Control)
                 {
-                    Utils.OpenFileDirectory(outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text);
+                    if (e.KeyCode == Keys.D && outputWindow.listViewOutput.SelectedItems.Count != 0)
+                    {
+                        Utils.OpenFileDirectory(outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text);
+                    }
+                    else if (e.KeyCode == Keys.O)
+                    {
+                        ShowOptionsWindow();
+                    }
                     return;
                 }
 
