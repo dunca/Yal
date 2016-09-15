@@ -550,12 +550,9 @@ namespace Yal
 
         private void launcherContextStrip_Opening(object sender, CancelEventArgs e)
         {
-            // only show the "Show launcher" option if the context menu is opened through the
-            // tray icon (when the launcher windows is minimized)
-            //showLauncherToolStripMenuItem.Visible = this.WindowState == FormWindowState.Minimized;
-
-            // TODO 
-            // only show the 'Show launcher' item when the strip is opened from within the notification bar
+            // only display the "Show Yal" option if the context menu is opened through the
+            // tray icon
+            showLauncherToolStripMenuItem.Visible = !this.Bounds.Contains(Cursor.Position);
         }
 
         private void showLauncherToolStripMenuItem_Click(object sender, EventArgs e)
