@@ -76,7 +76,7 @@ namespace Yal
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (outputWindow.listViewOutput.SelectedItems.Count != 0)
+            if (outputWindow.listViewOutput.SelectedItems.Count != 0 && (keyData & Keys.Control) != 0)
             {
                 if (keyData == (Keys.Control | Keys.D))
                 {
