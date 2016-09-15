@@ -425,7 +425,11 @@ namespace Yal
             {
                 if (e.Modifiers == Keys.Control)
                 {
-                    if (outputWindow.listViewOutput.SelectedItems.Count != 0)
+                    if (e.KeyCode == Keys.O)
+                    {
+                        ShowOptionsWindow();
+                    }
+                    else if (outputWindow.listViewOutput.SelectedItems.Count != 0)
                     {
                         if (e.KeyCode == Keys.D)
                         {
@@ -439,11 +443,6 @@ namespace Yal
                             outputWindow.BuildContextMenu(location);
                         }
                     }
-                    else if (e.KeyCode == Keys.O)
-                    {
-                        ShowOptionsWindow();
-                    }
-
                     return;
                 }
 
