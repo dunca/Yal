@@ -67,15 +67,31 @@ namespace Yal
             var runAsAdminItem = new ToolStripMenuItem("Run as administrator");
             runAsAdminItem.Click += RunAsAdminItem_Click;
 
+            var copyNameItem = new ToolStripMenuItem("Copy name");
+            copyNameItem.Click += CopyNameItem_Click;
+
             if (File.Exists(listViewOutput.SelectedItems[0].SubItems[1].Text))
             {
+                var copyPathItem = new ToolStripMenuItem("Copy path");
+                copyPathItem.Click += CopyPathItem_Click;
+
                 var openDirItem = new ToolStripMenuItem("Open containing directory");
                 openDirItem.Click += OpenDirItem_Click;
-                contextMenu.Items.AddRange(new ToolStripItem[] { openDirItem, new ToolStripSeparator() });
+                contextMenu.Items.AddRange(new ToolStripItem[] { openDirItem, copyPathItem });
             }
 
-            contextMenu.Items.AddRange(new ToolStripItem[] { runItem, runAsAdminItem });
+            contextMenu.Items.AddRange(new ToolStripItem[] { copyNameItem, runItem, runAsAdminItem });
             contextMenu.Show(location);
+        }
+
+        private void CopyPathItem_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(listViewOutput.SelectedItems[0].SubItems[1].Text);
+        }
+
+        private void CopyNameItem_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(listViewOutput.SelectedItems[0].SubItems[0].Text);
         }
 
         private void OpenDirItem_Click(object sender, EventArgs e)
