@@ -221,9 +221,9 @@
             this.cbMatchAnywhere.AutoSize = true;
             this.cbMatchAnywhere.Location = new System.Drawing.Point(6, 99);
             this.cbMatchAnywhere.Name = "cbMatchAnywhere";
-            this.cbMatchAnywhere.Size = new System.Drawing.Size(186, 17);
+            this.cbMatchAnywhere.Size = new System.Drawing.Size(196, 17);
             this.cbMatchAnywhere.TabIndex = 12;
-            this.cbMatchAnywhere.Text = "Match anywhere in the file\'s name";
+            this.cbMatchAnywhere.Text = "Match anywhere in the entry\'s name";
             this.cbMatchAnywhere.UseVisualStyleBackColor = true;
             // 
             // cbShowExt
@@ -774,9 +774,9 @@
             this.cbFuzzyMatching.AutoSize = true;
             this.cbFuzzyMatching.Location = new System.Drawing.Point(6, 74);
             this.cbFuzzyMatching.Name = "cbFuzzyMatching";
-            this.cbFuzzyMatching.Size = new System.Drawing.Size(99, 17);
+            this.cbFuzzyMatching.Size = new System.Drawing.Size(172, 17);
             this.cbFuzzyMatching.TabIndex = 16;
-            this.cbFuzzyMatching.Text = "Fuzzy matching";
+            this.cbFuzzyMatching.Text = "Fuzzily match names (files only)";
             this.cbFuzzyMatching.UseVisualStyleBackColor = true;
             // 
             // Options
