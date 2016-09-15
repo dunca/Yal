@@ -395,13 +395,6 @@ namespace Yal
             bool isAlpha = e.KeyCode >= Keys.A && e.KeyCode <= Keys.Z;
             if (isAlpha)
             {
-                if (e.KeyCode == Keys.O && e.Modifiers == Keys.Control && outputWindow.listViewOutput.SelectedItems.Count != 0
-                    && File.Exists(outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text))
-                {
-                    Process.Start(Path.GetDirectoryName(outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text));
-                    return;
-                }
-
                 char pressed = (char)e.KeyCode;
                 if (!Control.IsKeyLocked(Keys.CapsLock) ||
                     (Control.IsKeyLocked(Keys.CapsLock) && e.Shift))
@@ -423,7 +416,6 @@ namespace Yal
                 // the user can hold CTRL+SHIFT+ENTER to run the item with elevated rights
                 StartSelectedItem(e.Modifiers == (Keys.Shift | Keys.Control));
             }
-
         }
 
         private void outputWindow_listViewOutput_MouseDoubleClick(object sender, MouseEventArgs e)
