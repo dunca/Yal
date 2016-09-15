@@ -12,6 +12,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using PluginInterfaces;
+using Utilities;
 
 namespace Yal
 {
@@ -62,6 +63,17 @@ namespace Yal
             Properties.Settings.Default.FoldersToIndex = FileManager.ProcessRawPaths();
 
             PluginInstances = PluginLoader.InstantiatePlugins(PluginLoader.Load("plugins"));
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.D) && outputWindow.listViewOutput.SelectedItems.Count != 0)
+            {
+                Utils.OpenFileDirectory(outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text);
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private void TrimHistoryTimer_Tick(object sender, EventArgs e)
@@ -395,6 +407,12 @@ namespace Yal
             bool isAlpha = e.KeyCode >= Keys.A && e.KeyCode <= Keys.Z;
             if (isAlpha)
             {
+                if (e.KeyCode == Keys.D && e.Modifiers == Keys.Control && outputWindow.listViewOutput.SelectedItems.Count != 0)
+                {
+                    Utils.OpenFileDirectory(outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text);
+                    return;
+                }
+
                 char pressed = (char)e.KeyCode;
                 if (!Control.IsKeyLocked(Keys.CapsLock) ||
                     (Control.IsKeyLocked(Keys.CapsLock) && e.Shift))
@@ -423,7 +441,7 @@ namespace Yal
             StartSelectedItem();
         }
 
-        private void StartSelectedItem(bool elevatedRights = false)
+        internal void StartSelectedItem(bool elevatedRights = false)
         {
             if (outputWindow.listViewOutput.SelectedItems.Count == 0)
             {

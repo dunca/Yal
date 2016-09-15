@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using System.Diagnostics;
+using Utilities;
 
 namespace Yal
 {
@@ -44,6 +47,45 @@ namespace Yal
         private void listViewOutput_MouseEnter(object sender, EventArgs e)
         {
             listViewOutput.Focus();
+        }
+
+        private void listViewOutput_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var contextMenu = new ContextMenuStrip();
+
+                var runItem = new ToolStripMenuItem("Run");
+                runItem.Click += RunItem_Click;
+
+                var runAsAdminItem = new ToolStripMenuItem("Run as administrator");
+                runAsAdminItem.Click += RunAsAdminItem_Click;
+
+                if (File.Exists(listViewOutput.SelectedItems[0].SubItems[1].Text))
+                {
+                    var openDirItem = new ToolStripMenuItem("Open containing directory");
+                    openDirItem.Click += OpenDirItem_Click;
+                    contextMenu.Items.AddRange(new ToolStripItem[] { openDirItem, new ToolStripSeparator() });
+                }
+
+                contextMenu.Items.AddRange(new ToolStripItem[] { runItem, runAsAdminItem });
+                contextMenu.Show(Cursor.Position);
+            }
+        }
+
+        private void OpenDirItem_Click(object sender, EventArgs e)
+        {
+            Utils.OpenFileDirectory(listViewOutput.SelectedItems[0].SubItems[1].Text);
+        }
+
+        private void RunAsAdminItem_Click(object sender, EventArgs e)
+        {
+            MainWindow.StartSelectedItem(elevatedRights: true);
+        }
+
+        private void RunItem_Click(object sender, EventArgs e)
+        {
+            MainWindow.StartSelectedItem();
         }
     }
 }
