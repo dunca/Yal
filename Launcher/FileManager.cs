@@ -146,11 +146,6 @@ namespace Yal
             {
                 (new SQLiteCommand($"ATTACH '{historyDbInfo.fileName}' as HISTORY", connection)).ExecuteNonQuery();
 
-                // if 'MatchAnywhere' is on, match just the recorded chars at the time the entry was first added to the db 
-                // (eg. 'edi' for 'Resource Editor') otherwise, match just the entry's name
-                //var command = new SQLiteCommand(string.Format(fileQuery, Properties.Settings.Default.MatchAnywhere ||
-                //                                                         Properties.Settings.Default.FuzzyMatching ? "SNIPPET" : "NAME"), 
-                //                                connection);
                 var command = new SQLiteCommand(fileQuery, connection);
                 string pattern = Properties.Settings.Default.FuzzyMatching ? string.Concat(partialFileName.Select(c => string.Concat(c, "%"))) : 
                                                                              string.Concat(partialFileName, "%");

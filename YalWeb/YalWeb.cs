@@ -38,8 +38,8 @@ namespace YalWeb
             }
             catch
             {
-                //MessageBox.Show((Directory.GetCurrentDirectory()));
             }
+
             FileLikeOutput = false;
 
             Entries = new Dictionary<string, string>();
