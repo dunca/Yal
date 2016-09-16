@@ -42,8 +42,10 @@ namespace Yal
             this.Size = new Size(this.Size.Width, (neededRows * listViewOutput.TileSize.Height) + 4); // add 4px to the heigh to compensate for borders
 
             // dynamically change the tile's width based on the number of items (by considering the state of the vert. scrollbar)
-            listViewOutput.TileSize = new Size(listViewOutput.Items.Count <= Properties.Settings.Default.MaxVisible ? 
-                                               listViewOutput.Size.Width : listViewOutput.Size.Width - 17, 
+            //listViewOutput.TileSize = new Size(listViewOutput.Items.Count <= Properties.Settings.Default.MaxVisible ? 
+            //                                   listViewOutput.Size.Width : listViewOutput.Size.Width - 17, 
+            //                                   listViewOutput.TileSize.Height);
+            listViewOutput.TileSize = new Size(listViewOutput.ClientSize.Width,
                                                listViewOutput.TileSize.Height);
         }
 
