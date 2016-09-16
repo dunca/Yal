@@ -9,6 +9,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Diagnostics;
 using Utilities;
+using System.Text.RegularExpressions;
 
 namespace YalControlPanel
 {
@@ -128,19 +129,9 @@ Work Folders;Microsoft.WorkFolders;8.1,10
             return ControlPanelPluginInstance;
         }
 
-        public bool TryParseInput(string input, out string[] output, bool matchAnywhere)
+        public string[] GetResults(string input, bool matchAnywhere, bool fuzzyMatch)
         {
-            output = null;
-            string[] ret = GetMatchingActivators(input, matchAnywhere);
-            if (ret.Length == 0)
-            {
-                return false;
-            }
-            else
-            {
-                output = ret;
-                return true;
-            }
+            return GetMatchingActivators(input, matchAnywhere, fuzzyMatch);
         }
 
         public void HandleExecution(string name)
@@ -152,18 +143,24 @@ Work Folders;Microsoft.WorkFolders;8.1,10
             }
         }
 
-        private string[] GetMatchingActivators(string input, bool matchAnywhere)
+        private string[] GetMatchingActivators(string input, bool matchAnywhere, bool fuzzyMatch)
         {
             var items = new List<string>();
+            var regex = new Regex(string.Concat(matchAnywhere ? ".*" : "^", string.Concat(input.Select(c => string.Concat(Regex.Escape(c.ToString()), ".*")))), RegexOptions.IgnoreCase);
             foreach (string activator in Activators)
             {
-                if (matchAnywhere? activator.IndexOf(input, StringComparison.InvariantCultureIgnoreCase) > -1 : 
-                                   activator.StartsWith(input, StringComparison.InvariantCultureIgnoreCase))
+                if ((fuzzyMatch && regex.IsMatch(activator)) || (matchAnywhere ? activator.IndexOf(input, StringComparison.InvariantCultureIgnoreCase) > -1 : 
+                                                                 activator.StartsWith(input, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     items.Add(activator);
                 }
             }
             return items.ToArray();
+        }
+
+        public bool CouldProvideResults(string input, bool matchAnywhere, bool fuzzyMatch)
+        {
+            return GetMatchingActivators(input, matchAnywhere, fuzzyMatch).Length > 0;
         }
     }
 }

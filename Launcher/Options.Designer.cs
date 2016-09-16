@@ -36,7 +36,6 @@
             this.label11 = new System.Windows.Forms.Label();
             this.spinMaxHistoryVisible = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
-            this.cbMatchAnywhere = new System.Windows.Forms.CheckBox();
             this.cbShowExt = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.spinSearchDelay = new System.Windows.Forms.NumericUpDown();
@@ -45,11 +44,13 @@
             this.spinMaxFetch = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.cbFuzzyMatching = new System.Windows.Forms.CheckBox();
             this.cbPluginSelectionsInHistory = new System.Windows.Forms.CheckBox();
             this.spinMaxHistorySize = new System.Windows.Forms.NumericUpDown();
             this.spinAutoIndexInterval = new System.Windows.Forms.NumericUpDown();
-            this.label9 = new System.Windows.Forms.Label();
             this.cbAutoIndexing = new System.Windows.Forms.CheckBox();
+            this.cbMatchAnywhere = new System.Windows.Forms.CheckBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.checkBoxAutostart = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.buttonPickColor = new System.Windows.Forms.Button();
@@ -86,7 +87,6 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.btnApplyOptions = new System.Windows.Forms.Button();
             this.btnCancelOpt = new System.Windows.Forms.Button();
-            this.cbFuzzyMatching = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -216,16 +216,6 @@
             this.label10.TabIndex = 13;
             this.label10.Text = "Max visible history items";
             // 
-            // cbMatchAnywhere
-            // 
-            this.cbMatchAnywhere.AutoSize = true;
-            this.cbMatchAnywhere.Location = new System.Drawing.Point(6, 99);
-            this.cbMatchAnywhere.Name = "cbMatchAnywhere";
-            this.cbMatchAnywhere.Size = new System.Drawing.Size(192, 17);
-            this.cbMatchAnywhere.TabIndex = 12;
-            this.cbMatchAnywhere.Text = "Match anywhere in the item\'s name";
-            this.cbMatchAnywhere.UseVisualStyleBackColor = true;
-            // 
             // cbShowExt
             // 
             this.cbShowExt.AutoSize = true;
@@ -341,6 +331,16 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "System settings";
             // 
+            // cbFuzzyMatching
+            // 
+            this.cbFuzzyMatching.AutoSize = true;
+            this.cbFuzzyMatching.Location = new System.Drawing.Point(6, 74);
+            this.cbFuzzyMatching.Name = "cbFuzzyMatching";
+            this.cbFuzzyMatching.Size = new System.Drawing.Size(123, 17);
+            this.cbFuzzyMatching.TabIndex = 16;
+            this.cbFuzzyMatching.Text = "Fuzzily match names";
+            this.cbFuzzyMatching.UseVisualStyleBackColor = true;
+            // 
             // cbPluginSelectionsInHistory
             // 
             this.cbPluginSelectionsInHistory.AutoSize = true;
@@ -391,15 +391,6 @@
             0,
             0});
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 149);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(115, 13);
-            this.label9.TabIndex = 13;
-            this.label9.Text = "Items to keep in history";
-            // 
             // cbAutoIndexing
             // 
             this.cbAutoIndexing.AutoSize = true;
@@ -409,6 +400,25 @@
             this.cbAutoIndexing.TabIndex = 12;
             this.cbAutoIndexing.Text = "Auto indexing (minutes)";
             this.cbAutoIndexing.UseVisualStyleBackColor = true;
+            // 
+            // cbMatchAnywhere
+            // 
+            this.cbMatchAnywhere.AutoSize = true;
+            this.cbMatchAnywhere.Location = new System.Drawing.Point(6, 99);
+            this.cbMatchAnywhere.Name = "cbMatchAnywhere";
+            this.cbMatchAnywhere.Size = new System.Drawing.Size(192, 17);
+            this.cbMatchAnywhere.TabIndex = 12;
+            this.cbMatchAnywhere.Text = "Match anywhere in the item\'s name";
+            this.cbMatchAnywhere.UseVisualStyleBackColor = true;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 149);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(115, 13);
+            this.label9.TabIndex = 13;
+            this.label9.Text = "Items to keep in history";
             // 
             // checkBoxAutostart
             // 
@@ -768,16 +778,6 @@
             this.btnCancelOpt.Text = "Cancel";
             this.btnCancelOpt.UseVisualStyleBackColor = true;
             this.btnCancelOpt.Click += new System.EventHandler(this.btnCancelOpt_Click);
-            // 
-            // cbFuzzyMatching
-            // 
-            this.cbFuzzyMatching.AutoSize = true;
-            this.cbFuzzyMatching.Location = new System.Drawing.Point(6, 74);
-            this.cbFuzzyMatching.Name = "cbFuzzyMatching";
-            this.cbFuzzyMatching.Size = new System.Drawing.Size(172, 17);
-            this.cbFuzzyMatching.TabIndex = 16;
-            this.cbFuzzyMatching.Text = "Fuzzily match names (files only)";
-            this.cbFuzzyMatching.UseVisualStyleBackColor = true;
             // 
             // Options
             // 

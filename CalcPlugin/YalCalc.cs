@@ -17,9 +17,9 @@ namespace YalCalc
         public string Version { get; }
         public string Description { get; }
         public Icon PluginIcon { get; }
-        public List<string> Activators { get; }
         public bool FileLikeOutput { get; }
 
+        private List<string> activators;
         private YalCalcUC CalcPluginInstance { get; set; }
 
         //public string Activator { get; }
@@ -40,7 +40,7 @@ namespace YalCalc
             }
             FileLikeOutput = false;
 
-            Activators = new List<string>() { "=" };
+            activators = new List<string>() { "=" };
         }
 
         public void SaveSettings()
@@ -57,20 +57,18 @@ namespace YalCalc
             return CalcPluginInstance;
         }
 
-        public bool TryParseInput(string input, out string[] output, bool matchAnywhere)
+        public string[] GetResults(string input, bool matchAnywhere, bool fuzzyMatch)
         {
             var dt = new DataTable();
             try
             {
                 double result = Convert.ToDouble(dt.Compute(input.Substring(1), filter: ""));
-                output = new string[] { Convert.ToString(Math.Round(result, Properties.Settings.Default.DecimalPlaces)) };
-                return true;
+                return new string[] { Convert.ToString(Math.Round(result, Properties.Settings.Default.DecimalPlaces)) };
             }
             catch
             {
             }
-            output = null;
-            return false;
+            return new string[0];
         }
 
         public void HandleExecution(string input)
@@ -79,6 +77,11 @@ namespace YalCalc
             {
                 Clipboard.SetText(input);
             }
+        }
+
+        public bool CouldProvideResults(string input, bool matchAnywhere, bool fuzzyMatch)
+        {
+            return input.StartsWith(activators[0]);
         }
     }
 }

@@ -18,9 +18,9 @@ namespace YalWeb
         public string Version { get; }
         public string Description { get; }
         public Icon PluginIcon { get; }
-        public List<string> Activators { get; }
         public bool FileLikeOutput { get; }
 
+        private List<string> activators;
         private YalWebUC WebPluginInstance { get; set; }
         private Dictionary<string, string> Entries;
 
@@ -49,7 +49,7 @@ namespace YalWeb
                 Entries.Add(group[0], group[1]);
             }
 
-            Activators = Entries.Keys.ToList();
+            activators = Entries.Keys.ToList();
         }
 
         public void SaveSettings()
@@ -66,11 +66,10 @@ namespace YalWeb
             return WebPluginInstance;
         }
 
-        public bool TryParseInput(string input, out string[] output, bool matchAnywhere)
+        public string[] GetResults(string input, bool matchAnywhere, bool fuzzyMatch)
         {
             // this plugin is always able to return results (if the user's pc is connected & the search urls work)
-            output = new string[] { input };
-            return true;
+            return new string[] { input };
         }
 
         public void HandleExecution(string input)
@@ -85,6 +84,18 @@ namespace YalWeb
             {
                 MessageBox.Show(e.Message);
             }
+        }
+
+        public bool CouldProvideResults(string input, bool matchAnywhere, bool fuzzyMatch)
+        {
+            foreach (var activator in activators)
+            {
+                if (input.StartsWith(activator))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

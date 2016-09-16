@@ -380,13 +380,15 @@ namespace Yal
                 {
                     //if (plugin.Activators.Any(activator => txtSearch.Text.StartsWith(activator, StringComparison.InvariantCultureIgnoreCase) 
                     //                                       || activator.StartsWith(txtSearch.Text, StringComparison.InvariantCultureIgnoreCase)))
-                    if ((!plugin.FileLikeOutput && plugin.Activators.Any(activator => txtSearch.Text.StartsWith(activator, StringComparison.InvariantCultureIgnoreCase)))
-                        || (plugin.FileLikeOutput && plugin.Activators.Any(activator => Properties.Settings.Default.MatchAnywhere ? activator.IndexOf(txtSearch.Text, StringComparison.InvariantCultureIgnoreCase) > -1 : 
-                                                                                                                                    activator.StartsWith(txtSearch.Text, StringComparison.InvariantCultureIgnoreCase))))
+                    //if ((!plugin.FileLikeOutput && plugin.Activators.Any(activator => txtSearch.Text.StartsWith(activator, StringComparison.InvariantCultureIgnoreCase)))
+                    //    || (plugin.FileLikeOutput && plugin.Activators.Any(activator => Properties.Settings.Default.MatchAnywhere ? activator.IndexOf(txtSearch.Text, StringComparison.InvariantCultureIgnoreCase) > -1 : 
+                    //                                                                                                                activator.StartsWith(txtSearch.Text, StringComparison.InvariantCultureIgnoreCase))))
 
+                    if ((plugin.CouldProvideResults(txtSearch.Text, Properties.Settings.Default.MatchAnywhere, Properties.Settings.Default.FuzzyMatching)))
                     {
-                        string[] items;
-                        if (plugin.TryParseInput(txtSearch.Text, out items, Properties.Settings.Default.MatchAnywhere))
+                        string[] items = plugin.GetResults(txtSearch.Text, Properties.Settings.Default.MatchAnywhere,
+                                                           Properties.Settings.Default.FuzzyMatching);
+                        if (items.Length > 0)
                         {
                             int count = 1;
                             foreach (var item in items)
