@@ -360,6 +360,7 @@ namespace Yal
 
         private void PerformSearch()
         {
+            searchDelayTimer.Stop();
             //foreach (var plugin in PluginInstances)
             //{
             //    string ret;
@@ -431,8 +432,6 @@ namespace Yal
             {
                 outputWindow.Hide();
             }
-
-            searchDelayTimer.Stop();
         }
 
         private void outputWindow_listViewOutput_KeyDown(object sender, KeyEventArgs e)
