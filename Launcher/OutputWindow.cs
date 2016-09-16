@@ -38,10 +38,13 @@ namespace Yal
 
         internal void ResizeToFitContent()
         {
-            // todo. mess with the width in the TileSize prop... keep count of the vert. scrollbar and increase the width of the tile when
-            // there's no scrollbar
             int neededRows = Math.Min(Properties.Settings.Default.MaxVisible, listViewOutput.Items.Count);
-            this.Size = new Size(this.Size.Width, (neededRows * listViewOutput.TileSize.Height) + 5); // add 5px to the heigh to compensate for borders
+            this.Size = new Size(this.Size.Width, (neededRows * listViewOutput.TileSize.Height) + 4); // add 4px to the heigh to compensate for borders
+
+            // dynamically change the tile's width based on the number of items (by considering the state of the vert. scrollbar)
+            listViewOutput.TileSize = new Size(listViewOutput.Items.Count <= Properties.Settings.Default.MaxVisible ? 
+                                               listViewOutput.Size.Width : listViewOutput.Size.Width - 17, 
+                                               listViewOutput.TileSize.Height);
         }
 
         private void listViewOutput_MouseEnter(object sender, EventArgs e)

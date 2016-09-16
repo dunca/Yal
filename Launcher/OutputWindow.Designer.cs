@@ -38,6 +38,7 @@
             // 
             this.listViewOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.listViewOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewOutput.FullRowSelect = true;
             this.listViewOutput.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.listViewOutput.HideSelection = false;
             this.listViewOutput.LargeImageList = this.imageList1;
