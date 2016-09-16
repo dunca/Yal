@@ -22,8 +22,6 @@ namespace YalCalc
         private List<string> activators;
         private YalCalcUC CalcPluginInstance { get; set; }
 
-        //public string Activator { get; }
-
         public YalCalc()
         {
             Name = "YalCalc";
@@ -36,8 +34,8 @@ namespace YalCalc
             }
             catch
             {
-                //MessageBox.Show((Directory.GetCurrentDirectory()));
             }
+
             FileLikeOutput = false;
 
             activators = new List<string>() { "=" };

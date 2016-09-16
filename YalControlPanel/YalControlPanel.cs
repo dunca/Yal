@@ -95,8 +95,8 @@ Work Folders;Microsoft.WorkFolders;8.1,10
             }
             catch
             {
-                //MessageBox.Show((Directory.GetCurrentDirectory()));
             }
+
             FileLikeOutput = true;
 
             ControlPanelItems = new Dictionary<string, string>();

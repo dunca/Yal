@@ -20,8 +20,7 @@ namespace Yal
     {
         Regex extRegex = new Regex(@"^\w+$");
 
-        // this type of list signals it's modification which causes our listbox to reread it's
-        // contents
+        // this type of list signals it's modification which causes our listbox to reread it's contents
         internal BindingList<string> FoldersToIndex { get; set; }
         internal BindingList<string> FoldersToExclude { get; set; }
 
@@ -193,15 +192,6 @@ namespace Yal
                     {
                         rk.SetValue(MainWindow.Text, appPath);
 
-                        //using (RegistryKey rk2 = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion"))
-                        //{
-                        //    object value = rk2.GetValue("ProductName");
-                        //    if (value != null && Regex.IsMatch(value.ToString(), @"^Windows 10[\w\s]+$"))
-                        //    {
-                        //        MessageBox.Show("On Windows 10 you need to enable 'Launcher' from within Task Manager/Startup",
-                        //                        "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        //    }
-                        //}
                         if (Utils.GetOsVersion() == "10")
                         {
                             MessageBox.Show("On Windows 10 you need to enable 'Yal' from within Task Manager/Startup",

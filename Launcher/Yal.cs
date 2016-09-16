@@ -138,19 +138,13 @@ namespace Yal
 
         private void TimerAutoIndexing_Tick(object sender, EventArgs e)
         {
-            // make sure that enough minutes have already passed away since the last indexing. We use this in order to avoid
-            // multiple/unecessary indexing actions in case the handler is registered multiple times
-            //if (Properties.Settings.Default.DateLastIndexed.AddMinutes(double.Parse(Properties.Settings.Default.IndexingInterval)) <
-            //    DateTime.Now)
-            {
-                FileManager.RebuildIndex();
-                optionsWindow?.UpdateIndexingStatus();
-            }
+            FileManager.RebuildIndex();
+            optionsWindow?.UpdateIndexingStatus();
         }
 
         internal void UpdateHotkey()
         {
-            // re-registering picks up updated properties set by the uses throught the Options form
+            // re-registering picks up updated properties set by the user throught the Options form
             UnregisterHotkey();
             RegisterHotkey();
         }
@@ -232,7 +226,7 @@ namespace Yal
         {
             base.WndProc(ref m);
 
-            // focus on our form when the hotkey (Win+Z by default) is pressed
+            // focus on our form when the hotkey (Alt+Space by default) is pressed
             if (m.Msg == WM_HOTKEY)
             {
                 if (this.Visible)
@@ -366,15 +360,6 @@ namespace Yal
         private void PerformSearch()
         {
             timerSearchDelay.Stop();
-            //foreach (var plugin in PluginInstances)
-            //{
-            //    string ret;
-            //    if (plugin.TryParseInput(txtSearch.Text, out ret))
-            //    {
-            //        outputWindow.listViewOutput.Items.Insert(0, ret);
-            //        outputWindow.Visible = true;
-            //    }
-            //}
 
             if (txtSearch.Text != string.Empty)
             {
@@ -384,12 +369,6 @@ namespace Yal
                 int iconIndex = 0;
                 foreach (var plugin in PluginInstances)
                 {
-                    //if (plugin.Activators.Any(activator => txtSearch.Text.StartsWith(activator, StringComparison.InvariantCultureIgnoreCase) 
-                    //                                       || activator.StartsWith(txtSearch.Text, StringComparison.InvariantCultureIgnoreCase)))
-                    //if ((!plugin.FileLikeOutput && plugin.Activators.Any(activator => txtSearch.Text.StartsWith(activator, StringComparison.InvariantCultureIgnoreCase)))
-                    //    || (plugin.FileLikeOutput && plugin.Activators.Any(activator => Properties.Settings.Default.MatchAnywhere ? activator.IndexOf(txtSearch.Text, StringComparison.InvariantCultureIgnoreCase) > -1 : 
-                    //                                                                                                                activator.StartsWith(txtSearch.Text, StringComparison.InvariantCultureIgnoreCase))))
-
                     if ((plugin.CouldProvideResults(txtSearch.Text, Properties.Settings.Default.MatchAnywhere, Properties.Settings.Default.FuzzyMatching)))
                     {
                         string[] items = plugin.GetResults(txtSearch.Text, Properties.Settings.Default.MatchAnywhere,
@@ -424,8 +403,8 @@ namespace Yal
                 {
                     outputWindow.listViewOutput.Items[0].Selected = true;
                     outputWindow.Show();
-                    outputWindow.ResizeToFitContent();  // yep, Show() it first, so that the listview's ClientSize prop updates
-                    this.txtSearch.Focus();  // 'Show()'-ing a window focuses on it by default. We don't want that in this case;
+                    outputWindow.ResizeToFitContent();  // Show() it first, so that the listview's ClientSize property gets updated
+                    this.txtSearch.Focus();  // Show()-ing a window focuses on it by default. We don't want that in this case;
                 }
 
                 if (outputWindow.listViewOutput.Items.Count == 0)
