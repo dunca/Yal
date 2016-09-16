@@ -30,8 +30,8 @@ namespace Yal
         const int HOTKEY_REG_ID = 1;
         const int WM_HOTKEY = 0x312;  // message code that occurs when hotkeys are detected
         
-        Timer searchDelayTimer;
-        Timer trimHistoryTimer;
+        Timer timerSearchDelay;
+        Timer timerTrimHistory;
         bool LmbIsDown { get; set; }
         Form OptionsForm { get; set; }
         Point LastPointerLocation { get; set; }
@@ -53,12 +53,12 @@ namespace Yal
             UpdateWindowLooks();
             RegisterHotkey();
             
-            searchDelayTimer = new Timer();
-            searchDelayTimer.Tick += SearchDelayTimer_Tick;
+            timerSearchDelay = new Timer();
+            timerSearchDelay.Tick += SearchDelayTimer_Tick;
 
-            trimHistoryTimer = new Timer();
-            trimHistoryTimer.Interval = 60 * 60 * 1000;  // hourly
-            trimHistoryTimer.Tick += TrimHistoryTimer_Tick;
+            timerTrimHistory = new Timer();
+            timerTrimHistory.Interval = 60 * 60 * 1000;  // hourly
+            timerTrimHistory.Tick += TrimHistoryTimer_Tick;
 
             Properties.Settings.Default.FoldersToIndex = FileManager.ProcessRawPaths();
 
@@ -347,9 +347,9 @@ namespace Yal
             }
             else
             {
-                searchDelayTimer.Stop();
-                searchDelayTimer.Interval = Properties.Settings.Default.SearchDelay;
-                searchDelayTimer.Start();
+                timerSearchDelay.Stop();
+                timerSearchDelay.Interval = Properties.Settings.Default.SearchDelay;
+                timerSearchDelay.Start();
             }
         }
 
@@ -360,7 +360,7 @@ namespace Yal
 
         private void PerformSearch()
         {
-            searchDelayTimer.Stop();
+            timerSearchDelay.Stop();
             //foreach (var plugin in PluginInstances)
             //{
             //    string ret;
