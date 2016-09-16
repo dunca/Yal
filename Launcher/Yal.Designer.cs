@@ -52,7 +52,7 @@
             this.exitToolStripMenuItem});
             this.launcherContextStrip.Name = "contextMenuStrip1";
             this.launcherContextStrip.ShowImageMargin = false;
-            this.launcherContextStrip.Size = new System.Drawing.Size(140, 120);
+            this.launcherContextStrip.Size = new System.Drawing.Size(140, 98);
             this.launcherContextStrip.Opening += new System.ComponentModel.CancelEventHandler(this.launcherContextStrip_Opening);
             // 
             // showLauncherToolStripMenuItem
@@ -126,6 +126,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Yal";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Launcher_FormClosing);
+            this.Load += new System.EventHandler(this.Launcher_Load);
             this.Shown += new System.EventHandler(this.Launcher_Shown);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Launcher_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Launcher_MouseMove);

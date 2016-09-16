@@ -30,9 +30,9 @@ namespace Yal
     static class FileManager
     {
         internal static DbInfo indexDbInfo = new DbInfo("index.sqlite", "CATALOG", 
-                                                        "create table CATALOG (NAME string, FULLPATH string)");
+                                                        "create table if not exists CATALOG (NAME string, FULLPATH string)");
         internal static DbInfo historyDbInfo = new DbInfo("history.sqlite", "HISTORY", 
-                                                          "create table HISTORY (SNIPPET string, NAME string, FULLPATH string, HITS integer default 1, LASTACCESSED datetime)");
+                                                          "create table if not exists HISTORY (SNIPPET string, NAME string, FULLPATH string, HITS integer default 1, LASTACCESSED datetime)");
 
         private const string fileQuery = @"select distinct name, fullpath from 
                                          (select NAME, FULLPATH, HITS as STATIC from HISTORY where SNIPPET like @snip
@@ -117,9 +117,14 @@ namespace Yal
             }
         }
 
+        internal static void EnsureDbExists()
+        {
+            CreateDatabase(indexDbInfo);
+            CreateDatabase(historyDbInfo);
+        }
+
         private static void CreateDatabase(DbInfo dbInfo)
         {
-            SQLiteConnection.CreateFile(dbInfo.fileName);
             using (var connection = GetDbConnection(dbInfo))
             {
                 var command = new SQLiteCommand(dbInfo.createTableTemplate, connection);

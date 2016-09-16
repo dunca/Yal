@@ -573,5 +573,10 @@ namespace Yal
         {
             FileManager.RebuildIndex();
         }
+
+        private void Launcher_Load(object sender, EventArgs e)
+        {
+            FileManager.EnsureDbExists();
+        }
     }
 }
