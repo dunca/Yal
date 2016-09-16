@@ -279,7 +279,6 @@ namespace Yal
                 (LmbIsDown && Properties.Settings.Default.MoveWithCtrl &&
                 (Control.ModifierKeys == Keys.Control)))
             {
-                this.Cursor = Cursors.SizeAll;  // the little crosshair like cursor
                 this.Location = new Point(this.Location.X + (e.X - LastPointerLocation.X),
                                           this.Location.Y + (e.Y - LastPointerLocation.Y));
             }
@@ -291,6 +290,7 @@ namespace Yal
             {
                 LmbIsDown = true;
                 LastPointerLocation = e.Location;
+                this.Cursor = Cursors.SizeAll;  // the little crosshair like cursor
             }
         }
 
