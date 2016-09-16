@@ -10,12 +10,12 @@ namespace PluginInterfaces
         string Version { get; }
         string Description { get; }
         Icon PluginIcon { get; }
-        List<string> Activators { get; }
         bool FileLikeOutput { get; }
 
         void SaveSettings();
         UserControl GetUserControl();
-        bool TryParseInput(string input, out string[] output, bool matchAnywhere);
+        string[] GetResults(string input, bool matchAnywhere, bool fuzzyMatch);
+        bool CouldProvideResults(string input, bool matchAnywhere, bool fuzzyMatch);
         void HandleExecution(string input);
     }
 }
