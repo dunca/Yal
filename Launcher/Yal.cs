@@ -576,7 +576,12 @@ namespace Yal
 
         private void Launcher_Load(object sender, EventArgs e)
         {
-            FileManager.EnsureDbExists();
+            bool didNotExist;
+            FileManager.EnsureDbExists(out didNotExist);
+            if (didNotExist)
+            {
+                FileManager.RebuildIndex();
+            }
         }
     }
 }
