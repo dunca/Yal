@@ -117,18 +117,18 @@ namespace Yal
             }
         }
 
-        internal static void EnsureDbExists()
+        internal static void EnsureDbExists(out bool didNotExist)
         {
-            CreateDatabase(indexDbInfo);
             CreateDatabase(historyDbInfo);
+            didNotExist = !Convert.ToBoolean(CreateDatabase(indexDbInfo));
         }
 
-        private static void CreateDatabase(DbInfo dbInfo)
+        private static int CreateDatabase(DbInfo dbInfo)
         {
             using (var connection = GetDbConnection(dbInfo))
             {
-                var command = new SQLiteCommand(dbInfo.createTableTemplate, connection);
-                command.ExecuteNonQuery();
+                // -1 if table already existed, 0 if it was created
+                return (new SQLiteCommand(dbInfo.createTableTemplate, connection)).ExecuteNonQuery(); ;
             }
         }
 
