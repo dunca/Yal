@@ -76,18 +76,18 @@ namespace Yal
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (outputWindow.listViewOutput.SelectedItems.Count != 0 && (keyData & Keys.Control) != 0)
+            if (outputWindow.listViewOutput.SelectedItems.Count != 0)
             {
                 if (keyData == (Keys.Control | Keys.D))
                 {
                     Utils.OpenFileDirectory(outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text);
+                    return true;
                 }
                 else if (keyData == (Keys.Control | Keys.P))
                 {
                     ShowItemContextMenu();
+                    return true;
                 }
-                
-                return true;
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
