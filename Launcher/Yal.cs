@@ -51,8 +51,7 @@ namespace Yal
             ManageAutoIndexingTimer();
             UpdateWindowLocation();
             UpdateWindowLooks();
-            RegisterHotkey();
-            
+                        
             timerSearchDelay = new Timer();
             timerSearchDelay.Tick += SearchDelayTimer_Tick;
 
@@ -214,8 +213,14 @@ namespace Yal
 
         private void RegisterHotkey()
         {
-            RegisterHotKey(this.Handle, HOTKEY_REG_ID, (uint)Properties.Settings.Default.FocusModifier,
-                           (uint)Properties.Settings.Default.FocusKey);
+            if (!RegisterHotKey(this.Handle, HOTKEY_REG_ID, (uint)Properties.Settings.Default.FocusModifier,
+                                (uint)Properties.Settings.Default.FocusKey))
+            {
+                var combo = $"{Properties.Settings.Default.FocusModifier}-{Properties.Settings.Default.FocusKey}";
+                MessageBox.Show($"Key combination {combo} is already in use. Please choose another", this.Text,
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowOptionsWindow();
+            }
         }
 
         private void UnregisterHotkey()
@@ -576,6 +581,8 @@ namespace Yal
 
         private void Launcher_Load(object sender, EventArgs e)
         {
+            RegisterHotkey();
+
             bool didNotExist;
             FileManager.EnsureDbExists(out didNotExist);
             if (didNotExist)

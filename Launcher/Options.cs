@@ -240,15 +240,10 @@ namespace Yal
             }
 
             var hotkeyMod = (FsModifier)comboBoxHKMod.SelectedItem;
-            if (hotkeyMod != Properties.Settings.Default.FocusModifier)
+            var hotkeyKey = (Keys)comboBoxHKKey.SelectedItem;
+            if (hotkeyMod != Properties.Settings.Default.FocusModifier || hotkeyKey != Properties.Settings.Default.FocusKey)
             {
                 Properties.Settings.Default.FocusModifier = hotkeyMod;
-                MainWindow.UpdateHotkey();
-            }
-
-            var hotkeyKey = (Keys)comboBoxHKKey.SelectedItem;
-            if (hotkeyKey != Properties.Settings.Default.FocusKey)
-            {
                 Properties.Settings.Default.FocusKey = hotkeyKey;
                 MainWindow.UpdateHotkey();
             }
