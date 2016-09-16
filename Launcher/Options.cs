@@ -18,6 +18,8 @@ namespace Yal
 {
     public partial class Options : Form
     {
+        Regex extRegex = new Regex(@"^\w+$");
+
         // this type of list signals it's modification which causes our listbox to reread it's
         // contents
         internal BindingList<string> FoldersToIndex { get; set; }
@@ -330,10 +332,9 @@ namespace Yal
 
         private bool ValidFileExtensions()
         {
-            var regex = new Regex(@"^\w+$");
             foreach (string ext in txtExtensions.Text.Split(','))
             {
-                if (!regex.IsMatch(ext))
+                if (!extRegex.IsMatch(ext))
                 {
                     return false;
                 }
