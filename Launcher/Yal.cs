@@ -423,8 +423,8 @@ namespace Yal
                                              outputWindow.imageList1.Images))
                 {
                     outputWindow.listViewOutput.Items[0].Selected = true;
-                    outputWindow.ResizeToFitContent();
                     outputWindow.Show();
+                    outputWindow.ResizeToFitContent();  // yep, Show() it first, so that the listview's ClientSize prop updates
                     this.txtSearch.Focus();  // 'Show()'-ing a window focuses on it by default. We don't want that in this case;
                 }
 
