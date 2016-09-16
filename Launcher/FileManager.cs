@@ -35,7 +35,7 @@ namespace Yal
                                                           "create table HISTORY (SNIPPET string, NAME string, FULLPATH string, HITS integer default 1, LASTACCESSED datetime)");
 
         private const string fileQuery = @"select distinct name, fullpath from 
-                                         (select NAME, FULLPATH, HITS as STATIC from HISTORY where {0} like @snip
+                                         (select NAME, FULLPATH, HITS as STATIC from HISTORY where SNIPPET like @snip
                                          union 
                                          select NAME, FULLPATH, 0 as STATIC from CATALOG where NAME like @query 
                                          order by STATIC desc, NAME asc) limit @limit";
@@ -143,9 +143,10 @@ namespace Yal
 
                 // if 'MatchAnywhere' is on, match just the recorded chars at the time the entry was first added to the db 
                 // (eg. 'edi' for 'Resource Editor') otherwise, match just the entry's name
-                var command = new SQLiteCommand(string.Format(fileQuery, Properties.Settings.Default.MatchAnywhere ||
-                                                                         Properties.Settings.Default.FuzzyMatching ? "SNIPPET" : "NAME"), 
-                                                connection);
+                //var command = new SQLiteCommand(string.Format(fileQuery, Properties.Settings.Default.MatchAnywhere ||
+                //                                                         Properties.Settings.Default.FuzzyMatching ? "SNIPPET" : "NAME"), 
+                //                                connection);
+                var command = new SQLiteCommand(fileQuery, connection);
                 string pattern = Properties.Settings.Default.FuzzyMatching ? string.Concat(partialFileName.Select(c => string.Concat(c, "%"))) : 
                                                                              string.Concat(partialFileName, "%");
                 var query = string.Concat(Properties.Settings.Default.MatchAnywhere ? "%" : "", pattern);
