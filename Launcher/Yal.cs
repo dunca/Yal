@@ -95,9 +95,9 @@ namespace Yal
         private void ShowItemContextMenu()
         {
             ListViewItem item = outputWindow.listViewOutput.SelectedItems[0];
-            Point location = new Point(outputWindow.Location.X + item.Position.X + (outputWindow.listViewOutput.TileSize.Width / 2),
-                                       outputWindow.Location.Y + item.Position.Y + (outputWindow.listViewOutput.TileSize.Height / 2));
-            outputWindow.BuildContextMenu(location);
+            //Point location = new Point(outputWindow.Location.X + item.Position.X + (outputWindow.listViewOutput.TileSize.Width / 2),
+            //                           outputWindow.Location.Y + item.Position.Y + (outputWindow.listViewOutput.TileSize.Height / 2));
+            outputWindow.BuildContextMenu(txtSearch.PointToScreen(Point.Empty));
         }
 
         private void TrimHistoryTimer_Tick(object sender, EventArgs e)
