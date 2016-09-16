@@ -66,9 +66,16 @@
       <DependentUpon>YalControlPanelUC.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="YalControlPanel.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(TargetDir)$(ProjectName)$(TargetExt)" "$(SolutionDir)Launcher\$(OutDir)\plugins\$(ProjectName)$(TargetExt)"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>if not exist "$(SolutionDir)Launcher\$(OutDir)\plugins" mkdir "$(SolutionDir)Launcher\$(OutDir)\plugins\icons"
+if not exist "$(SolutionDir)Launcher\$(OutDir)\plugins\icons\$(ProjectName).ico" copy /Y "$(ProjectDir)$(ProjectName).ico" "$(SolutionDir)Launcher\$(OutDir)\plugins\icons"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
