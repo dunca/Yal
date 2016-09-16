@@ -336,7 +336,7 @@ namespace Yal
             }
             else if (e.KeyCode == Keys.Enter)
             {
-                StartSelectedItem();
+                StartSelectedItem(e.Modifiers == (Keys.Shift | Keys.Control), !(e.Modifiers == Keys.Shift));
             }
             else if (e.KeyCode == Keys.Escape)
             {
@@ -483,8 +483,9 @@ namespace Yal
             }
             else if (e.KeyCode == Keys.Enter)
             {
-                // the user can hold CTRL+SHIFT+ENTER to run the item with elevated rights
-                StartSelectedItem(e.Modifiers == (Keys.Shift | Keys.Control));
+                // the user can hold CTRL+SHIFT+ENTER to run the item with elevated rights. If just SHIFT+ENTER are pressed,
+                // the search term won't be saved in the history database
+                StartSelectedItem(e.Modifiers == (Keys.Shift | Keys.Control), !(e.Modifiers == Keys.Shift));
             }
         }
 
@@ -493,7 +494,7 @@ namespace Yal
             StartSelectedItem();
         }
 
-        internal void StartSelectedItem(bool elevatedRights = false)
+        internal void StartSelectedItem(bool elevatedRights = false, bool keepInHistory = true)
         {
             if (outputWindow.listViewOutput.SelectedItems.Count == 0)
             {
@@ -543,7 +544,7 @@ namespace Yal
                     FileManager.RemoveFromDb(filePath, FileManager.historyDbInfo);
                 }
             }
-            else
+            else if (keepInHistory)
             {
                 FileManager.UpdateHistory(txtSearch.Text, Path.GetFileName(filePath), filePath);
             }
