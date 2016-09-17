@@ -29,7 +29,7 @@ namespace YalCommand.Properties {
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <string>~reboot|%windir%\system32\shutdown.exe|-r|True</string>
   <string>~shutdown|%windir%\system32\shutdown.exe|-s|True</string>
-  <string>~cmdrun|%windir%\system32\cmd.exe|/C !n!|False</string>
+  <string>~cmdrun|%windir%\system32\cmd.exe|/C !1!|False</string>
   <string>~nopen|%windir%\system32\notepad.exe|!1!|False</string>
 </ArrayOfString>")]
         public global::System.Collections.Specialized.StringCollection Entries {

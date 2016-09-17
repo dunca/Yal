@@ -13,15 +13,20 @@ namespace YalCommand
 {
     public partial class YalCommandUC : UserControl
     {
+        private IEnumerable<string> activators;
+        private Dictionary<string, List<string>> Entries;
         private const string emptyPlaceholder = "~notset~";
 
-        public YalCommandUC()
+        public YalCommandUC(Dictionary<string, List<string>> entires, ref IEnumerable<string> activators)
         {
             InitializeComponent();
 
             ParseEntries();
 
             cbxConfirm.SelectedIndex = 0;
+
+            Entries = entires;
+            this.activators = activators;
         }
 
         private void ParseEntries()
@@ -44,6 +49,7 @@ namespace YalCommand
 
         internal void SaveSettings()
         {
+            Entries.Clear();
             Properties.Settings.Default.Entries.Clear();
             foreach (ListViewItem lvi in listViewEntries.Items)
             {
@@ -53,8 +59,9 @@ namespace YalCommand
                 var confirm = lvi.SubItems[3].Text;
                 Properties.Settings.Default.Entries.Add(string.Join("|", command, target, 
                                                                     parameters == "" ? emptyPlaceholder : parameters, confirm));
+                Entries.Add(command, new List<string>() { target, parameters, confirm });
+                activators = Entries.Keys;
             }
-
             Properties.Settings.Default.Save();
         }
 
