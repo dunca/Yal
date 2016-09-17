@@ -63,15 +63,15 @@ namespace Yal
 
             trackBarOpacity.Value = Properties.Settings.Default.Opacity;
 
-            cbVAlign.Checked = Properties.Settings.Default.VAlignment;
+            cbVAlignment.Checked = Properties.Settings.Default.VAlignment;
 
-            cbHAlign.Checked = Properties.Settings.Default.HAlignment;
+            cbHAlignment.Checked = Properties.Settings.Default.HAlignment;
 
             txtExtensions.Text = Properties.Settings.Default.Extensions;
 
-            cbSubdirs.Checked = Properties.Settings.Default.IncludeSubdirs;
+            cbIncludeSubdirs.Checked = Properties.Settings.Default.IncludeSubdirs;
 
-            cbCtrlMove.Checked = Properties.Settings.Default.MoveWithCtrl;
+            cbMoveWithCtrl.Checked = Properties.Settings.Default.MoveWithCtrl;
 
             cbTopMost.Checked = Properties.Settings.Default.TopMost;
 
@@ -84,7 +84,7 @@ namespace Yal
 
             cbAutoIndexing.Checked = Properties.Settings.Default.AutoIndexing;
 
-            checkBoxAutostart.Checked = Properties.Settings.Default.Autostart;
+            cbAutostart.Checked = Properties.Settings.Default.Autostart;
 
             spinMaxItems.Value = Properties.Settings.Default.MaxItems;
 
@@ -92,9 +92,9 @@ namespace Yal
             
             spinSearchDelay.Value = Properties.Settings.Default.SearchDelay;
 
-            cbShowExt.Checked = Properties.Settings.Default.ExtensionInFileName;
+            cbExtensionInFileName.Checked = Properties.Settings.Default.ExtensionInFileName;
 
-            spinAutoIndexInterval.Value = Properties.Settings.Default.AutoIndexingInterval;
+            spinAutoIndexingInterval.Value = Properties.Settings.Default.AutoIndexingInterval;
 
             colorDialog1.Color = Properties.Settings.Default.InterfaceColor;
 
@@ -248,17 +248,17 @@ namespace Yal
                 MainWindow.UpdateWindowOpacity();
             }
             
-            Properties.Settings.Default.IncludeSubdirs = cbSubdirs.Checked;
+            Properties.Settings.Default.IncludeSubdirs = cbIncludeSubdirs.Checked;
             
-            if (cbVAlign.Checked != Properties.Settings.Default.VAlignment)
+            if (cbVAlignment.Checked != Properties.Settings.Default.VAlignment)
             {
-                Properties.Settings.Default.VAlignment = cbVAlign.Checked;
+                Properties.Settings.Default.VAlignment = cbVAlignment.Checked;
                 MainWindow.UpdateVertAlignment();
             }
 
-            if (cbHAlign.Checked != Properties.Settings.Default.HAlignment)
+            if (cbHAlignment.Checked != Properties.Settings.Default.HAlignment)
             {
-                Properties.Settings.Default.HAlignment = cbHAlign.Checked;
+                Properties.Settings.Default.HAlignment = cbHAlignment.Checked;
                 MainWindow.UpdateHorizAlignment();
             }
             
@@ -268,20 +268,20 @@ namespace Yal
                 MainWindow.UpdateWindowTopMost();
             }
 
-            Properties.Settings.Default.MoveWithCtrl = cbCtrlMove.Checked;
+            Properties.Settings.Default.MoveWithCtrl = cbMoveWithCtrl.Checked;
 
-            if (checkBoxAutostart.Checked != Properties.Settings.Default.Autostart)
+            if (cbAutostart.Checked != Properties.Settings.Default.Autostart)
             {
-                Properties.Settings.Default.Autostart = checkBoxAutostart.Checked;
+                Properties.Settings.Default.Autostart = cbAutostart.Checked;
                 ManageAppAutoStart();
             }
 
             Properties.Settings.Default.MaxItems = (int)spinMaxItems.Value;
             Properties.Settings.Default.MaxVisible = (int)spinMaxVisible.Value;
             Properties.Settings.Default.SearchDelay = (int)spinSearchDelay.Value;
-            Properties.Settings.Default.ExtensionInFileName = cbShowExt.Checked;
+            Properties.Settings.Default.ExtensionInFileName = cbExtensionInFileName.Checked;
 
-            var autoIndexInterval = (int)spinAutoIndexInterval.Value;
+            var autoIndexInterval = (int)spinAutoIndexingInterval.Value;
             if (autoIndexInterval != Properties.Settings.Default.AutoIndexingInterval)
             {
                 Properties.Settings.Default.AutoIndexingInterval = autoIndexInterval;
