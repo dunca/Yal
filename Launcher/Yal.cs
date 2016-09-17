@@ -431,6 +431,11 @@ namespace Yal
                     {
                         ShowOptionsWindow();
                     }
+                    else if (e.KeyCode == Keys.A)
+                    {
+                        txtSearch.Focus();
+                        txtSearch.SelectAll();
+                    }
                     else if (outputWindow.listViewOutput.SelectedItems.Count != 0)
                     {
                         if (e.KeyCode == Keys.D)
