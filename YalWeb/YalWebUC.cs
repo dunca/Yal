@@ -77,9 +77,9 @@ namespace YalWeb
         {
             string name = txtName.Text;
             string url = txtUrl.Text;
-            if (name == string.Empty || url == string.Empty)
+            if (name == string.Empty || url == string.Empty || name == "s")
             {
-                MessageBox.Show($"Cell values cannot be empty", "Error",
+                MessageBox.Show($"Cell value is empty or uses an already assigned value", "Error",
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }

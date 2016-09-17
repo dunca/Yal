@@ -29,6 +29,10 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtUrl = new System.Windows.Forms.TextBox();
+            this.txtName = new System.Windows.Forms.TextBox();
             this.lblDefault = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btnSetDefault = new System.Windows.Forms.Button();
@@ -37,10 +41,6 @@
             this.listViewEntries = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.txtName = new System.Windows.Forms.TextBox();
-            this.txtUrl = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,10 +61,42 @@
             this.panel1.Size = new System.Drawing.Size(423, 61);
             this.panel1.TabIndex = 1;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(111, 36);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(29, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "URL";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 37);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Name";
+            // 
+            // txtUrl
+            // 
+            this.txtUrl.Location = new System.Drawing.Point(142, 33);
+            this.txtUrl.Name = "txtUrl";
+            this.txtUrl.Size = new System.Drawing.Size(197, 20);
+            this.txtUrl.TabIndex = 6;
+            // 
+            // txtName
+            // 
+            this.txtName.Location = new System.Drawing.Point(44, 33);
+            this.txtName.Name = "txtName";
+            this.txtName.Size = new System.Drawing.Size(61, 20);
+            this.txtName.TabIndex = 5;
+            // 
             // lblDefault
             // 
             this.lblDefault.AutoSize = true;
-            this.lblDefault.Location = new System.Drawing.Point(242, 10);
+            this.lblDefault.Location = new System.Drawing.Point(330, 10);
             this.lblDefault.Name = "lblDefault";
             this.lblDefault.Size = new System.Drawing.Size(39, 13);
             this.lblDefault.TabIndex = 4;
@@ -75,9 +107,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(192, 10);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(44, 13);
+            this.label1.Size = new System.Drawing.Size(140, 13);
             this.label1.TabIndex = 3;
-            this.label1.Text = "Default:";
+            this.label1.Text = "The \'s\' activator will point to:";
             // 
             // btnSetDefault
             // 
@@ -132,38 +164,6 @@
             // 
             this.columnHeader2.Text = "URL";
             this.columnHeader2.Width = 323;
-            // 
-            // txtName
-            // 
-            this.txtName.Location = new System.Drawing.Point(44, 33);
-            this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(61, 20);
-            this.txtName.TabIndex = 5;
-            // 
-            // txtUrl
-            // 
-            this.txtUrl.Location = new System.Drawing.Point(142, 33);
-            this.txtUrl.Name = "txtUrl";
-            this.txtUrl.Size = new System.Drawing.Size(197, 20);
-            this.txtUrl.TabIndex = 6;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 37);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "Name";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(111, 36);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(29, 13);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "URL";
             // 
             // YalWebUC
             // 
