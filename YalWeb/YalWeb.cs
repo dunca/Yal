@@ -50,7 +50,7 @@ namespace YalWeb
             }
 
             activators = Entries.Keys.ToList();
-            activators.Insert(0, "s"); // using this activator, the search is done with the default activator (ddg, g, yt...)
+            activators.Insert(0, "!s"); // using this activator, the search is done with the default activator (ddg, g, yt...)
         }
 
         public void SaveSettings()
@@ -76,7 +76,7 @@ namespace YalWeb
         public void HandleExecution(string input)
         {
             string providerName = input.Substring(0, input.IndexOf(' '));
-            if (providerName == "s")
+            if (providerName == "!s")
             {
                 providerName = Properties.Settings.Default.DefaultEntry;
             }
