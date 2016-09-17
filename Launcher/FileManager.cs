@@ -189,7 +189,12 @@ namespace Yal
             return false;
         }
 
-        internal static void RebuildIndex()
+        internal static Task RebuildIndexAsync()
+        {
+            return Task.Run(() => RebuildIndex());
+        }
+
+        private static void RebuildIndex()
         {
             var searchOption = Properties.Settings.Default.IncludeSubdirs ?
                                SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;

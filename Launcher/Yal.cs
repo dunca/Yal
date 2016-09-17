@@ -73,6 +73,12 @@ namespace Yal
             optionsWindow.Show();
         }
 
+        internal async void RebuildIndex()
+        {
+            await FileManager.RebuildIndexAsync();
+            optionsWindow?.UpdateIndexingStatus();
+        }
+
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (outputWindow.listViewOutput.SelectedItems.Count != 0)
@@ -138,8 +144,7 @@ namespace Yal
 
         private void TimerAutoIndexing_Tick(object sender, EventArgs e)
         {
-            FileManager.RebuildIndex();
-            optionsWindow?.UpdateIndexingStatus();
+            RebuildIndex();
         }
 
         internal void UpdateHotkey()
@@ -554,7 +559,7 @@ namespace Yal
 
         private void rebuildToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FileManager.RebuildIndex();
+            RebuildIndex();
         }
 
         private void Launcher_Load(object sender, EventArgs e)
@@ -565,7 +570,7 @@ namespace Yal
             FileManager.EnsureDbExists(out didNotExist);
             if (didNotExist)
             {
-                FileManager.RebuildIndex();
+                RebuildIndex();
             }
         }
     }
