@@ -80,7 +80,7 @@ namespace YalWeb
             {
                 providerName = Properties.Settings.Default.DefaultEntry;
             }
-            string url = Entries[providerName].Replace("%1", input.Substring(input.IndexOf(' ') + 1));
+            string url = Entries[providerName].Replace("%1", Uri.EscapeDataString(input.Substring(input.IndexOf(' ') + 1)));
             try
             {
                 Process.Start(url);
