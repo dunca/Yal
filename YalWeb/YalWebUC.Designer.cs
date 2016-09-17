@@ -36,8 +36,6 @@
             this.txtName = new System.Windows.Forms.TextBox();
             this.lblDefault = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnSetDefault = new System.Windows.Forms.Button();
-            this.btnRemove = new System.Windows.Forms.Button();
             this.btnAddEntry = new System.Windows.Forms.Button();
             this.listViewEntries = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -45,6 +43,8 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeEntryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setAsDefaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -57,8 +57,6 @@
             this.panel1.Controls.Add(this.txtName);
             this.panel1.Controls.Add(this.lblDefault);
             this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.btnSetDefault);
-            this.panel1.Controls.Add(this.btnRemove);
             this.panel1.Controls.Add(this.btnAddEntry);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 215);
@@ -101,7 +99,7 @@
             // lblDefault
             // 
             this.lblDefault.AutoSize = true;
-            this.lblDefault.Location = new System.Drawing.Point(330, 10);
+            this.lblDefault.Location = new System.Drawing.Point(144, 10);
             this.lblDefault.Name = "lblDefault";
             this.lblDefault.Size = new System.Drawing.Size(39, 13);
             this.lblDefault.TabIndex = 4;
@@ -110,31 +108,11 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(192, 10);
+            this.label1.Location = new System.Drawing.Point(6, 10);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(143, 13);
             this.label1.TabIndex = 3;
             this.label1.Text = "The \'!s\' activator will point to:";
-            // 
-            // btnSetDefault
-            // 
-            this.btnSetDefault.Location = new System.Drawing.Point(111, 5);
-            this.btnSetDefault.Name = "btnSetDefault";
-            this.btnSetDefault.Size = new System.Drawing.Size(75, 23);
-            this.btnSetDefault.TabIndex = 2;
-            this.btnSetDefault.Text = "Set default";
-            this.btnSetDefault.UseVisualStyleBackColor = true;
-            this.btnSetDefault.Click += new System.EventHandler(this.btnSetDefault_Click);
-            // 
-            // btnRemove
-            // 
-            this.btnRemove.Location = new System.Drawing.Point(6, 5);
-            this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(99, 23);
-            this.btnRemove.TabIndex = 1;
-            this.btnRemove.Text = "Remove selected";
-            this.btnRemove.UseVisualStyleBackColor = true;
-            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
             // btnAddEntry
             // 
@@ -175,9 +153,11 @@
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.copyNameToolStripMenuItem,
-            this.copyURLToolStripMenuItem});
+            this.copyURLToolStripMenuItem,
+            this.removeEntryToolStripMenuItem,
+            this.setAsDefaultToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(136, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 114);
             // 
             // copyNameToolStripMenuItem
             // 
@@ -192,6 +172,20 @@
             this.copyURLToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.copyURLToolStripMenuItem.Text = "Copy URL";
             this.copyURLToolStripMenuItem.Click += new System.EventHandler(this.copyURLToolStripMenuItem_Click);
+            // 
+            // removeEntryToolStripMenuItem
+            // 
+            this.removeEntryToolStripMenuItem.Name = "removeEntryToolStripMenuItem";
+            this.removeEntryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.removeEntryToolStripMenuItem.Text = "Remove entry";
+            this.removeEntryToolStripMenuItem.Click += new System.EventHandler(this.removeEntryToolStripMenuItem_Click);
+            // 
+            // setAsDefaultToolStripMenuItem
+            // 
+            this.setAsDefaultToolStripMenuItem.Name = "setAsDefaultToolStripMenuItem";
+            this.setAsDefaultToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.setAsDefaultToolStripMenuItem.Text = "Set as default";
+            this.setAsDefaultToolStripMenuItem.Click += new System.EventHandler(this.setAsDefaultToolStripMenuItem_Click);
             // 
             // YalWebUC
             // 
@@ -210,8 +204,6 @@
 
         #endregion
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnSetDefault;
-        private System.Windows.Forms.Button btnRemove;
         private System.Windows.Forms.Button btnAddEntry;
         private System.Windows.Forms.Label lblDefault;
         private System.Windows.Forms.Label label1;
@@ -225,5 +217,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem copyNameToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyURLToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeEntryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setAsDefaultToolStripMenuItem;
     }
 }
