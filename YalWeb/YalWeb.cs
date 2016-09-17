@@ -93,14 +93,7 @@ namespace YalWeb
 
         public bool CouldProvideResults(string input, bool matchAnywhere, bool fuzzyMatch)
         {
-            foreach (var activator in activators)
-            {
-                if (input.StartsWith(activator))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return activators.Any(activator => input.StartsWith(activator));
         }
     }
 }

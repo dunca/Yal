@@ -50,27 +50,12 @@ namespace YalWeb
 
         internal void SaveSettings()
         {
-            var sc = new StringCollection();
+            Properties.Settings.Default.Entries.Clear();
             foreach (ListViewItem item in listViewEntries.Items)
             {
-                sc.Add(string.Join("|", item.SubItems[0].Text, item.SubItems[1].Text));
+                Properties.Settings.Default.Entries.Add(string.Join("|", item.SubItems[0].Text, item.SubItems[1].Text));
             }
-            Properties.Settings.Default.Entries = sc;
             Properties.Settings.Default.Save();
-        }
-
-        private void btnRemove_Click(object sender, EventArgs e)
-        {
-            if (listViewEntries.SelectedItems.Count > 0)
-            {
-                ListViewItem lvi = listViewEntries.SelectedItems[0];
-                if (lvi.SubItems[0].Text ==  Properties.Settings.Default.DefaultEntry || listViewEntries.Items.Count == 1)
-                {
-                    lblDefault.Text = "not set";
-                    Properties.Settings.Default.DefaultEntry = "";
-                }
-                listViewEntries.Items.Remove(lvi);
-            }
         }
 
         private void btnAddEntry_Click(object sender, EventArgs e)
@@ -87,16 +72,6 @@ namespace YalWeb
             listViewEntries.Items.Add(new ListViewItem(new string[] { name, url }));
         }
 
-        private void btnSetDefault_Click(object sender, EventArgs e)
-        {
-            if (listViewEntries.SelectedIndices.Count == 0)
-            {
-                MessageBox.Show("Select an item first", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            SetDefaultRow(listViewEntries.SelectedItems[0].SubItems[0].Text);
-        }
-
         private void listViewEntries_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -107,12 +82,36 @@ namespace YalWeb
 
         private void copyNameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(listViewEntries.SelectedItems[0].SubItems[0].Text);
+            Clipboard.SetText(listViewEntries.FocusedItem.SubItems[0].Text);
         }
 
         private void copyURLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(listViewEntries.SelectedItems[0].SubItems[1].Text);
+            Clipboard.SetText(listViewEntries.FocusedItem.SubItems[1].Text);
+        }
+
+        private void removeEntryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listViewEntries.SelectedItems.Count > 0)
+            {
+                ListViewItem lvi = listViewEntries.FocusedItem;
+                if (lvi.SubItems[0].Text == Properties.Settings.Default.DefaultEntry || listViewEntries.Items.Count == 1)
+                {
+                    lblDefault.Text = "not set";
+                    Properties.Settings.Default.DefaultEntry = "";
+                }
+                listViewEntries.Items.Remove(lvi);
+            }
+        }
+
+        private void setAsDefaultToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listViewEntries.SelectedIndices.Count == 0)
+            {
+                MessageBox.Show("Select an item first", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            SetDefaultRow(listViewEntries.FocusedItem.SubItems[0].Text);
         }
     }
 }
