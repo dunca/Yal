@@ -27,13 +27,13 @@ namespace YalWeb.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <string>ddg|https://duckduckgo.com/?q=%1</string>
-  <string>g|https://www.google.com/?q=%1</string>
-  <string>w|https://en.wikipedia.org/w/index.php?title=Special:Search&amp;profile=default&amp;fulltext=Search&amp;search=%1</string>
-  <string>a|https://www.amazon.com/s/field-keywords=%1</string>
-  <string>yt|https://www.youtube.com/results?search_query=%1</string>
-  <string>so|http://stackoverflow.com/search?q=%1</string>
-  <string>imdb|http://www.imdb.com/find?s=all&amp;q=%1</string>
+  <string>!ddg|https://duckduckgo.com/?q=%1</string>
+  <string>!g|https://www.google.com/?q=%1</string>
+  <string>!w|https://en.wikipedia.org/w/index.php?title=Special:Search&amp;profile=default&amp;fulltext=Search&amp;search=%1</string>
+  <string>!a|https://www.amazon.com/s/field-keywords=%1</string>
+  <string>!yt|https://www.youtube.com/results?search_query=%1</string>
+  <string>!so|http://stackoverflow.com/search?q=%1</string>
+  <string>!imdb|http://www.imdb.com/find?s=all&amp;q=%1</string>
 </ArrayOfString>")]
         public global::System.Collections.Specialized.StringCollection Entries {
             get {
@@ -46,7 +46,7 @@ namespace YalWeb.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("g")]
+        [global::System.Configuration.DefaultSettingValueAttribute("!g")]
         public string DefaultEntry {
             get {
                 return ((string)(this["DefaultEntry"]));
