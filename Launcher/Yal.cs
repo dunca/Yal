@@ -372,6 +372,7 @@ namespace Yal
                 outputWindow.listViewOutput.Items.Clear();
 
                 int iconIndex = 0;
+                int pluginItemCount = 0;
                 foreach (var plugin in PluginInstances)
                 {
                     if ((plugin.CouldProvideResults(txtSearch.Text, Properties.Settings.Default.MatchAnywhere, Properties.Settings.Default.FuzzyMatching)))
@@ -380,9 +381,9 @@ namespace Yal
                                                            Properties.Settings.Default.FuzzyMatching);
                         if (items.Length > 0)
                         {
-                            int count = 1;
                             foreach (var item in items)
                             {
+                                pluginItemCount++;
                                 var lvi = new ListViewItem(new string[] { item, plugin.Name });
                                 if (plugin.PluginIcon != null)
                                 {
@@ -392,16 +393,16 @@ namespace Yal
                                 }
                                 outputWindow.listViewOutput.Items.Add(lvi);
 
-                                if (count == Properties.Settings.Default.MaxPluginItems)
+                                if (pluginItemCount == Properties.Settings.Default.MaxPluginItems)
                                 {
-                                    break;
+                                    goto DBQuery;
                                 }
-                                count++;
                             }
                         }
                     }
                 }
 
+                DBQuery:
                 if (FileManager.QueryIndexDb(txtSearch.Text, outputWindow.listViewOutput.Items, outputWindow.imageList1.Images))
                 {
                     outputWindow.listViewOutput.Items[0].Selected = true;
