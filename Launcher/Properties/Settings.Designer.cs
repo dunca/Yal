@@ -212,12 +212,12 @@ namespace Yal.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("10")]
-        public int MaxFetched {
+        public int MaxItems {
             get {
-                return ((int)(this["MaxFetched"]));
+                return ((int)(this["MaxItems"]));
             }
             set {
-                this["MaxFetched"] = value;
+                this["MaxItems"] = value;
             }
         }
         
@@ -295,18 +295,6 @@ namespace Yal.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("999")]
-        public int MaxHistoryVisible {
-            get {
-                return ((int)(this["MaxHistoryVisible"]));
-            }
-            set {
-                this["MaxHistoryVisible"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
             "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" />")]
         public global::System.Collections.Specialized.StringCollection FoldersToExclude {
@@ -333,12 +321,12 @@ namespace Yal.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("2")]
-        public int MaxVisiblePluginItems {
+        public int MaxPluginItems {
             get {
-                return ((int)(this["MaxVisiblePluginItems"]));
+                return ((int)(this["MaxPluginItems"]));
             }
             set {
-                this["MaxVisiblePluginItems"] = value;
+                this["MaxPluginItems"] = value;
             }
         }
         

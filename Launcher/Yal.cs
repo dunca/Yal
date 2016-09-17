@@ -387,7 +387,7 @@ namespace Yal
                                 }
                                 outputWindow.listViewOutput.Items.Add(lvi);
 
-                                if (count == Properties.Settings.Default.MaxVisiblePluginItems)
+                                if (count == Properties.Settings.Default.MaxPluginItems)
                                 {
                                     break;
                                 }
@@ -397,9 +397,7 @@ namespace Yal
                     }
                 }
 
-                if (FileManager.QueryIndexDb(txtSearch.Text, Properties.Settings.Default.MaxFetched,
-                                             outputWindow.listViewOutput.Items,
-                                             outputWindow.imageList1.Images))
+                if (FileManager.QueryIndexDb(txtSearch.Text, outputWindow.listViewOutput.Items, outputWindow.imageList1.Images))
                 {
                     outputWindow.listViewOutput.Items[0].Selected = true;
                     outputWindow.Show();
