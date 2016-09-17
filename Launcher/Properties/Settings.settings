@@ -53,7 +53,7 @@
     <Setting Name="InterfaceColor" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Gray</Value>
     </Setting>
-    <Setting Name="MaxFetched" Type="System.Int32" Scope="User">
+    <Setting Name="MaxItems" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="MaxVisible" Type="System.Int32" Scope="User">
@@ -74,9 +74,6 @@
     <Setting Name="MaxHistorySize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">500</Value>
     </Setting>
-    <Setting Name="MaxHistoryVisible" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">999</Value>
-    </Setting>
     <Setting Name="FoldersToExclude" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" /&gt;</Value>
@@ -84,7 +81,7 @@
     <Setting Name="PluginSelectionsInHistory" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="MaxVisiblePluginItems" Type="System.Int32" Scope="User">
+    <Setting Name="MaxPluginItems" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="FuzzyMatching" Type="System.Boolean" Scope="User">

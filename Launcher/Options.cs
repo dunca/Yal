@@ -86,10 +86,10 @@ namespace Yal
 
             checkBoxAutostart.Checked = Properties.Settings.Default.Autostart;
 
-            spinMaxFetch.Value = Properties.Settings.Default.MaxFetched;
+            spinMaxItems.Value = Properties.Settings.Default.MaxItems;
 
             spinMaxVisible.Value = Properties.Settings.Default.MaxVisible;
-
+            
             spinSearchDelay.Value = Properties.Settings.Default.SearchDelay;
 
             cbShowExt.Checked = Properties.Settings.Default.ExtensionInFileName;
@@ -102,11 +102,9 @@ namespace Yal
 
             spinMaxHistorySize.Value = Properties.Settings.Default.MaxHistorySize;
 
-            spinMaxHistoryVisible.Value = Properties.Settings.Default.MaxHistoryVisible;
-
             cbPluginSelectionsInHistory.Checked = Properties.Settings.Default.PluginSelectionsInHistory;
 
-            spinMaxVisiblePluginItems.Value = Properties.Settings.Default.MaxVisiblePluginItems;
+            spinMaxPluginItems.Value = Properties.Settings.Default.MaxPluginItems;
 
             cbFuzzyMatching.Checked = Properties.Settings.Default.FuzzyMatching;
 
@@ -278,7 +276,7 @@ namespace Yal
                 ManageAppAutoStart();
             }
 
-            Properties.Settings.Default.MaxFetched = (int)spinMaxFetch.Value;
+            Properties.Settings.Default.MaxItems = (int)spinMaxItems.Value;
             Properties.Settings.Default.MaxVisible = (int)spinMaxVisible.Value;
             Properties.Settings.Default.SearchDelay = (int)spinSearchDelay.Value;
             Properties.Settings.Default.ExtensionInFileName = cbShowExt.Checked;
@@ -304,11 +302,9 @@ namespace Yal
 
             Properties.Settings.Default.MaxHistorySize = (int)spinMaxHistorySize.Value;
 
-            Properties.Settings.Default.MaxHistoryVisible = (int)spinMaxHistoryVisible.Value;
-
             Properties.Settings.Default.PluginSelectionsInHistory = cbPluginSelectionsInHistory.Checked;
 
-            Properties.Settings.Default.MaxVisiblePluginItems = (int)spinMaxVisiblePluginItems.Value;
+            Properties.Settings.Default.MaxPluginItems = (int)spinMaxPluginItems.Value;
 
             Properties.Settings.Default.FuzzyMatching = cbFuzzyMatching.Checked;
 
@@ -325,6 +321,11 @@ namespace Yal
                 }
             }
             return true;
+        }
+
+        private void spinMaxItems_ValueChanged(object sender, EventArgs e)
+        {
+            spinMaxVisible.Maximum = spinMaxPluginItems.Maximum = spinMaxItems.Value;
         }
     }
 }

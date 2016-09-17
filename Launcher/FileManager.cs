@@ -139,7 +139,7 @@ namespace Yal
             return connection;
         }
 
-        internal static bool QueryIndexDb(string partialFileName, int fetchLimit, ListView.ListViewItemCollection items, 
+        internal static bool QueryIndexDb(string partialFileName, ListView.ListViewItemCollection items, 
                                           ImageList.ImageCollection images)
         {
             using (var connection = GetDbConnection(indexDbInfo))
@@ -151,7 +151,7 @@ namespace Yal
                                                                              string.Concat(partialFileName, "%");
                 var query = string.Concat(Properties.Settings.Default.MatchAnywhere ? "%" : "", pattern);
                 command.Parameters.AddWithValue("@query", query);
-                command.Parameters.AddWithValue("@limit", fetchLimit);
+                command.Parameters.AddWithValue("@limit", Properties.Settings.Default.MaxItems - items.Count);
                 command.Parameters.AddWithValue("@snip", string.Concat(partialFileName, "%"));
                 SQLiteDataReader response = command.ExecuteReader();
 
