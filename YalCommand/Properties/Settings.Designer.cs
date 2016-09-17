@@ -27,6 +27,7 @@ namespace YalCommand.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <string>~logoff|%windir%\system32\shutdown.exe|-l -t 00|True</string>
   <string>~reboot|%windir%\system32\shutdown.exe|-r -t 00|True</string>
   <string>~shutdown|%windir%\system32\shutdown.exe|-s -t 00|True</string>
   <string>~cmdrun|%windir%\system32\cmd.exe|/C !1!|False</string>
