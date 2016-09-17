@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Util
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dummy", "Dummy\Dummy.csproj", "{34BA5CD7-80FE-4FDF-87B6-85B151836128}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YalCommand", "YalCommand\YalCommand.csproj", "{8FC68CF9-5680-47A3-91D0-FE63EF592596}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{34BA5CD7-80FE-4FDF-87B6-85B151836128}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34BA5CD7-80FE-4FDF-87B6-85B151836128}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34BA5CD7-80FE-4FDF-87B6-85B151836128}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FC68CF9-5680-47A3-91D0-FE63EF592596}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FC68CF9-5680-47A3-91D0-FE63EF592596}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FC68CF9-5680-47A3-91D0-FE63EF592596}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FC68CF9-5680-47A3-91D0-FE63EF592596}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
