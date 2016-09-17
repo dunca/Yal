@@ -69,7 +69,7 @@ namespace Yal
 
             txtExtensions.Text = Properties.Settings.Default.Extensions;
 
-            cbSubdirs.Checked = Properties.Settings.Default.Subdirectories;
+            cbSubdirs.Checked = Properties.Settings.Default.IncludeSubdirs;
 
             cbCtrlMove.Checked = Properties.Settings.Default.MoveWithCtrl;
 
@@ -248,7 +248,7 @@ namespace Yal
                 MainWindow.UpdateWindowOpacity();
             }
             
-            Properties.Settings.Default.Subdirectories = cbSubdirs.Checked;
+            Properties.Settings.Default.IncludeSubdirs = cbSubdirs.Checked;
             
             if (cbVAlign.Checked != Properties.Settings.Default.VAlignment)
             {

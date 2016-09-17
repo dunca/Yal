@@ -191,7 +191,7 @@ namespace Yal
 
         internal static void RebuildIndex()
         {
-            var searchOption = Properties.Settings.Default.Subdirectories ?
+            var searchOption = Properties.Settings.Default.IncludeSubdirs ?
                                SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
             ClearDB(indexDbInfo);

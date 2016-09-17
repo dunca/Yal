@@ -14,7 +14,7 @@
     <Setting Name="Extensions" Type="System.String" Scope="User">
       <Value Profile="(Default)">exe,lnk,txt,pdf,mkv,mp4,avi,mp3,doc,docx,ppt,pptx,odt,odp,xls,xlsx</Value>
     </Setting>
-    <Setting Name="Subdirectories" Type="System.Boolean" Scope="User">
+    <Setting Name="IncludeSubdirs" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="DateLastIndexed" Type="System.DateTime" Scope="User">
@@ -60,7 +60,7 @@
       <Value Profile="(Default)">5</Value>
     </Setting>
     <Setting Name="SearchDelay" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">200</Value>
+      <Value Profile="(Default)">150</Value>
     </Setting>
     <Setting Name="ExtensionInFileName" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

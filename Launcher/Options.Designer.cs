@@ -300,9 +300,9 @@
             this.cbFuzzyMatching.AutoSize = true;
             this.cbFuzzyMatching.Location = new System.Drawing.Point(6, 74);
             this.cbFuzzyMatching.Name = "cbFuzzyMatching";
-            this.cbFuzzyMatching.Size = new System.Drawing.Size(123, 17);
+            this.cbFuzzyMatching.Size = new System.Drawing.Size(165, 17);
             this.cbFuzzyMatching.TabIndex = 16;
-            this.cbFuzzyMatching.Text = "Fuzzily match names";
+            this.cbFuzzyMatching.Text = "Fuzzily match the item\'s name";
             this.cbFuzzyMatching.UseVisualStyleBackColor = true;
             // 
             // cbPluginSelectionsInHistory
@@ -311,9 +311,9 @@
             this.cbPluginSelectionsInHistory.Enabled = false;
             this.cbPluginSelectionsInHistory.Location = new System.Drawing.Point(6, 49);
             this.cbPluginSelectionsInHistory.Name = "cbPluginSelectionsInHistory";
-            this.cbPluginSelectionsInHistory.Size = new System.Drawing.Size(193, 17);
+            this.cbPluginSelectionsInHistory.Size = new System.Drawing.Size(153, 17);
             this.cbPluginSelectionsInHistory.TabIndex = 15;
-            this.cbPluginSelectionsInHistory.Text = "Keep plugin resulted items in history";
+            this.cbPluginSelectionsInHistory.Text = "Keep plugin items in history";
             this.cbPluginSelectionsInHistory.UseVisualStyleBackColor = true;
             // 
             // spinMaxHistorySize
@@ -380,9 +380,9 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(6, 149);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(115, 13);
+            this.label9.Size = new System.Drawing.Size(141, 13);
             this.label9.TabIndex = 13;
-            this.label9.Text = "Items to keep in history";
+            this.label9.Text = "Total items to keep in history";
             // 
             // checkBoxAutostart
             // 
