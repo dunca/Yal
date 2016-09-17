@@ -96,5 +96,23 @@ namespace YalWeb
             }
             SetDefaultRow(listViewEntries.SelectedItems[0].SubItems[0].Text);
         }
+
+        private void listViewEntries_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                contextMenuStrip1.Show(Cursor.Position);
+            }
+        }
+
+        private void copyNameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(listViewEntries.SelectedItems[0].SubItems[0].Text);
+        }
+
+        private void copyURLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(listViewEntries.SelectedItems[0].SubItems[1].Text);
+        }
     }
 }
