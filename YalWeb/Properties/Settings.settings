@@ -5,17 +5,17 @@
     <Setting Name="Entries" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;string&gt;!ddg|https://duckduckgo.com/?q=%1&lt;/string&gt;
-  &lt;string&gt;!g|https://www.google.com/?q=%1&lt;/string&gt;
-  &lt;string&gt;!w|https://en.wikipedia.org/w/index.php?title=Special:Search&amp;amp;profile=default&amp;amp;fulltext=Search&amp;amp;search=%1&lt;/string&gt;
-  &lt;string&gt;!a|https://www.amazon.com/s/field-keywords=%1&lt;/string&gt;
-  &lt;string&gt;!yt|https://www.youtube.com/results?search_query=%1&lt;/string&gt;
-  &lt;string&gt;!so|http://stackoverflow.com/search?q=%1&lt;/string&gt;
-  &lt;string&gt;!imdb|http://www.imdb.com/find?s=all&amp;amp;q=%1&lt;/string&gt;
+  &lt;string&gt;ddg|https://duckduckgo.com/?q=%1&lt;/string&gt;
+  &lt;string&gt;g|https://www.google.com/?q=%1&lt;/string&gt;
+  &lt;string&gt;w|https://en.wikipedia.org/w/index.php?title=Special:Search&amp;amp;profile=default&amp;amp;fulltext=Search&amp;amp;search=%1&lt;/string&gt;
+  &lt;string&gt;a|https://www.amazon.com/s/field-keywords=%1&lt;/string&gt;
+  &lt;string&gt;yt|https://www.youtube.com/results?search_query=%1&lt;/string&gt;
+  &lt;string&gt;so|http://stackoverflow.com/search?q=%1&lt;/string&gt;
+  &lt;string&gt;imdb|http://www.imdb.com/find?s=all&amp;amp;q=%1&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
     <Setting Name="DefaultEntry" Type="System.String" Scope="User">
-      <Value Profile="(Default)">!ddg</Value>
+      <Value Profile="(Default)">g</Value>
     </Setting>
   </Settings>
 </SettingsFile>
