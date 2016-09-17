@@ -34,7 +34,7 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.spinMaxPluginItems = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
-            this.cbShowExt = new System.Windows.Forms.CheckBox();
+            this.cbExtensionInFileName = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.spinSearchDelay = new System.Windows.Forms.NumericUpDown();
             this.spinMaxVisible = new System.Windows.Forms.NumericUpDown();
@@ -45,21 +45,21 @@
             this.cbFuzzyMatching = new System.Windows.Forms.CheckBox();
             this.cbPluginSelectionsInHistory = new System.Windows.Forms.CheckBox();
             this.spinMaxHistorySize = new System.Windows.Forms.NumericUpDown();
-            this.spinAutoIndexInterval = new System.Windows.Forms.NumericUpDown();
+            this.spinAutoIndexingInterval = new System.Windows.Forms.NumericUpDown();
             this.cbAutoIndexing = new System.Windows.Forms.CheckBox();
             this.cbMatchAnywhere = new System.Windows.Forms.CheckBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.checkBoxAutostart = new System.Windows.Forms.CheckBox();
+            this.cbAutostart = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.buttonPickColor = new System.Windows.Forms.Button();
             this.comboBoxHKKey = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.comboBoxHKMod = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.cbCtrlMove = new System.Windows.Forms.CheckBox();
+            this.cbMoveWithCtrl = new System.Windows.Forms.CheckBox();
             this.cbTopMost = new System.Windows.Forms.CheckBox();
-            this.cbVAlign = new System.Windows.Forms.CheckBox();
-            this.cbHAlign = new System.Windows.Forms.CheckBox();
+            this.cbVAlignment = new System.Windows.Forms.CheckBox();
+            this.cbHAlignment = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.trackBarOpacity = new System.Windows.Forms.TrackBar();
             this.tabPageIndexing = new System.Windows.Forms.TabPage();
@@ -73,7 +73,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.txtExtensions = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cbSubdirs = new System.Windows.Forms.CheckBox();
+            this.cbIncludeSubdirs = new System.Windows.Forms.CheckBox();
             this.listBoxLocations = new System.Windows.Forms.ListBox();
             this.btnAddLocation = new System.Windows.Forms.Button();
             this.btnRemoveLocation = new System.Windows.Forms.Button();
@@ -94,7 +94,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.spinMaxItems)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spinMaxHistorySize)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spinAutoIndexInterval)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinAutoIndexingInterval)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarOpacity)).BeginInit();
             this.tabPageIndexing.SuspendLayout();
@@ -134,7 +134,7 @@
             // 
             this.groupBox5.Controls.Add(this.spinMaxPluginItems);
             this.groupBox5.Controls.Add(this.label11);
-            this.groupBox5.Controls.Add(this.cbShowExt);
+            this.groupBox5.Controls.Add(this.cbExtensionInFileName);
             this.groupBox5.Controls.Add(this.label8);
             this.groupBox5.Controls.Add(this.spinSearchDelay);
             this.groupBox5.Controls.Add(this.spinMaxVisible);
@@ -181,13 +181,13 @@
             // 
             // cbShowExt
             // 
-            this.cbShowExt.AutoSize = true;
-            this.cbShowExt.Location = new System.Drawing.Point(6, 115);
-            this.cbShowExt.Name = "cbShowExt";
-            this.cbShowExt.Size = new System.Drawing.Size(167, 17);
-            this.cbShowExt.TabIndex = 3;
-            this.cbShowExt.Text = "Show extensions in file names";
-            this.cbShowExt.UseVisualStyleBackColor = true;
+            this.cbExtensionInFileName.AutoSize = true;
+            this.cbExtensionInFileName.Location = new System.Drawing.Point(6, 115);
+            this.cbExtensionInFileName.Name = "cbShowExt";
+            this.cbExtensionInFileName.Size = new System.Drawing.Size(167, 17);
+            this.cbExtensionInFileName.TabIndex = 3;
+            this.cbExtensionInFileName.Text = "Show extensions in file names";
+            this.cbExtensionInFileName.UseVisualStyleBackColor = true;
             // 
             // label8
             // 
@@ -283,11 +283,11 @@
             this.groupBox4.Controls.Add(this.cbFuzzyMatching);
             this.groupBox4.Controls.Add(this.cbPluginSelectionsInHistory);
             this.groupBox4.Controls.Add(this.spinMaxHistorySize);
-            this.groupBox4.Controls.Add(this.spinAutoIndexInterval);
+            this.groupBox4.Controls.Add(this.spinAutoIndexingInterval);
             this.groupBox4.Controls.Add(this.cbAutoIndexing);
             this.groupBox4.Controls.Add(this.cbMatchAnywhere);
             this.groupBox4.Controls.Add(this.label9);
-            this.groupBox4.Controls.Add(this.checkBoxAutostart);
+            this.groupBox4.Controls.Add(this.cbAutostart);
             this.groupBox4.Location = new System.Drawing.Point(214, 5);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(219, 169);
@@ -335,21 +335,21 @@
             // 
             // spinAutoIndexInterval
             // 
-            this.spinAutoIndexInterval.Location = new System.Drawing.Point(151, 122);
-            this.spinAutoIndexInterval.Maximum = new decimal(new int[] {
+            this.spinAutoIndexingInterval.Location = new System.Drawing.Point(151, 122);
+            this.spinAutoIndexingInterval.Maximum = new decimal(new int[] {
             300,
             0,
             0,
             0});
-            this.spinAutoIndexInterval.Minimum = new decimal(new int[] {
+            this.spinAutoIndexingInterval.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.spinAutoIndexInterval.Name = "spinAutoIndexInterval";
-            this.spinAutoIndexInterval.Size = new System.Drawing.Size(61, 20);
-            this.spinAutoIndexInterval.TabIndex = 12;
-            this.spinAutoIndexInterval.Value = new decimal(new int[] {
+            this.spinAutoIndexingInterval.Name = "spinAutoIndexInterval";
+            this.spinAutoIndexingInterval.Size = new System.Drawing.Size(61, 20);
+            this.spinAutoIndexingInterval.TabIndex = 12;
+            this.spinAutoIndexingInterval.Value = new decimal(new int[] {
             1,
             0,
             0,
@@ -386,13 +386,13 @@
             // 
             // checkBoxAutostart
             // 
-            this.checkBoxAutostart.AutoSize = true;
-            this.checkBoxAutostart.Location = new System.Drawing.Point(6, 24);
-            this.checkBoxAutostart.Name = "checkBoxAutostart";
-            this.checkBoxAutostart.Size = new System.Drawing.Size(141, 17);
-            this.checkBoxAutostart.TabIndex = 2;
-            this.checkBoxAutostart.Text = "Launch at system statup\r\n";
-            this.checkBoxAutostart.UseVisualStyleBackColor = true;
+            this.cbAutostart.AutoSize = true;
+            this.cbAutostart.Location = new System.Drawing.Point(6, 24);
+            this.cbAutostart.Name = "checkBoxAutostart";
+            this.cbAutostart.Size = new System.Drawing.Size(141, 17);
+            this.cbAutostart.TabIndex = 2;
+            this.cbAutostart.Text = "Launch at system statup\r\n";
+            this.cbAutostart.UseVisualStyleBackColor = true;
             // 
             // groupBox3
             // 
@@ -401,10 +401,10 @@
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.comboBoxHKMod);
             this.groupBox3.Controls.Add(this.label3);
-            this.groupBox3.Controls.Add(this.cbCtrlMove);
+            this.groupBox3.Controls.Add(this.cbMoveWithCtrl);
             this.groupBox3.Controls.Add(this.cbTopMost);
-            this.groupBox3.Controls.Add(this.cbVAlign);
-            this.groupBox3.Controls.Add(this.cbHAlign);
+            this.groupBox3.Controls.Add(this.cbVAlignment);
+            this.groupBox3.Controls.Add(this.cbHAlignment);
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.trackBarOpacity);
             this.groupBox3.Location = new System.Drawing.Point(9, 6);
@@ -458,13 +458,13 @@
             // 
             // cbCtrlMove
             // 
-            this.cbCtrlMove.AutoSize = true;
-            this.cbCtrlMove.Location = new System.Drawing.Point(4, 160);
-            this.cbCtrlMove.Name = "cbCtrlMove";
-            this.cbCtrlMove.Size = new System.Drawing.Size(184, 17);
-            this.cbCtrlMove.TabIndex = 6;
-            this.cbCtrlMove.Text = "Only move while CTRL is pressed";
-            this.cbCtrlMove.UseVisualStyleBackColor = true;
+            this.cbMoveWithCtrl.AutoSize = true;
+            this.cbMoveWithCtrl.Location = new System.Drawing.Point(4, 160);
+            this.cbMoveWithCtrl.Name = "cbCtrlMove";
+            this.cbMoveWithCtrl.Size = new System.Drawing.Size(184, 17);
+            this.cbMoveWithCtrl.TabIndex = 6;
+            this.cbMoveWithCtrl.Text = "Only move while CTRL is pressed";
+            this.cbMoveWithCtrl.UseVisualStyleBackColor = true;
             // 
             // cbTopMost
             // 
@@ -478,23 +478,23 @@
             // 
             // cbVAlign
             // 
-            this.cbVAlign.AutoSize = true;
-            this.cbVAlign.Location = new System.Drawing.Point(4, 114);
-            this.cbVAlign.Name = "cbVAlign";
-            this.cbVAlign.Size = new System.Drawing.Size(109, 17);
-            this.cbVAlign.TabIndex = 4;
-            this.cbVAlign.Text = "Vertical alignment";
-            this.cbVAlign.UseVisualStyleBackColor = true;
+            this.cbVAlignment.AutoSize = true;
+            this.cbVAlignment.Location = new System.Drawing.Point(4, 114);
+            this.cbVAlignment.Name = "cbVAlign";
+            this.cbVAlignment.Size = new System.Drawing.Size(109, 17);
+            this.cbVAlignment.TabIndex = 4;
+            this.cbVAlignment.Text = "Vertical alignment";
+            this.cbVAlignment.UseVisualStyleBackColor = true;
             // 
             // cbHAlign
             // 
-            this.cbHAlign.AutoSize = true;
-            this.cbHAlign.Location = new System.Drawing.Point(4, 137);
-            this.cbHAlign.Name = "cbHAlign";
-            this.cbHAlign.Size = new System.Drawing.Size(124, 17);
-            this.cbHAlign.TabIndex = 3;
-            this.cbHAlign.Text = "Horizontal  alignment";
-            this.cbHAlign.UseVisualStyleBackColor = true;
+            this.cbHAlignment.AutoSize = true;
+            this.cbHAlignment.Location = new System.Drawing.Point(4, 137);
+            this.cbHAlignment.Name = "cbHAlign";
+            this.cbHAlignment.Size = new System.Drawing.Size(124, 17);
+            this.cbHAlignment.TabIndex = 3;
+            this.cbHAlignment.Text = "Horizontal  alignment";
+            this.cbHAlignment.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -619,7 +619,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.cbSubdirs);
+            this.groupBox1.Controls.Add(this.cbIncludeSubdirs);
             this.groupBox1.Controls.Add(this.listBoxLocations);
             this.groupBox1.Controls.Add(this.btnAddLocation);
             this.groupBox1.Controls.Add(this.btnRemoveLocation);
@@ -632,13 +632,13 @@
             // 
             // cbSubdirs
             // 
-            this.cbSubdirs.AutoSize = true;
-            this.cbSubdirs.Location = new System.Drawing.Point(345, 70);
-            this.cbSubdirs.Name = "cbSubdirs";
-            this.cbSubdirs.Size = new System.Drawing.Size(76, 17);
-            this.cbSubdirs.TabIndex = 5;
-            this.cbSubdirs.Text = "Subfolders";
-            this.cbSubdirs.UseVisualStyleBackColor = true;
+            this.cbIncludeSubdirs.AutoSize = true;
+            this.cbIncludeSubdirs.Location = new System.Drawing.Point(345, 70);
+            this.cbIncludeSubdirs.Name = "cbSubdirs";
+            this.cbIncludeSubdirs.Size = new System.Drawing.Size(76, 17);
+            this.cbIncludeSubdirs.TabIndex = 5;
+            this.cbIncludeSubdirs.Text = "Subfolders";
+            this.cbIncludeSubdirs.UseVisualStyleBackColor = true;
             // 
             // listBoxLocations
             // 
@@ -769,7 +769,7 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spinMaxHistorySize)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spinAutoIndexInterval)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinAutoIndexingInterval)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarOpacity)).EndInit();
@@ -797,7 +797,7 @@
         private System.Windows.Forms.ListBox listBoxLocations;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox txtExtensions;
-        private System.Windows.Forms.CheckBox cbSubdirs;
+        private System.Windows.Forms.CheckBox cbIncludeSubdirs;
         private System.Windows.Forms.Label lblIndexStatus;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnRebuild;
@@ -805,17 +805,17 @@
         private System.Windows.Forms.TabPage tabPageGeneral;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.CheckBox checkBoxAutostart;
+        private System.Windows.Forms.CheckBox cbAutostart;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button buttonPickColor;
         private System.Windows.Forms.ComboBox comboBoxHKKey;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox comboBoxHKMod;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.CheckBox cbCtrlMove;
+        private System.Windows.Forms.CheckBox cbMoveWithCtrl;
         private System.Windows.Forms.CheckBox cbTopMost;
-        private System.Windows.Forms.CheckBox cbVAlign;
-        private System.Windows.Forms.CheckBox cbHAlign;
+        private System.Windows.Forms.CheckBox cbVAlignment;
+        private System.Windows.Forms.CheckBox cbHAlignment;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TrackBar trackBarOpacity;
         private System.Windows.Forms.GroupBox groupBox5;
@@ -824,8 +824,8 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown spinSearchDelay;
-        private System.Windows.Forms.CheckBox cbShowExt;
-        private System.Windows.Forms.NumericUpDown spinAutoIndexInterval;
+        private System.Windows.Forms.CheckBox cbExtensionInFileName;
+        private System.Windows.Forms.NumericUpDown spinAutoIndexingInterval;
         private System.Windows.Forms.CheckBox cbAutoIndexing;
         private System.Windows.Forms.Button btnApplyOptions;
         private System.Windows.Forms.Button btnCancelOpt;
