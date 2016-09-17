@@ -174,8 +174,7 @@ namespace Yal
 
         private void btnRebuild_Click(object sender, EventArgs e)
         {
-            FileManager.RebuildIndex();
-            UpdateIndexingStatus();
+            MainWindow.RebuildIndex();
         }
 
         private void ManageAppAutoStart()
