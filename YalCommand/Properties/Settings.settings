@@ -7,7 +7,7 @@
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;string&gt;~reboot|%windir%\system32\shutdown.exe|-r|True&lt;/string&gt;
   &lt;string&gt;~shutdown|%windir%\system32\shutdown.exe|-s|True&lt;/string&gt;
-  &lt;string&gt;~cmdrun|%windir%\system32\cmd.exe|/C !n!|False&lt;/string&gt;
+  &lt;string&gt;~cmdrun|%windir%\system32\cmd.exe|/C !1!|False&lt;/string&gt;
   &lt;string&gt;~nopen|%windir%\system32\notepad.exe|!1!|False&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
