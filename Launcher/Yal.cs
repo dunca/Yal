@@ -379,24 +379,21 @@ namespace Yal
                     {
                         string[] items = plugin.GetResults(txtSearch.Text, Properties.Settings.Default.MatchAnywhere,
                                                            Properties.Settings.Default.FuzzyMatching);
-                        if (items.Length > 0)
+                        foreach (var item in items)
                         {
-                            foreach (var item in items)
+                            pluginItemCount++;
+                            var lvi = new ListViewItem(new string[] { item, plugin.Name });
+                            if (plugin.PluginIcon != null)
                             {
-                                pluginItemCount++;
-                                var lvi = new ListViewItem(new string[] { item, plugin.Name });
-                                if (plugin.PluginIcon != null)
-                                {
-                                    outputWindow.imageList1.Images.Add(plugin.PluginIcon);
-                                    lvi.ImageIndex = iconIndex;
-                                    iconIndex++;
-                                }
-                                outputWindow.listViewOutput.Items.Add(lvi);
+                                outputWindow.imageList1.Images.Add(plugin.PluginIcon);
+                                lvi.ImageIndex = iconIndex;
+                                iconIndex++;
+                            }
+                            outputWindow.listViewOutput.Items.Add(lvi);
 
-                                if (pluginItemCount == Properties.Settings.Default.MaxPluginItems)
-                                {
-                                    goto DBQuery;
-                                }
+                            if (pluginItemCount == Properties.Settings.Default.MaxPluginItems)
+                            {
+                                goto DBQuery;
                             }
                         }
                     }
