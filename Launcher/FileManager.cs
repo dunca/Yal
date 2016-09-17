@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Collections.Specialized;
-using System.Text.RegularExpressions;
+using Utilities;
 
 namespace Yal
 {
@@ -39,9 +39,6 @@ namespace Yal
                                          union 
                                          select NAME, FULLPATH, 0 as STATIC from CATALOG where NAME like @query 
                                          order by STATIC desc, NAME asc) limit @limit";
-
-        // used to replace environment variable placeholders inside the app's default indexing paths, with their actual values
-        private static Regex envVarRegex = new Regex(@"%([\w\d]+)%");
 
         private const string indexInsert = "insert into CATALOG (NAME, FULLPATH) values (@name, @fullpath)";
         private const string historyInsert = "insert into HISTORY (SNIPPET, NAME, FULLPATH, LASTACCESSED) values (@snippet, @name, @fullpath, datetime('now'))";
@@ -229,50 +226,6 @@ namespace Yal
         }
 
         /// <summary>
-        /// This method replaces environment variable placeholders with the actual variables
-        /// </summary>
-        /// <param name="oldPath">Eg. C:\some\cute\dir\%username%\nice</param>
-        /// <param name="newPath">Eg. C:\some\cute\dir\Johnny\nice</param>
-        /// <returns></returns>
-        private static bool PersonalizePath(string oldPath, out string newPath)
-        {
-            
-            // newPath = oldPath;
-            
-            // 1st try
-            //int oldStop = -1;
-            //var vars = new List<string>();
-            //while (true)
-            //{
-            //    int start = oldPath.IndexOf("%", oldStop + 1);
-            //    int stop = oldPath.IndexOf("%", start + 1);
-            //    if (start < 0 || stop < 0)
-            //    {
-            //        break;
-            //    }
-            //    // copy just the variable, without the starting and ending '%'
-            //    vars.Add(oldPath.Substring(start + 1, stop - start - 1));
-            //    oldStop = stop;
-            //}
-
-            // 2nd try
-            //foreach (Match match in envVarRegex.Matches(oldPath))
-            //{
-            //    string envVar = match.Groups[1].Value;
-            //    newPath = oldPath.Replace($"%{envVar}%", Environment.GetEnvironmentVariable(envVar));
-            //}
-            newPath = envVarRegex.Replace(oldPath, match => Environment.GetEnvironmentVariable(match.Groups[1].Value));
-
-            if (Directory.Exists(newPath))
-            {
-                return true;
-            }
-
-            newPath = null;
-            return false;
-        }
-
-        /// <summary>
         /// Makes sure all paths used for indexing are valid by replacing environment variable placeholders with their actual values
         /// </summary>
         /// <returns></returns>
@@ -282,7 +235,7 @@ namespace Yal
             foreach (string location in Properties.Settings.Default.FoldersToIndex)
             {
                 string result = null;
-                if (PersonalizePath(location, out result))
+                if (Utils.PersonalizePath(location, out result))
                 {
                     sc.Add(result);
                 }
