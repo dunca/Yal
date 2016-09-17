@@ -56,12 +56,12 @@ namespace Yal.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool Subdirectories {
+        public bool IncludeSubdirs {
             get {
-                return ((bool)(this["Subdirectories"]));
+                return ((bool)(this["IncludeSubdirs"]));
             }
             set {
-                this["Subdirectories"] = value;
+                this["IncludeSubdirs"] = value;
             }
         }
         
@@ -235,7 +235,7 @@ namespace Yal.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        [global::System.Configuration.DefaultSettingValueAttribute("150")]
         public int SearchDelay {
             get {
                 return ((int)(this["SearchDelay"]));
