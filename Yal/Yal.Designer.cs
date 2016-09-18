@@ -1,6 +1,6 @@
 ﻿namespace Yal
 {
-    partial class Launcher
+    partial class Yal
     {
         /// <summary>
         /// Required designer variable.
@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Launcher));
-            this.launcherContextStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.showLauncherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Yal));
+            this.yalContextStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.showYalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RebuildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -39,29 +39,29 @@
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.timerAutoIndexing = new System.Windows.Forms.Timer(this.components);
-            this.launcherContextStrip.SuspendLayout();
+            this.yalContextStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // launcherContextStrip
+            // yalContextStrip
             // 
-            this.launcherContextStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showLauncherToolStripMenuItem,
+            this.yalContextStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showYalToolStripMenuItem,
             this.optionsToolStripMenuItem,
             this.RebuildToolStripMenuItem,
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
-            this.launcherContextStrip.Name = "contextMenuStrip1";
-            this.launcherContextStrip.ShowImageMargin = false;
-            this.launcherContextStrip.Size = new System.Drawing.Size(140, 98);
-            this.launcherContextStrip.Opening += new System.ComponentModel.CancelEventHandler(this.launcherContextStrip_Opening);
+            this.yalContextStrip.Name = "contextMenuStrip1";
+            this.yalContextStrip.ShowImageMargin = false;
+            this.yalContextStrip.Size = new System.Drawing.Size(140, 98);
+            this.yalContextStrip.Opening += new System.ComponentModel.CancelEventHandler(this.yalContextStrip_Opening);
             // 
-            // showLauncherToolStripMenuItem
+            // showYalToolStripMenuItem
             // 
-            this.showLauncherToolStripMenuItem.Name = "showLauncherToolStripMenuItem";
-            this.showLauncherToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
-            this.showLauncherToolStripMenuItem.Text = "Show Yal";
-            this.showLauncherToolStripMenuItem.Visible = false;
-            this.showLauncherToolStripMenuItem.Click += new System.EventHandler(this.showLauncherToolStripMenuItem_Click);
+            this.showYalToolStripMenuItem.Name = "showYalToolStripMenuItem";
+            this.showYalToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.showYalToolStripMenuItem.Text = "Show Yal";
+            this.showYalToolStripMenuItem.Visible = false;
+            this.showYalToolStripMenuItem.Click += new System.EventHandler(this.showYalToolStripMenuItem_Click);
             // 
             // optionsToolStripMenuItem
             // 
@@ -103,49 +103,49 @@
             // 
             // notifyIcon
             // 
-            this.notifyIcon.ContextMenuStrip = this.launcherContextStrip;
+            this.notifyIcon.ContextMenuStrip = this.yalContextStrip;
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
             this.notifyIcon.Text = "Click to show YetAnotherLauncher";
             this.notifyIcon.Visible = true;
             this.notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseClick);
             // 
-            // Launcher
+            // Yal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ClientSize = new System.Drawing.Size(265, 37);
-            this.ContextMenuStrip = this.launcherContextStrip;
+            this.ContextMenuStrip = this.yalContextStrip;
             this.Controls.Add(this.txtSearch);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Launcher";
+            this.Name = "Yal";
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Yal";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Launcher_FormClosing);
-            this.Load += new System.EventHandler(this.Launcher_Load);
-            this.Shown += new System.EventHandler(this.Launcher_Shown);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Launcher_MouseDown);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Launcher_MouseMove);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Launcher_MouseUp);
-            this.Move += new System.EventHandler(this.Launcher_Move);
-            this.launcherContextStrip.ResumeLayout(false);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Yal_FormClosing);
+            this.Load += new System.EventHandler(this.Yal_Load);
+            this.Shown += new System.EventHandler(this.Yal_Shown);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Yal_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Yal_MouseMove);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Yal_MouseUp);
+            this.Move += new System.EventHandler(this.Yal_Move);
+            this.yalContextStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.ContextMenuStrip launcherContextStrip;
+        private System.Windows.Forms.ContextMenuStrip yalContextStrip;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem showLauncherToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showYalToolStripMenuItem;
         public System.Windows.Forms.Timer timerAutoIndexing;
         private System.Windows.Forms.ToolStripMenuItem RebuildToolStripMenuItem;
     }

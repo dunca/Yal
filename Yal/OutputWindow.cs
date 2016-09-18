@@ -15,9 +15,9 @@ namespace Yal
 {
     public partial class OutputWindow : Form
     {
-        Launcher MainWindow { get; }
+        Yal MainWindow { get; }
 
-        public OutputWindow(Launcher mainWindow)
+        public OutputWindow(Yal mainWindow)
         {
             InitializeComponent();
 

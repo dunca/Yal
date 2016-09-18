@@ -70,7 +70,7 @@
             this.Name = "OutputWindow";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Launcher output window";
+            this.Text = "Yal output window";
             this.ResumeLayout(false);
 
         }
