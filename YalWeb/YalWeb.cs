@@ -82,7 +82,15 @@ namespace YalWeb
             string providerName = input.Substring(0, input.IndexOf(' '));
             if (providerName == "!s")
             {
-                providerName = Properties.Settings.Default.DefaultEntry;
+                if (Properties.Settings.Default.DefaultEntry != string.Empty)
+                {
+                    providerName = Properties.Settings.Default.DefaultEntry;
+                }
+                else
+                {
+                    MessageBox.Show("The default activator is not set", this.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
             }
             string url = Entries[providerName].Replace("%1", Uri.EscapeDataString(input.Substring(input.IndexOf(' ') + 1)));
             try
