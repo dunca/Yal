@@ -89,16 +89,8 @@ Work Folders;Microsoft.WorkFolders;8.1,10
             Version = "1.0";
             Description = "Access Windows control panel items using Yal";
 
-            try
-            {
-                PluginIcon = Icon.ExtractAssociatedIcon(string.Concat(Directory.GetCurrentDirectory(), @"\plugins\icons\", Name, ".ico"));
-            }
-            catch
-            {
-            }
-
             FileLikeOutput = true;
-
+            PluginIcon = Utils.GetPluginIcon(Name);
             ControlPanelItems = new Dictionary<string, string>();
 
             foreach (var entry in canonicalNames)

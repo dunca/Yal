@@ -7,6 +7,7 @@ using Microsoft.Win32;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.IO;
+using System.Drawing;
 
 namespace Utilities
 {
@@ -88,6 +89,16 @@ namespace Utilities
         public static bool PathExists(string input)
         {
             return Directory.Exists(input) || File.Exists(input);
+        }
+
+        public static Icon GetPluginIcon(string iconName)
+        {
+            var iconPath = $@"plugins\icons\{iconName}.ico";
+            if (File.Exists(iconPath))
+            {
+                return Icon.ExtractAssociatedIcon(iconPath);
+            }
+            return null;
         }
     }
 }

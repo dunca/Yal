@@ -32,15 +32,8 @@ namespace YalCommand
             Version = "1.0";
             Description = "Yal plugin that allows you to quickly run programs with different parameters";
 
-            try
-            {
-                PluginIcon = Icon.ExtractAssociatedIcon(string.Concat(Directory.GetCurrentDirectory(), @"\plugins\icons\", Name, ".ico"));
-            }
-            catch
-            {
-            }
-
             FileLikeOutput = false;
+            PluginIcon = Utils.GetPluginIcon(Name);
 
             Entries = new Dictionary<string, List<string>>();
             foreach (var entry in Properties.Settings.Default.Entries)
@@ -56,7 +49,6 @@ namespace YalCommand
             }
 
             activators = Entries.Keys;
-
             placeholderRegex = new Regex(@"([!\?])([1-9])\1");
         }
 
