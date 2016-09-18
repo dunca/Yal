@@ -42,8 +42,9 @@ namespace Yal
 
         public Launcher()
         {
+            Directory.SetCurrentDirectory(Application.StartupPath);
+
             InitializeComponent();
-            
             outputWindow = new OutputWindow(this);
             outputWindow.listViewOutput.KeyDown += outputWindow_listViewOutput_KeyDown;
             outputWindow.listViewOutput.MouseDoubleClick += outputWindow_listViewOutput_MouseDoubleClick;
