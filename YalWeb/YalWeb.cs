@@ -40,17 +40,9 @@ namespace YalWeb
             {
             }
 
-            FileLikeOutput = false;
-
             Entries = new Dictionary<string, string>();
-            foreach (string item in Properties.Settings.Default.Entries)
-            {
-                var group = item.Split('|');
-                Entries.Add(group[0], group[1]);
-            }
-
-            activators = Entries.Keys.ToList();
-            activators.Insert(0, "!s"); // using this activator, the search is done with the default activator (ddg, g, yt...)
+            FileLikeOutput = false;
+            UpdateEntries();
         }
 
         public void SaveSettings()
@@ -58,11 +50,23 @@ namespace YalWeb
             WebPluginInstance.SaveSettings();
         }
 
+        internal void UpdateEntries()
+        {
+            Entries.Clear();
+            foreach (string item in Properties.Settings.Default.Entries)
+            {
+                var group = item.Split('|');
+                Entries.Add(group[0], group[1]);
+            }
+            activators = Entries.Keys.ToList();
+            activators.Add("!s"); // using this activator, the search is done with the default activator (ddg, g, yt...)
+        }
+
         public UserControl GetUserControl()
         {
             if (WebPluginInstance == null || WebPluginInstance.IsDisposed)
             {
-                WebPluginInstance = new YalWebUC();
+                WebPluginInstance = new YalWebUC(this);
             }
             return WebPluginInstance;
         }
