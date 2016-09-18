@@ -105,7 +105,8 @@ namespace YalWeb
 
         public bool CouldProvideResults(string input, bool matchAnywhere, bool fuzzyMatch)
         {
-            return input.StartsWith(defaultActivator) || activators.Any(activator => input.StartsWith(activator));
+            var firstInputItem = input.Split()[0];
+            return firstInputItem == defaultActivator || activators.Any(activator => firstInputItem == activator);
         }
     }
 }
