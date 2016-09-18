@@ -17,7 +17,7 @@ namespace YalCommand
         private Dictionary<string, List<string>> Entries;
         private const string emptyPlaceholder = "~notset~";
 
-        public YalCommandUC(Dictionary<string, List<string>> entires, ref IEnumerable<string> activators)
+        public YalCommandUC(Dictionary<string, List<string>> entires)
         {
             InitializeComponent();
 
@@ -26,7 +26,6 @@ namespace YalCommand
             cbxConfirm.SelectedIndex = 0;
 
             Entries = entires;
-            this.activators = activators;
         }
 
         private void ParseEntries()
@@ -60,7 +59,6 @@ namespace YalCommand
                 Properties.Settings.Default.Entries.Add(string.Join("|", command, target, 
                                                                     parameters == "" ? emptyPlaceholder : parameters, confirm));
                 Entries.Add(command, new List<string>() { target, parameters, confirm });
-                activators = Entries.Keys;
             }
             Properties.Settings.Default.Save();
         }

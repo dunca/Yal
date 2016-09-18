@@ -74,7 +74,7 @@ namespace YalCommand
         {
             if (CommandPluginInstance == null || CommandPluginInstance.IsDisposed)
             {
-                CommandPluginInstance = new YalCommandUC(Entries, ref activators);
+                CommandPluginInstance = new YalCommandUC(Entries);
             }
             return CommandPluginInstance;
         }
