@@ -24,9 +24,9 @@ namespace Yal
         internal BindingList<string> FoldersToIndex { get; set; }
         internal BindingList<string> FoldersToExclude { get; set; }
 
-        Launcher MainWindow { get; }
+        Yal MainWindow { get; }
 
-        public Options(Launcher mainWindow)
+        public Options(Yal mainWindow)
         {
             InitializeComponent();
 

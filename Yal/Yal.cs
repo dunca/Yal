@@ -25,7 +25,7 @@ namespace Yal
         WIN = 0x0008
     }
 
-    public partial class Launcher : Form
+    public partial class Yal : Form
     {
         const int HOTKEY_REG_ID = 1;
         const int WM_HOTKEY = 0x312;  // message code that occurs when hotkeys are detected
@@ -40,7 +40,7 @@ namespace Yal
         internal Options optionsWindow;
         internal List<IPlugin> PluginInstances;
 
-        public Launcher()
+        public Yal()
         {
             Directory.SetCurrentDirectory(Application.StartupPath);
 
@@ -241,12 +241,12 @@ namespace Yal
                 }
                 else
                 {
-                    ActivateLauncher();
+                    ActivateYal();
                 }
             }
         }
 
-        private void ActivateLauncher()
+        private void ActivateYal()
         {
             this.Show();
             this.Activate();
@@ -261,24 +261,24 @@ namespace Yal
             }
         }
 
-        private void Launcher_FormClosing(object sender, FormClosingEventArgs e)
+        private void Yal_FormClosing(object sender, FormClosingEventArgs e)
         {
             UnregisterHotkey();
             Properties.Settings.Default.Location = Location;
             Properties.Settings.Default.Save();
         }
 
-        private void Launcher_Move(object sender, EventArgs e)
+        private void Yal_Move(object sender, EventArgs e)
         {
             outputWindow.Location = new Point(this.Location.X, this.Location.Y + this.Height);
         }
 
-        private void Launcher_Shown(object sender, EventArgs e)
+        private void Yal_Shown(object sender, EventArgs e)
         {
-            ActivateLauncher();
+            ActivateYal();
         }
 
-        private void Launcher_MouseMove(object sender, MouseEventArgs e)
+        private void Yal_MouseMove(object sender, MouseEventArgs e)
         {
             if ((LmbIsDown && !Properties.Settings.Default.MoveWithCtrl) ||
                 (LmbIsDown && Properties.Settings.Default.MoveWithCtrl &&
@@ -289,7 +289,7 @@ namespace Yal
             }
         }
 
-        private void Launcher_MouseDown(object sender, MouseEventArgs e)
+        private void Yal_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -299,7 +299,7 @@ namespace Yal
             }
         }
 
-        private void Launcher_MouseUp(object sender, MouseEventArgs e)
+        private void Yal_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -541,23 +541,23 @@ namespace Yal
             Application.Exit();
         }
 
-        private void launcherContextStrip_Opening(object sender, CancelEventArgs e)
+        private void yalContextStrip_Opening(object sender, CancelEventArgs e)
         {
             // only display the "Show Yal" option if the context menu is opened through the
             // tray icon
-            showLauncherToolStripMenuItem.Visible = !this.Bounds.Contains(Cursor.Position);
+            showYalToolStripMenuItem.Visible = !this.Bounds.Contains(Cursor.Position);
         }
 
-        private void showLauncherToolStripMenuItem_Click(object sender, EventArgs e)
+        private void showYalToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ActivateLauncher();
+            ActivateYal();
         }
 
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                ActivateLauncher();
+                ActivateYal();
             }
         }
 
@@ -566,7 +566,7 @@ namespace Yal
             RebuildIndex();
         }
 
-        private void Launcher_Load(object sender, EventArgs e)
+        private void Yal_Load(object sender, EventArgs e)
         {
             RegisterHotkey();
 
