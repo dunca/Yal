@@ -61,6 +61,10 @@
       <Project>{be2771f7-02da-415a-90bd-75206da36375}</Project>
       <Name>PluginInterfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{4C584613-E0BC-41A9-A5B1-944B96CD7915}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="YalWebUC.resx">

@@ -9,6 +9,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.ComponentModel;
+using Utilities;
 
 namespace YalWeb
 {
@@ -33,17 +34,11 @@ namespace YalWeb
             Version = "1.0";
             Description = "Yal plugin that allows you to quickly search the web using your favorite search engine";
 
-            try
-            {
-                PluginIcon = Icon.ExtractAssociatedIcon(string.Concat(Directory.GetCurrentDirectory(), @"\plugins\icons\", Name, ".ico"));
-            }
-            catch
-            {
-            }
+            FileLikeOutput = false;
+            PluginIcon = Utils.GetPluginIcon(Name);
 
             Entries = new Dictionary<string, string>();
             activators = Entries.Keys;
-            FileLikeOutput = false;
             UpdateEntries();
         }
 

@@ -8,6 +8,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using PluginInterfaces;
+using Utilities;
 
 namespace YalCalc
 {
@@ -28,16 +29,8 @@ namespace YalCalc
             Version = "1.0";
             Description = "Perform simple calculations using Yal";
 
-            try
-            {
-                PluginIcon = Icon.ExtractAssociatedIcon(string.Concat(Directory.GetCurrentDirectory(), @"\plugins\icons\", Name, ".ico"));
-            }
-            catch
-            {
-            }
-
             FileLikeOutput = false;
-
+            PluginIcon = Utils.GetPluginIcon(Name);
             activators = new List<string>() { "=" };
         }
 
