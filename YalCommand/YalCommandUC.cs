@@ -14,7 +14,10 @@ namespace YalCommand
     public partial class YalCommandUC : UserControl
     {
         private Dictionary<string, List<string>> Entries;
-        private const string emptyPlaceholder = "~notset~";
+
+        internal const string emptyPlaceholder = "~notset~";
+        internal const string mandatoryParameterTag = "!";
+        internal const string optionalParameterTag = "?";
 
         public YalCommandUC(Dictionary<string, List<string>> entires)
         {

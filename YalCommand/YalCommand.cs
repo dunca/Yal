@@ -21,6 +21,7 @@ namespace YalCommand
         public Icon PluginIcon { get; }
         public bool FileLikeOutput { get; }
 
+        private Regex digitRegex;
         private Regex placeholderRegex;
         private IEnumerable<string> activators;
         private YalCommandUC CommandPluginInstance { get; set; }
@@ -49,7 +50,8 @@ namespace YalCommand
             }
 
             activators = Entries.Keys;
-            placeholderRegex = new Regex(@"([!\?])([1-9])\1");
+            digitRegex = new Regex(@"\d+");
+            placeholderRegex = new Regex(@"(?<TAG>[!\?])(?<ID>\d+|n|\d+-n|\d+-\d+)\k<TAG>");
         }
 
         public bool CouldProvideResults(string input, bool matchAnywhere, bool fuzzyMatch)
@@ -74,47 +76,101 @@ namespace YalCommand
         public void HandleExecution(string input)
         {
             // there could be parameters in the input
-            var split = input.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            var commandName = split[0];
-            var suppliedArgCount = split.Length - 1;
-            List<string> matchingTarget = Entries[commandName];
+            var splitUserInput = input.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            var inputCommand = splitUserInput[0];
+            List<string> matchingTarget = Entries[inputCommand];
+
             var command = matchingTarget[0];
             var parameters = matchingTarget[1];
             var confirmBeforeProcessing = Convert.ToBoolean(matchingTarget[2]);
 
-            var matches = placeholderRegex.Matches(parameters);
+            var arguments = new List<string>();
 
-            for (int i = 0; i < matches.Count; i++)
+            foreach (Match match in placeholderRegex.Matches(parameters))
             {
-                if (i == suppliedArgCount)
+                string currentParameter = string.Empty;
+                var currentIdMatch = match.Groups["ID"];
+                var currentTagMatch = match.Groups["TAG"];
+
+                bool? result = SkipCurrentParameter(currentIdMatch.Value, currentTagMatch.Value, splitUserInput);
+
+                if (result == null)
                 {
-                    // if there are not enough args in the input and the current parameter is mandatory
-                    if (matches[i].Value[0] == '!')
-                    {
-                        MessageBox.Show($"Not enough arguments to run {commandName}", this.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                    else
-                    {
-                        break; // for optional parameters that didn't have a supplied argument
-                    }
+                    return; // index out of range, simply return
                 }
-                parameters = parameters.Replace(matches[i].Value, split[i + 1]);
+                else if (result == true)
+                {
+                    continue;  // skip this optional parameter
+                }
+
+                int number;
+                if (int.TryParse(currentIdMatch.Value, out number))
+                {
+                    currentParameter = splitUserInput[number];
+                }
+                else
+                {
+                    int start = 1; // we always ignore the first item, which is the input command itself
+                    int end = splitUserInput.Length - 1;
+                    if (currentIdMatch.Value.Contains('-'))
+                    {
+                        var splitMatchValue = currentIdMatch.Value.Split('-');
+                        start = int.Parse(splitMatchValue[0]);
+                        if (splitMatchValue[1] != "n")
+                        {
+                            end = int.Parse(splitMatchValue[1]);
+                        }
+                    }
+                    currentParameter = string.Join(" ", new ArraySegment<string>(splitUserInput, start, end));
+                }
+                arguments.Add(currentParameter);
             }
 
             try
             {
-                if (confirmBeforeProcessing && MessageBox.Show($"Are you sure you want to run {commandName}?", this.Name,
+                if (confirmBeforeProcessing && MessageBox.Show($"Are you sure you want to run {inputCommand}?", this.Name,
                                                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 {
                     return;
                 }
-                Process.Start(command, parameters);
+
+                var proc = new Process();
+                proc.StartInfo.FileName = command;
+
+                if (arguments.Count > 0)
+                {
+                    proc.StartInfo.Arguments = string.Join(" ", arguments);
+                }
+                else if (parameters != YalCommandUC.emptyPlaceholder)
+                {
+                    proc.StartInfo.Arguments = parameters;
+                }
+
+                proc.Start();
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
+        }
+
+        private bool? SkipCurrentParameter(string currentIdValue, string currentTagValue, string[] userInput)
+        {
+            foreach (Match m in digitRegex.Matches(currentIdValue))
+            {
+                if (int.Parse(m.Value) > userInput.Length - 1)
+                {
+                    if (currentTagValue == YalCommandUC.mandatoryParameterTag)
+                    {
+                        MessageBox.Show("Not enough arguments to run the command", this.Name, MessageBoxButtons.OK,
+                                        MessageBoxIcon.Error);
+                        return null; // the current parameter can't get an argument and it can't be skipped either
+                    }
+                    return true; // can be skipped since it's optional
+                }
+            }
+            return false; // the user's input has enough arguments
         }
 
         public void SaveSettings()
