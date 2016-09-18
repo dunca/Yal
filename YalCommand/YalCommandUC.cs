@@ -13,7 +13,6 @@ namespace YalCommand
 {
     public partial class YalCommandUC : UserControl
     {
-        private IEnumerable<string> activators;
         private Dictionary<string, List<string>> Entries;
         private const string emptyPlaceholder = "~notset~";
 
