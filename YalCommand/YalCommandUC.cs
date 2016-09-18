@@ -72,15 +72,26 @@ namespace YalCommand
             var parameters = txtParameters.Text;
             var confirm = (string)cbxConfirm.SelectedItem;
 
+            string message = string.Empty;
+
             if (command == "" || target == "")
             {
-                MessageBox.Show("Empty command or target fields", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                message = "Command and target fields can't be empty";
             }
 
-            if (!Utils.PathExists(target))
+            else if (Entries.Keys.Any(cmd => cmd == command))
             {
-                MessageBox.Show("The target should be a file or directory", "Error", MessageBoxButtons.OK, 
+                message = $"A command named '{command}' already exists";
+            }
+
+            else if (!Utils.PathExists(target))
+            {
+                message = "The target should be a file or directory";
+            }
+
+            if (message != string.Empty)
+            {
+                MessageBox.Show(message, "Error", MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
                 return;
             }
