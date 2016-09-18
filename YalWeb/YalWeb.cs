@@ -20,11 +20,12 @@ namespace YalWeb
         public Icon PluginIcon { get; }
         public bool FileLikeOutput { get; }
 
-        private List<string> activators;
+        private IEnumerable<string> activators;
         private YalWebUC WebPluginInstance { get; set; }
         private Dictionary<string, string> Entries;
 
-        //public string Activator { get; }
+        // when this activator is used, the search is done using the default activator (!ddg/!yt/!a)
+        private const string defaultActivator = "!s";
 
         public YalWeb()
         {
@@ -41,6 +42,7 @@ namespace YalWeb
             }
 
             Entries = new Dictionary<string, string>();
+            activators = Entries.Keys;
             FileLikeOutput = false;
             UpdateEntries();
         }
@@ -58,8 +60,6 @@ namespace YalWeb
                 var group = item.Split('|');
                 Entries.Add(group[0], group[1]);
             }
-            activators = Entries.Keys.ToList();
-            activators.Add("!s"); // using this activator, the search is done with the default activator (ddg, g, yt...)
         }
 
         public UserControl GetUserControl()
@@ -97,7 +97,7 @@ namespace YalWeb
 
         public bool CouldProvideResults(string input, bool matchAnywhere, bool fuzzyMatch)
         {
-            return activators.Any(activator => input.StartsWith(activator));
+            return input.StartsWith(defaultActivator) || activators.Any(activator => input.StartsWith(activator));
         }
     }
 }
