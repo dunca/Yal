@@ -13,11 +13,15 @@ namespace YalWeb
 {
     public partial class YalWebUC : UserControl
     {
-        public YalWebUC()
+        YalWeb pluginInstance;
+
+        public YalWebUC(YalWeb pluginInstance)
         {
             InitializeComponent();
 
             ParseEntries();
+
+            this.pluginInstance = pluginInstance;
         }
 
         private void ParseEntries()
@@ -55,6 +59,7 @@ namespace YalWeb
             {
                 Properties.Settings.Default.Entries.Add(string.Join("|", item.SubItems[0].Text, item.SubItems[1].Text));
             }
+            pluginInstance.UpdateEntries();
             Properties.Settings.Default.Save();
         }
 
@@ -68,7 +73,6 @@ namespace YalWeb
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
             listViewEntries.Items.Add(new ListViewItem(new string[] { name, url }));
         }
 
