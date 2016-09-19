@@ -141,13 +141,13 @@
         #endregion
         private System.Windows.Forms.ContextMenuStrip yalContextStrip;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
-        private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem showYalToolStripMenuItem;
         public System.Windows.Forms.Timer timerAutoIndexing;
         private System.Windows.Forms.ToolStripMenuItem RebuildToolStripMenuItem;
+        internal System.Windows.Forms.TextBox txtSearch;
     }
 }
 
