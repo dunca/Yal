@@ -21,14 +21,10 @@ namespace YalBookmark
         public bool FileLikeOutput { get; }
 
         private const int limit = 5;
-        private List<string> activators;
         private YalBookmarkUC BookmarkPluginInstance { get; set; }
         private Dictionary<string, string[]> localQueryCache = new Dictionary<string, string[]>();
 
-        private Dictionary<string, string> browserDbPaths = new Dictionary<string, string>()
-        {
-            { "Firefox", GetFirefoxDbPath() }
-        };
+        private Dictionary<string, string> browserDbPaths;
         private const string connectionString = "Data Source={0};Version=3;";
         private Dictionary<string, string> browserSqlQueries = new Dictionary<string, string>()
         {
@@ -48,7 +44,6 @@ namespace YalBookmark
 
             FileLikeOutput = true;
             PluginIcon = Utils.GetPluginIcon(Name);
-            activators = new List<string>();
 
             browserDbPaths = GetBrowserDbPaths();
         }
