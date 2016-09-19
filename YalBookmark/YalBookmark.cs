@@ -154,7 +154,10 @@ namespace YalBookmark
                         {
                             bookmarkName = $"{bookmarkName.Substring(0, Properties.Settings.Default.Truncate)}...";
                         }
-                        localQueryCache.Add(bookmarkName, new string[] { browser, response["URL"].ToString() });
+                        if (!localQueryCache.ContainsKey(bookmarkName))
+                        {
+                            localQueryCache.Add(bookmarkName, new string[] { browser, response["URL"].ToString() });
+                        }
                     }
                 }
             }
