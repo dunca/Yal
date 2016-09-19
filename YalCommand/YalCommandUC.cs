@@ -44,7 +44,7 @@ namespace YalCommand
                 }
                 var parameters = split[2] == emptyPlaceholder ? "" : split[2];
                 listViewEntries.Items.Add(new ListViewItem(new string[] { split[0], target, parameters,
-                                                                          Convert.ToBoolean(split[3]).ToString() }));
+                                                                          Convert.ToBoolean(split[3]).ToString() }) { Name = split[0]});
             }
         }
 
@@ -79,7 +79,7 @@ namespace YalCommand
                 errorMessage = "Command and target fields can't be empty";
             }
 
-            else if (Entries.Keys.Any(cmd => cmd == command))
+            else if (listViewEntries.Items.ContainsKey(command))
             {
                 errorMessage = $"A command named '{command}' already exists";
             }
@@ -122,7 +122,7 @@ namespace YalCommand
                 return;
             }
 
-            listViewEntries.Items.Add(new ListViewItem(new string[] { command, target, parameters, confirm }));
+            listViewEntries.Items.Add(new ListViewItem(new string[] { command, target, parameters, confirm }) { Name = command });
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
