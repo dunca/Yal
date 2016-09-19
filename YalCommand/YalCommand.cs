@@ -22,7 +22,6 @@ namespace YalCommand
         public bool FileLikeOutput { get; }
 
         private Regex digitRegex;
-        private Regex placeholderRegex;
         private IEnumerable<string> activators;
         private YalCommandUC CommandPluginInstance { get; set; }
         private Dictionary<string, List<string>> Entries;
@@ -51,7 +50,6 @@ namespace YalCommand
 
             activators = Entries.Keys;
             digitRegex = new Regex(@"\d+");
-            placeholderRegex = new Regex(@"(?<TAG>[!\?])(?<ID>\d+|n|\d+-n|\d+-\d+)\k<TAG>");
         }
 
         public bool CouldProvideResults(string input, bool matchAnywhere, bool fuzzyMatch)
@@ -87,43 +85,53 @@ namespace YalCommand
 
             var arguments = new List<string>();
 
-            foreach (Match match in placeholderRegex.Matches(parameters))
+            foreach (var item in parameters.Split())
             {
-                string currentParameter = string.Empty;
-                var currentIdMatch = match.Groups["ID"];
-                var currentTagMatch = match.Groups["TAG"];
+                string currentParameter;
+                Match match = YalCommandUC.placeholderRegex.Match(item);
 
-                bool? result = SkipCurrentParameter(currentIdMatch.Value, currentTagMatch.Value, splitUserInput);
-
-                if (result == null)
+                if (!match.Success)
                 {
-                    return; // index out of range, simply return
-                }
-                else if (result == true)
-                {
-                    continue;  // skip this optional parameter
-                }
-
-                int number;
-                if (int.TryParse(currentIdMatch.Value, out number))
-                {
-                    currentParameter = splitUserInput[number];
+                    currentParameter = item;
                 }
                 else
                 {
-                    int start = 1; // we always ignore the first item, which is the input command itself
-                    int end = splitUserInput.Length - 1;
-                    if (currentIdMatch.Value.Contains('-'))
+                    var currentIdMatch = match.Groups["ID"];
+                    var currentTagMatch = match.Groups["TAG"];
+
+                    bool? result = SkipCurrentParameter(currentIdMatch.Value, currentTagMatch.Value, splitUserInput);
+
+                    if (result == null)
                     {
-                        var splitMatchValue = currentIdMatch.Value.Split('-');
-                        start = int.Parse(splitMatchValue[0]);
-                        if (splitMatchValue[1] != "n")
-                        {
-                            end = int.Parse(splitMatchValue[1]);
-                        }
+                        return; // index out of range, simply return
                     }
-                    currentParameter = string.Join(" ", new ArraySegment<string>(splitUserInput, start, end));
+                    else if (result == true)
+                    {
+                        continue;  // skip this optional parameter
+                    }
+
+                    int number;
+                    if (int.TryParse(currentIdMatch.Value, out number))
+                    {
+                        currentParameter = splitUserInput[number];
+                    }
+                    else
+                    {
+                        int start = 1; // we always ignore the first item, which is the input command itself
+                        int end = splitUserInput.Length - 1;
+                        if (currentIdMatch.Value.Contains('-'))
+                        {
+                            var splitMatchValue = currentIdMatch.Value.Split('-');
+                            start = int.Parse(splitMatchValue[0]);
+                            if (splitMatchValue[1] != "n")
+                            {
+                                end = int.Parse(splitMatchValue[1]);
+                            }
+                        }
+                        currentParameter = string.Join(" ", new ArraySegment<string>(splitUserInput, start, end));
+                    }
                 }
+
                 arguments.Add(currentParameter);
             }
 
