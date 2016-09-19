@@ -54,10 +54,10 @@
       <Value Profile="(Default)">Gray</Value>
     </Setting>
     <Setting Name="MaxItems" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
+      <Value Profile="(Default)">15</Value>
     </Setting>
     <Setting Name="MaxVisible" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">5</Value>
+      <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="SearchDelay" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">150</Value>
@@ -82,7 +82,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="MaxPluginItems" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">2</Value>
+      <Value Profile="(Default)">5</Value>
     </Setting>
     <Setting Name="FuzzyMatching" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
