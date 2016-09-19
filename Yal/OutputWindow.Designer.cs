@@ -50,7 +50,9 @@
             this.listViewOutput.TileSize = new System.Drawing.Size(248, 30);
             this.listViewOutput.UseCompatibleStateImageBehavior = false;
             this.listViewOutput.View = System.Windows.Forms.View.Tile;
+            this.listViewOutput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listViewOutput_KeyDown);
             this.listViewOutput.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listViewOutput_MouseClick);
+            this.listViewOutput.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listViewOutput_MouseDoubleClick);
             this.listViewOutput.MouseEnter += new System.EventHandler(this.listViewOutput_MouseEnter);
             // 
             // imageList1

@@ -58,12 +58,69 @@ namespace Yal
         {
             if (e.Button == MouseButtons.Right)
             {
-                BuildContextMenu(Cursor.Position);
+                BuildContextMenu();
             }
         }
 
-        internal void BuildContextMenu(Point location)
+        private void listViewOutput_KeyDown(object sender, KeyEventArgs e)
         {
+            char inputChar = (char)e.KeyCode;
+
+            if (char.IsLetter(inputChar))
+            {
+                if (e.Modifiers == Keys.Control)
+                {
+                    if (e.KeyCode == Keys.O)
+                    {
+                        MainWindow.ShowOptionsWindow();
+                    }
+                    else if (e.KeyCode == Keys.A)
+                    {
+                        MainWindow.txtSearch.Focus();
+                        MainWindow.txtSearch.SelectAll();
+                    }
+                    else if (listViewOutput.SelectedItems.Count != 0 && e.KeyCode == Keys.P)
+                    {
+                        BuildContextMenu();
+                    }
+                    return;
+                }
+
+                if (!Control.IsKeyLocked(Keys.CapsLock) || (Control.IsKeyLocked(Keys.CapsLock) && e.Modifiers == Keys.Shift))
+                {
+                    inputChar = char.ToLower(inputChar);
+                }
+
+                MainWindow.txtSearch.Text += inputChar;
+                MainWindow.txtSearch.SelectionStart = MainWindow.txtSearch.Text.Length;
+                MainWindow.txtSearch.Focus();
+            }
+            else if (e.KeyCode == Keys.Back)
+            {
+                MainWindow.txtSearch.Text = MainWindow.txtSearch.Text.Substring(0, MainWindow.txtSearch.Text.Length - 1);
+                MainWindow.txtSearch.SelectionStart = MainWindow.txtSearch.Text.Length;
+                MainWindow.txtSearch.Focus();
+            }
+            else if (e.KeyCode == Keys.Enter)
+            {
+                // the user can hold CTRL+SHIFT+ENTER to run the item with elevated rights. If just SHIFT+ENTER are pressed,
+                // the search term won't be saved in the history database
+                MainWindow.StartSelectedItem(e.Modifiers == (Keys.Shift | Keys.Control), !(e.Modifiers == Keys.Shift));
+            }
+        }
+
+        private void listViewOutput_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            MainWindow.StartSelectedItem();
+        }
+
+        internal void BuildContextMenu(Point? location = null)
+        {
+            if (location == null)
+            {
+                location = Cursor.Position;
+            }
+
             var contextMenu = new ContextMenuStrip();
 
             var runItem = new ToolStripMenuItem("Run");
@@ -86,7 +143,7 @@ namespace Yal
             }
 
             contextMenu.Items.AddRange(new ToolStripItem[] { copyNameItem, runItem, runAsAdminItem });
-            contextMenu.Show(location);
+            contextMenu.Show((Point)location);
         }
 
         private void CopyPathItem_Click(object sender, EventArgs e)

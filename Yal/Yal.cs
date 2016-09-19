@@ -46,9 +46,7 @@ namespace Yal
 
             InitializeComponent();
             outputWindow = new OutputWindow(this);
-            outputWindow.listViewOutput.KeyDown += outputWindow_listViewOutput_KeyDown;
-            outputWindow.listViewOutput.MouseDoubleClick += outputWindow_listViewOutput_MouseDoubleClick;
-
+            
             ManageAutoIndexingTimer();
             UpdateWindowLocation();
             UpdateWindowLooks();
@@ -65,7 +63,7 @@ namespace Yal
             PluginInstances = PluginLoader.InstantiatePlugins(PluginLoader.Load("plugins"));
         }
 
-        private void ShowOptionsWindow()
+        internal void ShowOptionsWindow()
         {
             if (optionsWindow == null)
             {
@@ -78,33 +76,6 @@ namespace Yal
         {
             await FileManager.RebuildIndexAsync();
             optionsWindow?.UpdateIndexingStatus();
-        }
-
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            if (outputWindow.listViewOutput.SelectedItems.Count != 0)
-            {
-                if (keyData == (Keys.Control | Keys.D))
-                {
-                    Utils.OpenFileDirectory(outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text);
-                    return true;
-                }
-                else if (keyData == (Keys.Control | Keys.P))
-                {
-                    ShowItemContextMenu();
-                    return true;
-                }
-            }
-
-            return base.ProcessCmdKey(ref msg, keyData);
-        }
-
-        private void ShowItemContextMenu()
-        {
-            ListViewItem item = outputWindow.listViewOutput.SelectedItems[0];
-            //Point location = new Point(outputWindow.Location.X + item.Position.X + (outputWindow.listViewOutput.TileSize.Width / 2),
-            //                           outputWindow.Location.Y + item.Position.Y + (outputWindow.listViewOutput.TileSize.Height / 2));
-            outputWindow.BuildContextMenu(Cursor.Position);
         }
 
         private void TrimHistoryTimer_Tick(object sender, EventArgs e)
@@ -316,19 +287,13 @@ namespace Yal
 
         private void txtSearch_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Down)
+            if (outputWindow.listViewOutput.SelectedItems.Count != 0 && e.Modifiers == Keys.Control && e.KeyCode == Keys.P)
             {
-                //if (outputWindow.listViewOutput.Items.Count > 1)
-                //{
-                ////outputWindow.listViewOutput.Items[0].Selected = false;
-                ////outputWindow.listViewOutput.Items[1].Selected = true;
-
-                //int indexOfSelected = outputWindow.listViewOutput.Items.IndexOf(outputWindow.listViewOutput.SelectedItems[0]);
-                //outputWindow.listViewOutput.Items[indexOfSelected].Selected = false;
-                //outputWindow.listViewOutput.Items[++indexOfSelected].Selected = true;
-                //outputWindow.listViewOutput.FocusedItem = outputWindow.listViewOutput.Items[indexOfSelected];
-                //}
-                if (outputWindow.Visible == false)
+                outputWindow.BuildContextMenu();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                if (!outputWindow.Visible)
                 {
                     outputWindow.Show();
                 }
@@ -418,66 +383,6 @@ namespace Yal
             {
                 outputWindow.Hide();
             }
-        }
-
-        private void outputWindow_listViewOutput_KeyDown(object sender, KeyEventArgs e)
-        {
-            //bool isAlpha = char.IsLetter((char)e.KeyCode);
-            bool isAlpha = e.KeyCode >= Keys.A && e.KeyCode <= Keys.Z;
-            if (isAlpha)
-            {
-                if (e.Modifiers == Keys.Control)
-                {
-                    if (e.KeyCode == Keys.O)
-                    {
-                        ShowOptionsWindow();
-                    }
-                    else if (e.KeyCode == Keys.A)
-                    {
-                        txtSearch.Focus();
-                        txtSearch.SelectAll();
-                    }
-                    else if (outputWindow.listViewOutput.SelectedItems.Count != 0)
-                    {
-                        if (e.KeyCode == Keys.D)
-                        {
-                            Utils.OpenFileDirectory(outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text);
-                        }
-                        else if (e.KeyCode == Keys.P)
-                        {
-                            ShowItemContextMenu();
-                        }
-                    }
-                    return;
-                }
-
-                char pressed = (char)e.KeyCode;
-                if (!Control.IsKeyLocked(Keys.CapsLock) ||
-                    (Control.IsKeyLocked(Keys.CapsLock) && e.Shift))
-                {
-                    pressed = char.ToLower(pressed);
-                }
-                txtSearch.Text += pressed;
-                txtSearch.SelectionStart = txtSearch.Text.Length;
-                txtSearch.Focus();
-            }
-            else if (e.KeyCode == Keys.Back) // backspace
-            {
-                txtSearch.Text = txtSearch.Text.Substring(0, txtSearch.Text.Length - 1);
-                txtSearch.SelectionStart = txtSearch.Text.Length;
-                txtSearch.Focus();
-            }
-            else if (e.KeyCode == Keys.Enter)
-            {
-                // the user can hold CTRL+SHIFT+ENTER to run the item with elevated rights. If just SHIFT+ENTER are pressed,
-                // the search term won't be saved in the history database
-                StartSelectedItem(e.Modifiers == (Keys.Shift | Keys.Control), !(e.Modifiers == Keys.Shift));
-            }
-        }
-
-        private void outputWindow_listViewOutput_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            StartSelectedItem();
         }
 
         internal void StartSelectedItem(bool elevatedRights = false, bool keepInHistory = true)
