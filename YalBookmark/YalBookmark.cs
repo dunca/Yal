@@ -46,7 +46,7 @@ namespace YalBookmark
             Version = "1.0";
             Description = "Yal plugin that allows you to easily visit your browser bookmarks";
 
-            FileLikeOutput = false;
+            FileLikeOutput = true;
             PluginIcon = Utils.GetPluginIcon(Name);
             activators = new List<string>();
 
