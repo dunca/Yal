@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Data;
 using System.Drawing;
-using System.IO;
 using PluginInterfaces;
+using System.Windows.Forms;
+using System.Collections.Generic;
+
 using Utilities;
 
 namespace YalCalc

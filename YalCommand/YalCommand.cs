@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PluginInterfaces;
 using System.Drawing;
-using System.Windows.Forms;
-using System.IO;
-using System.Text.RegularExpressions;
+using PluginInterfaces;
 using System.Diagnostics;
+using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+
 using Utilities;
 
 namespace YalCommand
