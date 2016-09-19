@@ -55,8 +55,9 @@ namespace YalCommand
             return activators.Any(activator => input.StartsWith(activator));
         }
 
-        public string[] GetResults(string input, bool matchAnywhere, bool fuzzyMatch)
+        public string[] GetResults(string input, bool matchAnywhere, bool fuzzyMatch, out string[] itemInfo)
         {
+            itemInfo = null;
             return new string[] { input };
         }
 
