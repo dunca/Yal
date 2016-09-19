@@ -85,24 +85,9 @@ namespace Yal
 
         internal void ManageAutoIndexingTimer()
         {
-            //int autoIndexingInterval;
-            //if (int.TryParse(Properties.Settings.Default.IndexingInterval, out autoIndexingInterval))
-            //{
-            //    timerAutoIndexing.Stop();
-            //    // the interval is in milliseconds so a conversion is needed
-            //    timerAutoIndexing.Interval = autoIndexingInterval * 1000 * 60;
-            //    timerAutoIndexing.Tick -= TimerAutoIndexing_Tick;
-            //    timerAutoIndexing.Tick += TimerAutoIndexing_Tick;
-            //    timerAutoIndexing.Start();
-            //}
-            //else
-            //{
-            //    timerAutoIndexing.Stop();
-            //}
             if (Properties.Settings.Default.AutoIndexing)
             {
                 timerAutoIndexing.Stop();
-                // the interval is in milliseconds so a conversion is needed
                 timerAutoIndexing.Interval = Properties.Settings.Default.AutoIndexingInterval * 1000 * 60;
                 timerAutoIndexing.Tick -= TimerAutoIndexing_Tick;
                 timerAutoIndexing.Tick += TimerAutoIndexing_Tick;
@@ -203,7 +188,6 @@ namespace Yal
         {
             base.WndProc(ref m);
 
-            // focus on our form when the hotkey (Alt+Space by default) is pressed
             if (m.Msg == WM_HOTKEY)
             {
                 if (this.Visible)
@@ -276,7 +260,6 @@ namespace Yal
             {
                 LmbIsDown = false;
                 this.Cursor = Cursors.Default;  // we only want the crosshair cursor when moving the window
-                //AlignHorizontally(this);
             }
         }
 
@@ -448,8 +431,7 @@ namespace Yal
 
         private void yalContextStrip_Opening(object sender, CancelEventArgs e)
         {
-            // only display the "Show Yal" option if the context menu is opened through the
-            // tray icon
+            // only display the "Show Yal" option if the context menu is opened through the tray icon
             showYalToolStripMenuItem.Visible = !this.Bounds.Contains(Cursor.Position);
         }
 
@@ -477,6 +459,7 @@ namespace Yal
 
             bool didNotExist;
             FileManager.EnsureDbExists(out didNotExist);
+
             if (didNotExist)
             {
                 RebuildIndex();

@@ -23,17 +23,7 @@ namespace Yal
 
             MainWindow = mainWindow;
 
-            CreateLVColumns();
-
             listViewOutput.ShowItemToolTips = true;
-        }
-
-        private void CreateLVColumns()
-        {
-            //listViewOutput.HeaderStyle = ColumnHeaderStyle.None;
-            var c1 = new ColumnHeader() { Name="ColName", Text="Name"};
-            var c2 = new ColumnHeader() { Name = "ColFullName", Text = "FullName" };
-            listViewOutput.Columns.AddRange(new ColumnHeader[] { c1, c2 });
         }
 
         internal void ResizeToFitContent()

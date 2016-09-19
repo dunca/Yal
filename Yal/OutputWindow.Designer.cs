@@ -32,11 +32,16 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OutputWindow));
             this.listViewOutput = new System.Windows.Forms.ListView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // listViewOutput
             // 
             this.listViewOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.listViewOutput.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2});
             this.listViewOutput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewOutput.FullRowSelect = true;
             this.listViewOutput.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
@@ -61,6 +66,14 @@
             this.imageList1.ImageSize = new System.Drawing.Size(24, 24);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Name";
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Details";
+            // 
             // OutputWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -81,5 +94,7 @@
 
         internal System.Windows.Forms.ListView listViewOutput;
         internal System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
     }
 }
