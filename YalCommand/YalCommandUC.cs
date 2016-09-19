@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utilities;
+using System.Text.RegularExpressions;
 
 namespace YalCommand
 {
@@ -15,19 +16,18 @@ namespace YalCommand
     {
         private Dictionary<string, List<string>> Entries;
 
-        internal const string emptyPlaceholder = "~notset~";
-        internal const string mandatoryParameterTag = "!";
         internal const string optionalParameterTag = "?";
+        internal const string mandatoryParameterTag = "!";
+        internal const string emptyPlaceholder = "~notset~";
+        internal static Regex placeholderRegex = new Regex(@"^(?<TAG>[!\?])(?<ID>[1-9]+[0-9]*|n|[1-9]+[0-9]*-n|[1-9]+[0-9]*-[1-9]+[0-9]*)\k<TAG>$");
 
         public YalCommandUC(Dictionary<string, List<string>> entires)
         {
             InitializeComponent();
 
             ParseEntries();
-
-            cbxConfirm.SelectedIndex = 0;
-
             Entries = entires;
+            cbxConfirm.SelectedIndex = 0;
         }
 
         private void ParseEntries()
@@ -72,26 +72,52 @@ namespace YalCommand
             var parameters = txtParameters.Text;
             var confirm = (string)cbxConfirm.SelectedItem;
 
-            string message = string.Empty;
+            string errorMessage = string.Empty;
 
             if (command == "" || target == "")
             {
-                message = "Command and target fields can't be empty";
+                errorMessage = "Command and target fields can't be empty";
             }
 
             else if (Entries.Keys.Any(cmd => cmd == command))
             {
-                message = $"A command named '{command}' already exists";
+                errorMessage = $"A command named '{command}' already exists";
             }
 
             else if (!Utils.PathExists(target))
             {
-                message = "The target should be a file or directory";
+                errorMessage = "The target should be a file or directory";
+            }
+            else
+            {
+                foreach (var item in parameters.Split())
+                {
+                    if (item.StartsWith(optionalParameterTag) || item.StartsWith(mandatoryParameterTag))
+                    {
+                        Match match = placeholderRegex.Match(item);
+                        string matchValue = match.Groups["ID"].Value;
+
+                        if (!match.Success)
+                        {
+                            errorMessage = $"Invalid parameter '{item}'";
+                            break;
+                        }
+                        else if (matchValue.Contains('-') && matchValue.Last() != 'n')
+                        {
+                            var split = matchValue.Split('-');
+                            if (int.Parse(split[0]) >= int.Parse(split[1]))
+                            {
+                                errorMessage = $"The first item in a range should be less than the second ({item})";
+                                break;
+                            }
+                        }
+                    }
+                }
             }
 
-            if (message != string.Empty)
+            if (errorMessage != string.Empty)
             {
-                MessageBox.Show(message, "Error", MessageBoxButtons.OK,
+                MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
                 return;
             }
