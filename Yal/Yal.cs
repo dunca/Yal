@@ -321,12 +321,13 @@ namespace Yal
                 {
                     if ((plugin.CouldProvideResults(txtSearch.Text, Properties.Settings.Default.MatchAnywhere, Properties.Settings.Default.FuzzyMatching)))
                     {
+                        string[] itemInfo;
                         string[] items = plugin.GetResults(txtSearch.Text, Properties.Settings.Default.MatchAnywhere,
-                                                           Properties.Settings.Default.FuzzyMatching);
+                                                           Properties.Settings.Default.FuzzyMatching, out itemInfo);
                         foreach (var item in items)
                         {
                             pluginItemCount++;
-                            var lvi = new ListViewItem(new string[] { item, plugin.Name });
+                            var lvi = new ListViewItem(new string[] { item, itemInfo == null ? plugin.Name : itemInfo[pluginItemCount] } );
                             if (plugin.PluginIcon != null)
                             {
                                 outputWindow.imageList1.Images.Add(plugin.PluginIcon);

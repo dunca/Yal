@@ -119,8 +119,9 @@ Work Folders;Microsoft.WorkFolders;8.1,10
             return ControlPanelPluginInstance;
         }
 
-        public string[] GetResults(string input, bool matchAnywhere, bool fuzzyMatch)
+        public string[] GetResults(string input, bool matchAnywhere, bool fuzzyMatch, out string[] itemInfo)
         {
+            itemInfo = null;
             return GetMatchingActivators(input, matchAnywhere, fuzzyMatch);
         }
 

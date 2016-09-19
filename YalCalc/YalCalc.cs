@@ -45,8 +45,10 @@ namespace YalCalc
             return CalcPluginInstance;
         }
 
-        public string[] GetResults(string input, bool matchAnywhere, bool fuzzyMatch)
+        public string[] GetResults(string input, bool matchAnywhere, bool fuzzyMatch, out string[] itemInfo)
         {
+            itemInfo = null;
+
             var dt = new DataTable();
             try
             {

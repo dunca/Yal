@@ -64,8 +64,10 @@ namespace YalWeb
             return WebPluginInstance;
         }
 
-        public string[] GetResults(string input, bool matchAnywhere, bool fuzzyMatch)
+        public string[] GetResults(string input, bool matchAnywhere, bool fuzzyMatch, out string[] itemInfo)
         {
+            itemInfo = null;
+
             // this plugin is always able to return results (if the user's pc is connected & the search urls work)
             return new string[] { input };
         }
