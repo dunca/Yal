@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO;
+using System.Drawing;
 using Microsoft.Win32;
-using System.Text.RegularExpressions;
 using PluginInterfaces;
+using System.Windows.Forms;
+using System.ComponentModel;
+using System.Collections.Specialized;
+using System.Text.RegularExpressions;
+
 using Utilities;
 
 namespace Yal

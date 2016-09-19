@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Reflection;
 using PluginInterfaces;
-using System.Windows.Forms;
+using System.Reflection;
+using System.Collections.Generic;
 
 namespace Yal
 {

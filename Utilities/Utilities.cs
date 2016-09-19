@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Win32;
-using System.Text.RegularExpressions;
-using System.Diagnostics;
 using System.IO;
 using System.Drawing;
+using Microsoft.Win32;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace Utilities
 {
