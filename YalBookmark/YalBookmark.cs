@@ -45,7 +45,7 @@ namespace YalBookmark
         private YalBookmarkUC BookmarkPluginInstance { get; set; }
 
         private const int limit = 5;
-        private Dictionary<string, BrowserInfo> browsers;
+        internal static Dictionary<string, BrowserInfo> browsers;
         private const string dbConnectionString = "Data Source={0};Version=3;";
         private Dictionary<string, string[]> localQueryCache = new Dictionary<string, string[]>();
 
@@ -72,6 +72,16 @@ namespace YalBookmark
                                               GetExecutablePath("firefox.exe"), GetFirefoxDbPath, QueryFirefoxDb) },
                 { "Chrome", new BrowserInfo("Chrome", "", GetExecutablePath("chrome.exe"), GetChromeDbPath, QueryChromeDb) }
             };
+
+            if (Properties.Settings.Default.FirstRun)
+            {
+                Properties.Settings.Default.EnabledBackends = new System.Collections.Specialized.StringCollection();
+                foreach (var browser in browsers.Keys)
+                {
+                    Properties.Settings.Default.EnabledBackends.Add(browser);
+                }
+                Properties.Settings.Default.FirstRun = false;
+            }
         }
 
         private static string GetExecutablePath(string programName)
@@ -228,9 +238,15 @@ namespace YalBookmark
             itemInfo = null;
             localQueryCache.Clear();
 
-            foreach (BrowserInfo browser in browsers.Values)
+            foreach (var browser in browsers)
             {
-                var results = browser.QueryDatabase(input, matchAnywhere, fuzzyMatch);
+                if (!Properties.Settings.Default.EnabledBackends.Contains(browser.Key))
+                {
+                    continue;
+                }
+
+                var browserInfo = browser.Value;
+                var results = browserInfo.QueryDatabase(input, matchAnywhere, fuzzyMatch);
                 if (results != null && results.Count > 0)
                 {
                     foreach (var item in results)
@@ -279,7 +295,8 @@ namespace YalBookmark
 
         public bool CouldProvideResults(string input, bool matchAnywhere, bool fuzzyMatch)
         {
-            return browsers.Any(browser => browser.Value.GetDbPath() != null);
+            return browsers.Any(browser => Properties.Settings.Default.EnabledBackends.Contains(browser.Key)
+                                && browser.Value.GetDbPath() != null);
         }
     }
 }
