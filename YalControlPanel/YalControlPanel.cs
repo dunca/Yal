@@ -137,7 +137,7 @@ Work Folders;Microsoft.WorkFolders;8.1,10
         private string[] GetMatchingActivators(string input, bool matchAnywhere, bool fuzzyMatch)
         {
             var items = new List<string>();
-            var regex = new Regex(string.Concat(matchAnywhere ? ".*" : "^", string.Concat(input.Select(c => string.Concat(Regex.Escape(c.ToString()), ".*")))), RegexOptions.IgnoreCase);
+            var regex = new Regex(string.Concat(matchAnywhere ? "" : "^", string.Concat(input.Select(c => string.Concat(Regex.Escape(c.ToString()), ".*")))), RegexOptions.IgnoreCase);
             foreach (string activator in Activators)
             {
                 if ((fuzzyMatch && regex.IsMatch(activator)) || (matchAnywhere ? activator.IndexOf(input, StringComparison.InvariantCultureIgnoreCase) > -1 : 
