@@ -188,19 +188,18 @@ namespace YalBookmark
                 return null;
             }
 
+            string regexString = snippet;
             var results = new Dictionary<string, string[]>();
             string database = File.ReadAllText(databasePath);
 
-            string regexString = string.Concat("^", snippet);
-
             if (fuzzyMatch)
             {
-                regexString = string.Concat("^", string.Concat(snippet.Select(c => $"{c}.?")));
+                regexString = string.Concat(snippet.Select(c => $"{c}.*"));
             }
 
-            if (matchAnywhere)
+            if (!matchAnywhere)
             {
-                regexString = regexString.Substring(1);
+                regexString = string.Concat("^", regexString);
             }
 
             Regex bookmarkRegex = new Regex(regexString, RegexOptions.IgnoreCase);
