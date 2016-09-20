@@ -98,7 +98,7 @@ namespace YalBookmark
 
                 for (int i = 0; i < content.Length; i++)
                 {
-                    if (content[i].StartsWith("Path=") && content[i + 1].Split('=')[1] == "1")
+                    if (content[i].StartsWith("Path=") && content[i + 1] == "Default=1")
                     {
                         // found the default profile's directory
                         profilePath = content[i].Split('=')[1];
