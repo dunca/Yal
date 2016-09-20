@@ -63,7 +63,6 @@
             // cbOpenWithProvider
             // 
             this.cbOpenWithProvider.AutoSize = true;
-            this.cbOpenWithProvider.Enabled = false;
             this.cbOpenWithProvider.Location = new System.Drawing.Point(3, 29);
             this.cbOpenWithProvider.Name = "cbOpenWithProvider";
             this.cbOpenWithProvider.Size = new System.Drawing.Size(248, 17);
