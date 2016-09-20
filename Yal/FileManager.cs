@@ -234,7 +234,7 @@ namespace Yal
             foreach (string location in Properties.Settings.Default.FoldersToIndex)
             {
                 string result = null;
-                if (Utils.PersonalizePath(location, out result))
+                if (Utils.LocalizePath(location, out result))
                 {
                     sc.Add(result);
                 }

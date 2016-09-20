@@ -34,7 +34,7 @@ namespace YalCommand
                 var split = entry.Split('|');
 
                 string target = split[1];
-                if (!Utils.PersonalizePath(target, out target))
+                if (!Utils.LocalizePath(target, out target))
                 { 
                     continue;
                 }
