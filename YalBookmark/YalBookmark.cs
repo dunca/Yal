@@ -6,6 +6,7 @@ using Microsoft.Win32;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
 
@@ -18,16 +19,17 @@ namespace YalBookmark
     {
         public string name;
         public string queryString;
-        public string databasePath;
-        public string executablePath;
+        public string executableName;
+        public Func<string> GetDbPath;
         public Func<string, Dictionary<string, string[]>> QueryDatabase;
 
-        public BrowserInfo(string name, string query, string dbPath, string exePath, Func<string, Dictionary<string, string[]>> QueryDatabase)
+        public BrowserInfo(string name, string query, string exeName, Func<string> GetDbPath,
+                           Func<string, Dictionary<string, string[]>> QueryDatabase)
         {
             this.name = name;
             queryString = query;
-            databasePath = dbPath;
-            executablePath = exePath;
+            executableName = exeName;
+            this.GetDbPath = GetDbPath;
             this.QueryDatabase = QueryDatabase;
         }
     }
@@ -39,12 +41,14 @@ namespace YalBookmark
         public string Description { get; }
         public Icon PluginIcon { get; }
         public bool FileLikeOutput { get; }
-
-        private const int limit = 5;
+        
         private YalBookmarkUC BookmarkPluginInstance { get; set; }
 
+        private const int limit = 5;
         private Dictionary<string, BrowserInfo> browsers;
+        private const string dbConnectionString = "Data Source={0};Version=3;";
         private Dictionary<string, string[]> localQueryCache = new Dictionary<string, string[]>();
+
         private static string roamingAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         private static string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
@@ -65,8 +69,8 @@ namespace YalBookmark
                 { "Firefox",  new BrowserInfo("Firefox", @"select bookmarks.TITLE, places.URL from moz_bookmarks as bookmarks, 
                                                          moz_places as places where bookmarks.fk = places.id and places.REV_HOST is not null
                                                          and bookmarks.TITLE like @snippet order by bookmarks.TITLE limit @limit",
-                                              GetFirefoxDbPath(), GetExecutablePath("firefox.exe"), QueryFirefoxDb) },
-                { "Chrome", new BrowserInfo("Chrome", "", GetChromeDbPath(), GetExecutablePath("chrome.exe"), QueryChromeDb) }
+                                              GetExecutablePath("firefox.exe"), GetFirefoxDbPath, QueryFirefoxDb) },
+                { "Chrome", new BrowserInfo("Chrome", "", GetExecutablePath("chrome.exe"), GetChromeDbPath, QueryChromeDb) }
             };
         }
 
@@ -74,10 +78,10 @@ namespace YalBookmark
         {
             foreach (string rootKey in rootRegistryKeys)
             {
-                object path = Registry.GetValue(string.Format(appPathsTemplate, rootKey, programName), string.Empty, null);
-                if (path != null)
+                var path = (string)Registry.GetValue(string.Format(appPathsTemplate, rootKey, programName), string.Empty, null);
+                if (path != null && File.Exists(path))
                 {
-                    return path as string;
+                    return path;
                 }
             }
             return null;
@@ -120,15 +124,15 @@ namespace YalBookmark
         private Dictionary<string, string[]> QueryFirefoxDb(string snippet)
         {
             var browserInfo = browsers["Firefox"];
-            var databasePath = browserInfo.databasePath;
+            var databasePath = browserInfo.GetDbPath();
 
             if (databasePath == null)
             {
                 return null;
             }
-
+            
             var results = new Dictionary<string, string[]>();
-            using (var connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", databasePath)))
+            using (var connection = new SQLiteConnection(string.Format(dbConnectionString, databasePath)))
             {
                 connection.Open();
                 var command = new SQLiteCommand(browserInfo.queryString, connection);
@@ -152,17 +156,24 @@ namespace YalBookmark
 
         private Dictionary<string, string[]> QueryChromeDb(string snippet)
         {
-            string database = string.Empty;
             var browserInfo = browsers["Chrome"];
-            database = File.ReadAllText(browserInfo.databasePath);
-
-            var results = new Dictionary<string, string[]>();
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            dynamic document = serializer.DeserializeObject(database);
-
-            foreach (var bookmark in document["roots"]["bookmark_bar"]["children"])
+            string databasePath = browserInfo.GetDbPath();
+            
+            if (databasePath == null)
             {
-                if (bookmark["type"] == "url" && bookmark["name"].Contains(snippet.Replace("%", "")) && !results.ContainsKey(bookmark["name"]))
+                return null;
+            }
+            
+            var results = new Dictionary<string, string[]>();
+            string database = File.ReadAllText(databasePath);
+
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            dynamic parsedBookmarks = serializer.DeserializeObject(database);
+
+            foreach (var bookmark in parsedBookmarks["roots"]["bookmark_bar"]["children"])
+            {
+                if (bookmark["type"] == "url" && bookmark["name"].Contains(snippet.Replace("%", "")) 
+                    && !results.ContainsKey(bookmark["name"]))
                 {
                     results.Add(bookmark["name"], new string[] { browserInfo.name, bookmark["url"] });
                 }
@@ -232,9 +243,10 @@ namespace YalBookmark
             var url = localQueryCache[input][1];
             var proc = new Process();
 
-            if (Properties.Settings.Default.OpenWithProvider && providingBrowser.executablePath != null)
+            var providingBrowserPath = GetExecutablePath(providingBrowser.executableName);
+            if (Properties.Settings.Default.OpenWithProvider && providingBrowserPath != null)
             {
-                proc.StartInfo.FileName = providingBrowser.executablePath;
+                proc.StartInfo.FileName = providingBrowserPath;
                 proc.StartInfo.Arguments = url;
             }
             else
@@ -246,7 +258,7 @@ namespace YalBookmark
             {
                 proc.Start();
             }
-            catch (Exception e)
+            catch (Win32Exception e) // as per https://support.microsoft.com/en-us/kb/305703 this usually occurs when there's no browser installed
             {
                 MessageBox.Show(e.Message, Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -254,7 +266,7 @@ namespace YalBookmark
 
         public bool CouldProvideResults(string input, bool matchAnywhere, bool fuzzyMatch)
         {
-            return browsers.Any(browser => browser.Value.databasePath != null);
+            return browsers.Any(browser => browser.Value.GetDbPath() != null);
         }
     }
 }
