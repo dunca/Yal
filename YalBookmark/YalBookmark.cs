@@ -6,8 +6,8 @@ using Microsoft.Win32;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.Windows.Forms;
-using System.ComponentModel;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Web.Script.Serialization;
 
 using Utilities;
@@ -21,10 +21,10 @@ namespace YalBookmark
         public string queryString;
         public string executableName;
         public Func<string> GetDbPath;
-        public Func<string, Dictionary<string, string[]>> QueryDatabase;
+        public Func<string, bool, bool, Dictionary<string, string[]>> QueryDatabase;
 
         public BrowserInfo(string name, string query, string exeName, Func<string> GetDbPath,
-                           Func<string, Dictionary<string, string[]>> QueryDatabase)
+                           Func<string, bool, bool, Dictionary<string, string[]>> QueryDatabase)
         {
             this.name = name;
             queryString = query;
@@ -121,7 +121,7 @@ namespace YalBookmark
             return File.Exists(bookmarksPath) ? bookmarksPath : null;
         }
 
-        private Dictionary<string, string[]> QueryFirefoxDb(string snippet)
+        private Dictionary<string, string[]> QueryFirefoxDb(string snippet, bool matchAnywhere, bool fuzzyMatch)
         {
             var browserInfo = browsers["Firefox"];
             var databasePath = browserInfo.GetDbPath();
@@ -130,7 +130,21 @@ namespace YalBookmark
             {
                 return null;
             }
-            
+
+            if (fuzzyMatch)
+            {
+                snippet = string.Concat(snippet.Select(c => $"{c}%"));
+            }
+            else
+            {
+                snippet = $"{snippet}%";
+            }
+
+            if (matchAnywhere)
+            {
+                snippet = string.Concat("%", snippet);
+            }
+
             var results = new Dictionary<string, string[]>();
             using (var connection = new SQLiteConnection(string.Format(dbConnectionString, databasePath)))
             {
@@ -154,7 +168,7 @@ namespace YalBookmark
             return results;
         }
 
-        private Dictionary<string, string[]> QueryChromeDb(string snippet)
+        private Dictionary<string, string[]> QueryChromeDb(string snippet, bool matchAnywhere, bool fuzzyMatch)
         {
             var browserInfo = browsers["Chrome"];
             string databasePath = browserInfo.GetDbPath();
@@ -163,17 +177,31 @@ namespace YalBookmark
             {
                 return null;
             }
-            
+
             var results = new Dictionary<string, string[]>();
             string database = File.ReadAllText(databasePath);
+
+            string regexString = string.Concat("^", snippet);
+
+            if (fuzzyMatch)
+            {
+                regexString = string.Concat("^", string.Concat(snippet.Select(c => $"{c}.?")));
+            }
+
+            if (matchAnywhere)
+            {
+                regexString = regexString.Substring(1);
+            }
+
+            Regex bookmarkRegex = new Regex(regexString, RegexOptions.IgnoreCase);
 
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             dynamic parsedBookmarks = serializer.DeserializeObject(database);
 
             foreach (var bookmark in parsedBookmarks["roots"]["bookmark_bar"]["children"])
             {
-                if (bookmark["type"] == "url" && bookmark["name"].Contains(snippet.Replace("%", "")) 
-                    && !results.ContainsKey(bookmark["name"]))
+                var bookmarkName = bookmark["name"];
+                if (bookmark["type"] == "url" && !results.ContainsKey(bookmarkName) && bookmarkRegex.IsMatch(bookmarkName))
                 {
                     results.Add(bookmark["name"], new string[] { browserInfo.name, bookmark["url"] });
                 }
@@ -197,27 +225,12 @@ namespace YalBookmark
 
         public string[] GetResults(string input, bool matchAnywhere, bool fuzzyMatch, out string[] itemInfo)
         {
-            string snippet;
             itemInfo = null;
             localQueryCache.Clear();
 
-            if (fuzzyMatch)
-            {
-                snippet = string.Concat(input.Select(c => $"{c}%"));
-            }
-            else
-            {
-                snippet = $"{input}%";
-            }
-
-            if (matchAnywhere)
-            {
-                snippet = string.Concat("%", snippet);
-            }
-
             foreach (BrowserInfo browser in browsers.Values)
             {
-                var results = browser.QueryDatabase(snippet);
+                var results = browser.QueryDatabase(input, matchAnywhere, fuzzyMatch);
                 if (results != null && results.Count > 0)
                 {
                     foreach (var item in results)
