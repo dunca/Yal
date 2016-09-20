@@ -258,7 +258,7 @@ namespace YalBookmark
             {
                 proc.Start();
             }
-            catch (Win32Exception e) // as per https://support.microsoft.com/en-us/kb/305703 this usually occurs when there's no browser installed
+            catch (Exception e)
             {
                 MessageBox.Show(e.Message, Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
