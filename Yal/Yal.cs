@@ -39,7 +39,6 @@ namespace Yal
         internal List<IPlugin> PluginInstances;
 
         private const string attachTemplate = "attach database '{0}' as {1}";
-        private const string pluginDbString = "FullUri=file::memory:?cache=shared;Version=3;";
         private const string pluginTableSchema = "create table if not exists PLUGIN_ITEMS (ITEM_NAME string, OTHER_INFO string)";
         private const string pluginInsertString = "insert into PLUGIN_ITEMS (ITEM_NAME, OTHER_INFO) values (@item_name, @other_info)";
         private const string itemQueryString = @"select distinct ITEM_NAME, OTHER_INFO from 
@@ -49,7 +48,7 @@ namespace Yal
                                                union
                                                select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, 0 as HITS from INDEX_CATALOG where ITEM_NAME like @pattern
                                                order by HITS desc, ITEM_NAME asc) limit @limit";
-        private SQLiteConnection pluginTempConnection = new SQLiteConnection(pluginDbString);
+        private SQLiteConnection pluginTempConnection = new SQLiteConnection("FullUri=file::memory:?cache=shared;Version=3;");
 
         public Yal()
         {
@@ -336,7 +335,6 @@ namespace Yal
             outputWindow.imageList1.Images?.Clear();
             outputWindow.listViewOutput.Items.Clear();
 
-
             if (txtSearch.Text != string.Empty)
             {
                 int pluginItemCount = 0;
@@ -411,9 +409,9 @@ namespace Yal
                                 iconIndex++;
                             }
                         }
-                         
                         outputWindow.listViewOutput.Items.Add(lvi);
                     }
+                    (new SQLiteCommand("delete from PLUGIN_ITEMS", pluginTempConnection)).ExecuteNonQuery();
                 }
 
                 if (outputWindow.listViewOutput.Items.Count > 0)
@@ -434,7 +432,7 @@ namespace Yal
                 outputWindow.Hide();
             }
 
-            (new SQLiteCommand("delete from PLUGIN_ITEMS", pluginTempConnection)).ExecuteNonQuery();
+            
         }
 
         internal void StartSelectedItem(bool elevatedRights = false, bool keepInHistory = true)
