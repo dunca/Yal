@@ -40,13 +40,13 @@ namespace Yal
 
         private const string attachTemplate = "attach database '{0}' as {1}";
         private const string pluginTableSchema = "create table if not exists PLUGIN_ITEMS (ITEM_NAME string, PLUGIN_NAME string, ADDITIONAL_INFO string)";
-        private const string pluginInsertString = "insert into PLUGIN_ITEMS (ITEM_NAME, PLUGIN_NAME) values (@item_name, @plugin_name)";
+        private const string pluginInsertString = "insert into PLUGIN_ITEMS (ITEM_NAME, PLUGIN_NAME, ADDITIONAL_INFO) values (@item_name, @plugin_name, @additional_info)";
         private const string itemQueryString = @"select distinct ITEM_NAME, OTHER_INFO from 
                                                (select ITEM_NAME, OTHER_INFO, HITS from HISTORY_CATALOG where SNIPPET like @snippet
                                                union
                                                select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, 0 as HITS from INDEX_CATALOG where NAME like @pattern
                                                union
-                                               select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, 0 as HITS from PLUGIN_ITEMS where ITEM_NAME like @pattern
+                                               select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, ADDITIONAL_INFO as HITS from PLUGIN_ITEMS where ITEM_NAME like @pattern
                                                order by HITS desc, NAME asc) limit @limit";
         private SQLiteConnection pluginTempConnection = new SQLiteConnection("FullUri=file::memory:?cache=shared;Version=3;");
 
@@ -346,7 +346,9 @@ namespace Yal
 
                     string[] itemInfo;
                     string[] pluginItems = plugin.GetResults(txtSearch.Text, out itemInfo);
-                    //var additionalInfo = itemInfo[pluginItemCount];
+
+                    // give higher priority to file-like plugins (used to order items in the SQL query)
+                    var additionalInfo = plugin.FileLikeOutput ? 0 : -1;
 
                     foreach (var pluginItem in pluginItems)
                     {
@@ -354,6 +356,7 @@ namespace Yal
                         var command = new SQLiteCommand(pluginInsertString, pluginTempConnection);
                         command.Parameters.AddWithValue("@item_name", pluginItem);
                         command.Parameters.AddWithValue("@plugin_name", plugin.Name);
+                        command.Parameters.AddWithValue("@additional_info", additionalInfo);
                         command.ExecuteNonQuery();
                     }
                 }
