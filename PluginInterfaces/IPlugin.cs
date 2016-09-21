@@ -13,8 +13,7 @@ namespace PluginInterfaces
 
         void SaveSettings();
         UserControl GetUserControl();
-        string[] GetResults(string input, bool matchAnywhere, bool fuzzyMatch, out string[] itemInfo);
-        bool CouldProvideResults(string input, bool matchAnywhere, bool fuzzyMatch);
+        string[] GetResults(string input, out string[] itemInfo);
         void HandleExecution(string input);
     }
 }

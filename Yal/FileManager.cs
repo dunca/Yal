@@ -16,37 +16,32 @@ namespace Yal
     {
         public readonly string fileName;
         public readonly string tableName;
+        public readonly string mainColumn;
         public readonly string createTableTemplate;
 
-        public DbInfo(string file, string table, string tableTemplate)
+        public DbInfo(string file, string table, string mainCol, string tableTemplate)
         {
             fileName = file;
             tableName = table;
+            mainColumn = mainCol;
             createTableTemplate = tableTemplate;
         }
     }
 
     static class FileManager
     {
-        internal static DbInfo indexDbInfo = new DbInfo("index.sqlite", "CATALOG", 
-                                                        "create table if not exists CATALOG (NAME string, FULLPATH string)");
-        internal static DbInfo historyDbInfo = new DbInfo("history.sqlite", "HISTORY", 
-                                                          "create table if not exists HISTORY (SNIPPET string, NAME string, FULLPATH string, HITS integer default 1, LASTACCESSED datetime)");
+        internal static DbInfo indexDbInfo = new DbInfo("index.sqlite", "INDEX_CATALOG", "FULLPATH",
+                                                        "create table if not exists INDEX_CATALOG (NAME string, FULLPATH string)");
+        internal static DbInfo historyDbInfo = new DbInfo("history.sqlite", "HISTORY", "OTHER_INFO",
+                                                          "create table if not exists HISTORY_CATALOG (SNIPPET string, ITEM_NAME string, OTHER_INFO string, HITS integer default 1, LASTACCESSED datetime)");
 
-        private const string fileQuery = @"select distinct name, fullpath from 
-                                         (select NAME, FULLPATH, HITS as STATIC from HISTORY where SNIPPET like @snip
-                                         union 
-                                         select NAME, FULLPATH, 0 as STATIC from CATALOG where NAME like @query 
-                                         order by STATIC desc, NAME asc) limit @limit";
+        private const string indexInsert = "insert into INDEX_CATALOG (NAME, FULLPATH) values (@name, @fullpath)";
+        private const string historyInsert = "insert into HISTORY_CATALOG (SNIPPET, ITEM_NAME, OTHER_INFO, LASTACCESSED) values (@snippet, @item_name, @other_info, datetime('now'))";
+        private const string historyTrim = "delete from HISTORY_CATALOG where LASTACCESSED in (select LASTACCESSED from HISTORY_CATALOG order by LASTACCESSED limit @limit)";
+        private const string historyUpdate = "update HISTORY_CATALOG set HITS = HITS + 1, LASTACCESSED = datetime('now') where SNIPPET == @snippet and OTHER_INFO == @other_info";
+        private const string historyQuery = "select count(SNIPPET) from HISTORY_CATALOG where SNIPPET == @snippet and OTHER_INFO == @other_info";
 
-        private const string indexInsert = "insert into CATALOG (NAME, FULLPATH) values (@name, @fullpath)";
-        private const string historyInsert = "insert into HISTORY (SNIPPET, NAME, FULLPATH, LASTACCESSED) values (@snippet, @name, @fullpath, datetime('now'))";
-        private const string historyTrim = "delete from HISTORY where LASTACCESSED in (select LASTACCESSED from HISTORY order by LASTACCESSED limit @limit)";
-        private const string historyUpdate = "update HISTORY set HITS = HITS + 1, LASTACCESSED = datetime('now') where SNIPPET == @snippet and FULLPATH == @fullpath";
-        private const string historyQuery = "select count(snippet) from HISTORY where SNIPPET == @snippet and FULLPATH == @fullpath";
-        
-        private static IEnumerable<string> Search(string path, string pattern, 
-                                                  SearchOption searchOption = SearchOption.TopDirectoryOnly)
+        private static IEnumerable<string> SearchForFiles(string path, string pattern, SearchOption searchOption = SearchOption.TopDirectoryOnly)
         {
             string[] patterns = pattern.Split(',');
             return Directory.EnumerateFiles(path, "*", searchOption)
@@ -72,14 +67,14 @@ namespace Yal
             }
         }
 
-        internal static void UpdateHistory(string snippet, string fileName, string fullPath)
+        internal static void UpdateHistory(string snippet, string itemName, string other_info)
         {
             using (var connection = GetDbConnection(historyDbInfo))
             {
                 SQLiteCommand nonQuery;
                 var command = new SQLiteCommand(historyQuery, connection);
                 command.Parameters.AddWithValue("@snippet", snippet);
-                command.Parameters.AddWithValue("@fullpath", fullPath);
+                command.Parameters.AddWithValue("@other_info", other_info);
                 if (Convert.ToBoolean(command.ExecuteScalar()))  // snippet + fileName combo already in DB
                 { // update the existing value
                     nonQuery = new SQLiteCommand(historyUpdate, connection);
@@ -87,10 +82,10 @@ namespace Yal
                 else
                 {
                     nonQuery = new SQLiteCommand(historyInsert, connection);
-                    nonQuery.Parameters.AddWithValue("@name", fileName);
+                    nonQuery.Parameters.AddWithValue("@item_name", itemName);
                 }
                 nonQuery.Parameters.AddWithValue("@snippet", snippet);
-                nonQuery.Parameters.AddWithValue("@fullpath", fullPath);
+                nonQuery.Parameters.AddWithValue("@other_info", other_info);
                 nonQuery.ExecuteNonQuery();
             }
         }
@@ -103,12 +98,12 @@ namespace Yal
             }
         }
 
-        internal static bool RemoveFromDb(string fullPath, DbInfo dbInfo)
+        internal static bool RemoveFromDb(string itemIdentifier, DbInfo dbInfo)
         {
             using (var connection = GetDbConnection(dbInfo))
             {
-                var command = new SQLiteCommand($"delete from {dbInfo.tableName} where FULLPATH == @fullpath", connection);
-                command.Parameters.AddWithValue("@fullpath", fullPath);
+                var command = new SQLiteCommand($"delete from {dbInfo.tableName} where {dbInfo.mainColumn} == @item", connection);
+                command.Parameters.AddWithValue("@item", itemIdentifier);
                 return Convert.ToBoolean(command.ExecuteNonQuery());
             }
         }
@@ -128,57 +123,58 @@ namespace Yal
             }
         }
 
-        private static SQLiteConnection GetDbConnection(DbInfo dbInfo)
+        internal static SQLiteConnection GetDbConnection(DbInfo dbInfo)
         {
             var connection = new SQLiteConnection($"Data Source={dbInfo.fileName};Version=3;");
             connection.Open();
             return connection;
         }
 
-        internal static bool QueryIndexDb(string partialFileName, ListView.ListViewItemCollection items, 
-                                          ImageList.ImageCollection images)
-        {
-            using (var connection = GetDbConnection(indexDbInfo))
-            {
-                (new SQLiteCommand($"ATTACH '{historyDbInfo.fileName}' as HISTORY", connection)).ExecuteNonQuery();
+        //internal static bool QueryIndexDb(string partialFileName, ListView.ListViewItemCollection items,
+        //                                  ImageList.ImageCollection images)
+        //{
+        //    using (var connection = GetDbConnection(indexDbInfo))
+        //    {
+        //        (new SQLiteCommand($"ATTACH '{historyDbInfo.fileName}' as HISTORY", connection)).ExecuteNonQuery();
 
-                var command = new SQLiteCommand(fileQuery, connection);
-                string pattern = Properties.Settings.Default.FuzzyMatching ? string.Concat(partialFileName.Select(c => string.Concat(c, "%"))) : 
-                                                                             string.Concat(partialFileName, "%");
-                var query = string.Concat(Properties.Settings.Default.MatchAnywhere ? "%" : "", pattern);
-                command.Parameters.AddWithValue("@query", query);
-                command.Parameters.AddWithValue("@limit", Properties.Settings.Default.MaxItems - items.Count);
-                command.Parameters.AddWithValue("@snip", string.Concat(partialFileName, "%"));
-                SQLiteDataReader response = command.ExecuteReader();
+        //        var command = new SQLiteCommand(fileQuery, connection);
+        //        string pattern = Properties.Settings.Default.FuzzyMatching ? string.Concat(partialFileName.Select(c => string.Concat(c, "%"))) :
+        //                                                                     string.Concat(partialFileName, "%");
+        //        var query = string.Concat(Properties.Settings.Default.MatchAnywhere ? "%" : "", pattern);
+        //        command.Parameters.AddWithValue("@query", query);
+        //        command.Parameters.AddWithValue("@limit", Properties.Settings.Default.MaxItems - items.Count);
+        //        command.Parameters.AddWithValue("@snip", string.Concat(partialFileName, "%"));
+        //        SQLiteDataReader response = command.ExecuteReader();
 
-                int iconIndex = images.Count; // plugins could also have images (see Yal.cs/PerformSearch()), so we can't start form 0
-                while (response.Read())
-                {
-                    var name = response["NAME"].ToString();
-                    if (!Properties.Settings.Default.ExtensionInFileName)
-                    {
-                        name = Path.GetFileNameWithoutExtension(name);
-                    }
-                    var fullPath = response["FULLPATH"].ToString();
-                    Icon icon;
-                    if (GetFileIcon(fullPath, out icon))  // to avoid exceptions when the file is deleted but it's still in the db
-                    {
-                        images?.Add(icon);
-                        var listItem = new ListViewItem(new string[] { name, fullPath },
-                                                        imageIndex: iconIndex) { ToolTipText = fullPath };
-                        items.Add(listItem);
-                        iconIndex++;
-                    }
-                }
-            }
-            return items.Count > 0;
-        }
+        //        int iconIndex = images.Count; // plugins could also have images (see Yal.cs/PerformSearch()), so we can't start form 0
+        //        while (response.Read())
+        //        {
+        //            var name = response["NAME"].ToString();
+        //            if (!Properties.Settings.Default.ExtensionInFileName)
+        //            {
+        //                name = Path.GetFileNameWithoutExtension(name);
+        //            }
+        //            var fullPath = response["FULLPATH"].ToString();
+        //            Icon icon;
+        //            if (GetFileIcon(fullPath, out icon))  // to avoid exceptions when the file is deleted but it's still in the db
+        //            {
+        //                images?.Add(icon);
+        //                var listItem = new ListViewItem(new string[] { name, fullPath },
+        //                                                imageIndex: iconIndex)
+        //                { ToolTipText = fullPath };
+        //                items.Add(listItem);
+        //                iconIndex++;
+        //            }
+        //        }
+        //    }
+        //    return items.Count > 0;
+        //}
 
-        private static bool GetFileIcon(string fullName, out Icon icon)
+        internal static bool GetFileIcon(string fullName, out Icon icon)
         {
             if (File.Exists(fullName))
             {
-                icon =  Icon.ExtractAssociatedIcon(fullName);
+                icon = Icon.ExtractAssociatedIcon(fullName);
                 return true;
             }
             icon = null;
@@ -201,7 +197,7 @@ namespace Yal
                 // Convert.ToBoolean(null) -> false; So this will work even if FoldersToExclude is null;
                 if (!Convert.ToBoolean(Properties.Settings.Default.FoldersToExclude?.Contains(directory)))
                 {
-                    UpdateIndex(Search(directory, Properties.Settings.Default.Extensions, searchOption));
+                    UpdateIndex(SearchForFiles(directory, Properties.Settings.Default.Extensions, searchOption));
                 }
             }
             Properties.Settings.Default.DateLastIndexed = DateTime.Now;
@@ -219,7 +215,8 @@ namespace Yal
         {
             using (var connection = GetDbConnection(dbInfo))
             {
-                var command = new SQLiteCommand($"select count(NAME) from {dbInfo.tableName}", connection);
+                var command = new SQLiteCommand($"select count(@column) from {dbInfo.tableName}", connection);
+                command.Parameters.AddWithValue("@column", dbInfo.mainColumn);
                 return Convert.ToInt32(command.ExecuteScalar());
             }
         }
@@ -247,7 +244,7 @@ namespace Yal
             using (var connection = GetDbConnection(historyDbInfo))
             {
                 int historySize = DbRowCount(historyDbInfo);
-                if ( historySize > Properties.Settings.Default.MaxHistorySize)
+                if (historySize > Properties.Settings.Default.MaxHistorySize)
                 {
                     var command = new SQLiteCommand(historyTrim, connection);
                     command.Parameters.AddWithValue("@limit", historySize - Properties.Settings.Default.MaxHistorySize);

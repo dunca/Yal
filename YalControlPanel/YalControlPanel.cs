@@ -13,15 +13,16 @@ namespace YalControlPanel
 {
     public class YalControlPanel : IPlugin
     {
-        public string Name { get; }
-        public string Version { get; }
-        public string Description { get; }
-        public Icon PluginIcon { get; }
-        public List<string> Activators { get; }
-        public bool FileLikeOutput { get; }
+        public string Name { get; } = "YalControlPanel";
+        public string Version { get; } = "1.0";
+        public string Description { get; } = "Access Windows control panel items using Yal";
 
-        private Dictionary<string, string> ControlPanelItems { get; }
+        public Icon PluginIcon { get; }
+        public bool FileLikeOutput { get; } = true;
+        
         private YalControlPanelUC ControlPanelPluginInstance { get; set; }
+        private Dictionary<string, string> ControlPanelItems { get; } = new Dictionary<string, string>();
+
         string controlPath = string.Concat(Environment.GetEnvironmentVariable("SYSTEMROOT"), @"\system32\control.exe");
         private string osString = Utils.GetOsVersion();
         private string[] canonicalNames = @"Action Center;Microsoft.ActionCenter;7,8,8.1,10
@@ -83,13 +84,7 @@ Work Folders;Microsoft.WorkFolders;8.1,10
 
         public YalControlPanel()
         {
-            Name = "YalControlPanel";
-            Version = "1.0";
-            Description = "Access Windows control panel items using Yal";
-
-            FileLikeOutput = true;
             PluginIcon = Utils.GetPluginIcon(Name);
-            ControlPanelItems = new Dictionary<string, string>();
 
             foreach (var entry in canonicalNames)
             {
@@ -101,8 +96,6 @@ Work Folders;Microsoft.WorkFolders;8.1,10
                     ControlPanelItems.Add(items[0], items[1]);
                 }
             }
-
-            Activators = new List<string>(ControlPanelItems.Keys);
         }
 
         public void SaveSettings()
@@ -119,10 +112,10 @@ Work Folders;Microsoft.WorkFolders;8.1,10
             return ControlPanelPluginInstance;
         }
 
-        public string[] GetResults(string input, bool matchAnywhere, bool fuzzyMatch, out string[] itemInfo)
+        public string[] GetResults(string input, out string[] itemInfo)
         {
             itemInfo = null;
-            return GetMatchingActivators(input, matchAnywhere, fuzzyMatch);
+            return ControlPanelItems.Keys.ToArray();
         }
 
         public void HandleExecution(string name)
@@ -132,26 +125,6 @@ Work Folders;Microsoft.WorkFolders;8.1,10
             {
                 Process.Start(controlPath, $"/name {ControlPanelItems[name]}");
             }
-        }
-
-        private string[] GetMatchingActivators(string input, bool matchAnywhere, bool fuzzyMatch)
-        {
-            var items = new List<string>();
-            var regex = new Regex(string.Concat(matchAnywhere ? "" : "^", string.Concat(input.Select(c => string.Concat(Regex.Escape(c.ToString()), ".*")))), RegexOptions.IgnoreCase);
-            foreach (string activator in Activators)
-            {
-                if ((fuzzyMatch && regex.IsMatch(activator)) || (matchAnywhere ? activator.IndexOf(input, StringComparison.InvariantCultureIgnoreCase) > -1 : 
-                                                                 activator.StartsWith(input, StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    items.Add(activator);
-                }
-            }
-            return items.ToArray();
-        }
-
-        public bool CouldProvideResults(string input, bool matchAnywhere, bool fuzzyMatch)
-        {
-            return GetMatchingActivators(input, matchAnywhere, fuzzyMatch).Length > 0;
         }
     }
 }

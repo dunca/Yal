@@ -3,7 +3,6 @@ using System.Data;
 using System.Drawing;
 using PluginInterfaces;
 using System.Windows.Forms;
-using System.Collections.Generic;
 
 using Utilities;
 
@@ -11,24 +10,18 @@ namespace YalCalc
 {
     public class YalCalc : IPlugin
     {
-        public string Name { get; }
-        public string Version { get; }
-        public string Description { get; }
-        public Icon PluginIcon { get; }
-        public bool FileLikeOutput { get; }
+        public string Name { get; } = "YalCalc";
+        public string Version { get; } = "1.0";
+        public string Description { get; } = "Perform simple calculations using Yal";
 
-        private List<string> activators;
+        public Icon PluginIcon { get; }
+        public bool FileLikeOutput { get; } = false;
+
         private YalCalcUC CalcPluginInstance { get; set; }
 
         public YalCalc()
         {
-            Name = "YalCalc";
-            Version = "1.0";
-            Description = "Perform simple calculations using Yal";
-
-            FileLikeOutput = false;
             PluginIcon = Utils.GetPluginIcon(Name);
-            activators = new List<string>() { "=" };
         }
 
         public void SaveSettings()
@@ -45,7 +38,7 @@ namespace YalCalc
             return CalcPluginInstance;
         }
 
-        public string[] GetResults(string input, bool matchAnywhere, bool fuzzyMatch, out string[] itemInfo)
+        public string[] GetResults(string input, out string[] itemInfo)
         {
             itemInfo = null;
 
@@ -67,11 +60,6 @@ namespace YalCalc
             {
                 Clipboard.SetText(input);
             }
-        }
-
-        public bool CouldProvideResults(string input, bool matchAnywhere, bool fuzzyMatch)
-        {
-            return input.StartsWith(activators[0]);
         }
     }
 }

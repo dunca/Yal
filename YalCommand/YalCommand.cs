@@ -13,27 +13,22 @@ namespace YalCommand
 {
     public class YalCommand : IPlugin
     {
-        public string Name { get; }
-        public string Version { get; }
-        public string Description { get; }
+        public string Name { get; } = "YalCommand";
+        public string Version { get; } = "1.0";
+        public string Description { get; } = "Yal plugin that allows you to quickly run programs with different parameters";
+
         public Icon PluginIcon { get; }
-        public bool FileLikeOutput { get; }
+        public bool FileLikeOutput { get; } = false;
 
         private Regex digitRegex;
         private IEnumerable<string> activators;
         private YalCommandUC CommandPluginInstance { get; set; }
-        private Dictionary<string, List<string>> Entries;
+        private Dictionary<string, List<string>> Entries = new Dictionary<string, List<string>>();
 
         public YalCommand()
         {
-            Name = "YalCommand";
-            Version = "1.0";
-            Description = "Yal plugin that allows you to quickly run programs with different parameters";
-
-            FileLikeOutput = false;
             PluginIcon = Utils.GetPluginIcon(Name);
 
-            Entries = new Dictionary<string, List<string>>();
             foreach (var entry in Properties.Settings.Default.Entries)
             {
                 var split = entry.Split('|');
@@ -50,15 +45,10 @@ namespace YalCommand
             digitRegex = new Regex(@"\d+");
         }
 
-        public bool CouldProvideResults(string input, bool matchAnywhere, bool fuzzyMatch)
-        {
-            return activators.Any(activator => input.StartsWith(activator));
-        }
-
-        public string[] GetResults(string input, bool matchAnywhere, bool fuzzyMatch, out string[] itemInfo)
+        public string[] GetResults(string input, out string[] itemInfo)
         {
             itemInfo = null;
-            return new string[] { input };
+            return Entries.Keys.ToArray();
         }
 
         public UserControl GetUserControl()
