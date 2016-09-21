@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Collections.Specialized;
 
 using PluginInterfaces;
 
@@ -54,6 +55,11 @@ namespace Yal
             timerTrimHistory.Tick += TrimHistoryTimer_Tick;
 
             Properties.Settings.Default.FoldersToIndex = FileManager.ProcessRawPaths();
+
+            if (Properties.Settings.Default.DisabledPlugins == null)
+            {
+                Properties.Settings.Default.DisabledPlugins = new StringCollection();
+            }
 
             PluginInstances = PluginLoader.InstantiatePlugins(PluginLoader.Load("plugins"));
         }
@@ -319,6 +325,10 @@ namespace Yal
                 int pluginItemCount = 0;
                 foreach (var plugin in PluginInstances)
                 {
+                    if (Properties.Settings.Default.DisabledPlugins.Contains(plugin.Name))
+                    {
+                        continue;
+                    }
                     if ((plugin.CouldProvideResults(txtSearch.Text, Properties.Settings.Default.MatchAnywhere, Properties.Settings.Default.FuzzyMatching)))
                     {
                         string[] itemInfo;
