@@ -355,15 +355,17 @@ namespace Yal
                 }
 
                 DBQuery:
-                if (FileManager.QueryIndexDb(txtSearch.Text, outputWindow.listViewOutput.Items, outputWindow.imageList1.Images))
+                FileManager.QueryIndexDb(txtSearch.Text, outputWindow.listViewOutput.Items, outputWindow.imageList1.Images);
+
+                if (outputWindow.listViewOutput.Items.Count > 0)
                 {
+                    outputWindow.Show(); // Show() it first, so that the listview's ClientSize property gets updated
+
                     outputWindow.listViewOutput.Items[0].Selected = true;
-                    outputWindow.Show();
-                    outputWindow.ResizeToFitContent();  // Show() it first, so that the listview's ClientSize property gets updated
+                    outputWindow.ResizeToFitContent();
                     this.txtSearch.Focus();  // Show()-ing a window focuses on it by default. We don't want that in this case;
                 }
-
-                if (outputWindow.listViewOutput.Items.Count == 0)
+                else
                 {
                     outputWindow.Hide();
                 }
