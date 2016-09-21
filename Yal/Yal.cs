@@ -39,15 +39,15 @@ namespace Yal
         internal List<IPlugin> PluginInstances;
 
         private const string attachTemplate = "attach database '{0}' as {1}";
-        private const string pluginTableSchema = "create table if not exists PLUGIN_ITEMS (ITEM_NAME string, OTHER_INFO string)";
-        private const string pluginInsertString = "insert into PLUGIN_ITEMS (ITEM_NAME, OTHER_INFO) values (@item_name, @other_info)";
+        private const string pluginTableSchema = "create table if not exists PLUGIN_ITEMS (ITEM_NAME string, PLUGIN_NAME string, ADDITIONAL_INFO string)";
+        private const string pluginInsertString = "insert into PLUGIN_ITEMS (ITEM_NAME, PLUGIN_NAME) values (@item_name, @plugin_name)";
         private const string itemQueryString = @"select distinct ITEM_NAME, OTHER_INFO from 
                                                (select ITEM_NAME, OTHER_INFO, HITS from HISTORY_CATALOG where SNIPPET like @snippet
                                                union
-                                               select ITEM_NAME, OTHER_INFO, 0 as HITS from PLUGIN_ITEMS where ITEM_NAME like @pattern
+                                               select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, 0 as HITS from INDEX_CATALOG where NAME like @pattern
                                                union
-                                               select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, 0 as HITS from INDEX_CATALOG where ITEM_NAME like @pattern
-                                               order by HITS desc, ITEM_NAME asc) limit @limit";
+                                               select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, 0 as HITS from PLUGIN_ITEMS where ITEM_NAME like @pattern
+                                               order by HITS desc, NAME asc) limit @limit";
         private SQLiteConnection pluginTempConnection = new SQLiteConnection("FullUri=file::memory:?cache=shared;Version=3;");
 
         public Yal()
@@ -78,7 +78,6 @@ namespace Yal
 
             pluginTempConnection.Open();
             (new SQLiteCommand(pluginTableSchema, pluginTempConnection)).ExecuteNonQuery();
-
         }
 
         internal void ShowOptionsWindow()
@@ -347,14 +346,14 @@ namespace Yal
 
                     string[] itemInfo;
                     string[] pluginItems = plugin.GetResults(txtSearch.Text, out itemInfo);
-                    //var otherInfo = itemInfo == null ? plugin.Name : itemInfo[pluginItemCount];
+                    //var additionalInfo = itemInfo[pluginItemCount];
 
                     foreach (var pluginItem in pluginItems)
                     {
                         pluginItemCount++;
                         var command = new SQLiteCommand(pluginInsertString, pluginTempConnection);
                         command.Parameters.AddWithValue("@item_name", pluginItem);
-                        command.Parameters.AddWithValue("@other_info", plugin.Name);
+                        command.Parameters.AddWithValue("@plugin_name", plugin.Name);
                         command.ExecuteNonQuery();
                     }
                 }
