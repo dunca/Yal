@@ -110,9 +110,6 @@ namespace Yal
             var runItem = new ToolStripMenuItem("Run");
             runItem.Click += RunItem_Click;
 
-            var runAsAdminItem = new ToolStripMenuItem("Run as administrator");
-            runAsAdminItem.Click += RunAsAdminItem_Click;
-
             var copyNameItem = new ToolStripMenuItem("Copy name");
             copyNameItem.Click += CopyNameItem_Click;
 
@@ -121,12 +118,15 @@ namespace Yal
                 var copyPathItem = new ToolStripMenuItem("Copy path");
                 copyPathItem.Click += CopyPathItem_Click;
 
+                var runAsAdminItem = new ToolStripMenuItem("Run as administrator");
+                runAsAdminItem.Click += RunAsAdminItem_Click;
+
                 var openDirItem = new ToolStripMenuItem("Open containing directory");
                 openDirItem.Click += OpenDirItem_Click;
-                contextMenu.Items.AddRange(new ToolStripItem[] { openDirItem, copyPathItem });
+                contextMenu.Items.AddRange(new ToolStripItem[] { copyPathItem, runAsAdminItem, openDirItem });
             }
 
-            contextMenu.Items.AddRange(new ToolStripItem[] { copyNameItem, runItem, runAsAdminItem });
+            contextMenu.Items.AddRange(new ToolStripItem[] { copyNameItem, runItem });
             contextMenu.Show((Point)location);
         }
 
