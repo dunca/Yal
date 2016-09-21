@@ -13,31 +13,23 @@ namespace YalWeb
 {
     public class YalWeb : IPlugin
     {
-        public string Name { get; }
-        public string Version { get; }
-        public string Description { get; }
-        public Icon PluginIcon { get; }
-        public bool FileLikeOutput { get; }
+        public string Name { get; } = "YalWeb";
+        public string Version { get; } = "1.0";
+        public string Description { get; } = "Yal plugin that allows you to quickly search the web using your favorite search engine";
 
-        private IEnumerable<string> activators;
+        public Icon PluginIcon { get; }
+        public bool FileLikeOutput { get; } = false;
+
         private YalWebUC WebPluginInstance { get; set; }
-        private Dictionary<string, string> Entries;
+        private Dictionary<string, string> Entries = new Dictionary<string, string>();
 
         // when this activator is used, the search is done using the default activator (!ddg/!yt/!a)
-        private const string defaultActivator = "!s";
+        internal const string defaultActivator = "!s";
 
         public YalWeb()
         {
-            Name = "YalWeb";
-            Version = "1.0";
-            Description = "Yal plugin that allows you to quickly search the web using your favorite search engine";
-
-            FileLikeOutput = false;
+            PopulateEntries();
             PluginIcon = Utils.GetPluginIcon(Name);
-
-            Entries = new Dictionary<string, string>();
-            activators = Entries.Keys;
-            UpdateEntries();
         }
 
         public void SaveSettings()
@@ -45,7 +37,7 @@ namespace YalWeb
             WebPluginInstance.SaveSettings();
         }
 
-        internal void UpdateEntries()
+        internal void PopulateEntries()
         {
             Entries.Clear();
             foreach (string item in Properties.Settings.Default.Entries)
@@ -64,18 +56,16 @@ namespace YalWeb
             return WebPluginInstance;
         }
 
-        public string[] GetResults(string input, bool matchAnywhere, bool fuzzyMatch, out string[] itemInfo)
+        public string[] GetResults(string input, out string[] itemInfo)
         {
             itemInfo = null;
-
-            // this plugin is always able to return results (if the user's pc is connected & the search urls work)
-            return new string[] { input };
+            return Entries.Keys.Select(activator => string.Join(" ", activator, input)).ToArray();
         }
 
         public void HandleExecution(string input)
         {
             string providerName = input.Substring(0, input.IndexOf(' '));
-            if (providerName == "!s")
+            if (providerName == defaultActivator)
             {
                 if (Properties.Settings.Default.DefaultEntry != string.Empty)
                 {
@@ -96,12 +86,6 @@ namespace YalWeb
             {
                 MessageBox.Show(e.Message);
             }
-        }
-
-        public bool CouldProvideResults(string input, bool matchAnywhere, bool fuzzyMatch)
-        {
-            var firstInputItem = input.Split()[0];
-            return firstInputItem == defaultActivator || activators.Any(activator => firstInputItem == activator);
         }
     }
 }

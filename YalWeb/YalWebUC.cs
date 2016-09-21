@@ -51,7 +51,7 @@ namespace YalWeb
             {
                 Properties.Settings.Default.Entries.Add(string.Join("|", item.SubItems[0].Text, item.SubItems[1].Text));
             }
-            pluginInstance.UpdateEntries();
+            pluginInstance.PopulateEntries();
             Properties.Settings.Default.Save();
         }
 
@@ -59,7 +59,7 @@ namespace YalWeb
         {
             string name = txtName.Text;
             string url = txtUrl.Text;
-            if (name == string.Empty || url == string.Empty || name == "s")
+            if (name == string.Empty || url == string.Empty || name == YalWeb.defaultActivator)
             {
                 MessageBox.Show($"Cell value is empty or uses an already assigned value", "Error",
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);

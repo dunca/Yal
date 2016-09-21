@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Drawing;
+using System.Data.SQLite;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.ComponentModel;
@@ -36,13 +38,25 @@ namespace Yal
         internal Options optionsWindow;
         internal List<IPlugin> PluginInstances;
 
+        private const string attachTemplate = "attach database '{0}' as {1}";
+        private const string pluginDbString = "FullUri=file::memory:?cache=shared;Version=3;";
+        private const string pluginTableSchema = "create table if not exists PLUGIN_ITEMS (ITEM_NAME string, OTHER_INFO string)";
+        private const string pluginInsertString = "insert into PLUGIN_ITEMS (ITEM_NAME, OTHER_INFO) values (@item_name, @other_info)";
+        private const string itemQueryString = @"select distinct ITEM_NAME, OTHER_INFO from 
+                                               (select ITEM_NAME, OTHER_INFO, HITS from HISTORY_CATALOG where SNIPPET like @snippet
+                                               union
+                                               select ITEM_NAME, OTHER_INFO, 0 as HITS from PLUGIN_ITEMS where ITEM_NAME like @pattern
+                                               union
+                                               select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, 0 as HITS from INDEX_CATALOG where ITEM_NAME like @pattern
+                                               order by HITS desc, ITEM_NAME asc) limit @limit";
+        private SQLiteConnection pluginTempConnection = new SQLiteConnection(pluginDbString);
+
         public Yal()
         {
-            Directory.SetCurrentDirectory(Application.StartupPath);
-
             InitializeComponent();
+
+            Directory.SetCurrentDirectory(Application.StartupPath);
             outputWindow = new OutputWindow(this);
-            
             ManageAutoIndexingTimer();
             UpdateWindowLocation();
             UpdateWindowLooks();
@@ -62,6 +76,10 @@ namespace Yal
             }
 
             PluginInstances = PluginLoader.InstantiatePlugins(PluginLoader.Load("plugins"));
+
+            pluginTempConnection.Open();
+            (new SQLiteCommand(pluginTableSchema, pluginTempConnection)).ExecuteNonQuery();
+
         }
 
         internal void ShowOptionsWindow()
@@ -315,13 +333,12 @@ namespace Yal
         private void PerformSearch()
         {
             timerSearchDelay.Stop();
+            outputWindow.imageList1.Images?.Clear();
+            outputWindow.listViewOutput.Items.Clear();
+
 
             if (txtSearch.Text != string.Empty)
             {
-                outputWindow.imageList1.Images?.Clear();
-                outputWindow.listViewOutput.Items.Clear();
-
-                int iconIndex = 0;
                 int pluginItemCount = 0;
                 foreach (var plugin in PluginInstances)
                 {
@@ -329,35 +346,75 @@ namespace Yal
                     {
                         continue;
                     }
-                    if ((plugin.CouldProvideResults(txtSearch.Text, Properties.Settings.Default.MatchAnywhere, Properties.Settings.Default.FuzzyMatching)))
+
+                    string[] itemInfo;
+                    string[] pluginItems = plugin.GetResults(txtSearch.Text, out itemInfo);
+                    //var otherInfo = itemInfo == null ? plugin.Name : itemInfo[pluginItemCount];
+
+                    foreach (var pluginItem in pluginItems)
                     {
-                        string[] itemInfo;
-                        string[] items = plugin.GetResults(txtSearch.Text, Properties.Settings.Default.MatchAnywhere,
-                                                           Properties.Settings.Default.FuzzyMatching, out itemInfo);
-                        var other_info = itemInfo == null ? plugin.Name : itemInfo[pluginItemCount];
-
-                        foreach (var item in items)
-                        {
-                            pluginItemCount++;
-                            var lvi = new ListViewItem(new string[] { item,  other_info } );
-                            if (plugin.PluginIcon != null)
-                            {
-                                outputWindow.imageList1.Images.Add(plugin.PluginIcon);
-                                lvi.ImageIndex = iconIndex;
-                                iconIndex++;
-                            }
-                            outputWindow.listViewOutput.Items.Add(lvi);
-
-                            if (pluginItemCount == Properties.Settings.Default.MaxPluginItems)
-                            {
-                                goto DBQuery;
-                            }
-                        }
+                        pluginItemCount++;
+                        var command = new SQLiteCommand(pluginInsertString, pluginTempConnection);
+                        command.Parameters.AddWithValue("@item_name", pluginItem);
+                        command.Parameters.AddWithValue("@other_info", plugin.Name);
+                        command.ExecuteNonQuery();
                     }
                 }
 
-                DBQuery:
-                FileManager.QueryIndexDb(txtSearch.Text, outputWindow.listViewOutput.Items, outputWindow.imageList1.Images);
+                using (var connection = FileManager.GetDbConnection(FileManager.historyDbInfo))
+                {
+                    (new SQLiteCommand(string.Format(attachTemplate, "file::memory:?cache=shared", "PLUGIN_ITEMS"), connection)).ExecuteNonQuery();
+                    (new SQLiteCommand(string.Format(attachTemplate, FileManager.indexDbInfo.fileName, "INDEX_DB"), connection)).ExecuteNonQuery();
+
+                    var command = new SQLiteCommand(itemQueryString, connection);
+
+                    string pattern = Properties.Settings.Default.FuzzyMatching ? string.Concat(txtSearch.Text.Select(c => string.Concat(c, "%"))) :
+                                                                                 string.Concat(txtSearch.Text, "%");
+                    pattern = string.Concat(Properties.Settings.Default.MatchAnywhere ? "%" : "", pattern);
+
+                    command.Parameters.AddWithValue("@limit", Properties.Settings.Default.MaxItems);
+                    command.Parameters.AddWithValue("@snippet", string.Concat(txtSearch.Text, "%"));
+                    command.Parameters.AddWithValue("@pattern", pattern);
+                    var reader = command.ExecuteReader();
+
+                    int iconIndex = 0;
+                    while (reader.Read())
+                    {
+                        var itemName = reader["ITEM_NAME"].ToString();
+                        var otherInfo = reader["OTHER_INFO"].ToString();
+
+                        ListViewItem lvi = null;
+                        IPlugin pluginInstance = PluginInstances.Find(plugin => plugin.Name == otherInfo);
+                        if (pluginInstance != null)
+                        {
+                            lvi = new ListViewItem(new string[] { itemName, otherInfo });
+                            if (pluginInstance.PluginIcon != null)
+                            {
+                                outputWindow.imageList1.Images.Add(pluginInstance.PluginIcon);
+                                lvi.ImageIndex = iconIndex;
+                                iconIndex++;
+                            }
+                        }
+                        else
+                        {
+                            //  most likely a file
+                            if (!Properties.Settings.Default.ExtensionInFileName)
+                            {
+                                itemName = Path.GetFileNameWithoutExtension(otherInfo);
+                            }
+
+                            Icon icon;
+                            if (FileManager.GetFileIcon(otherInfo, out icon))
+                            {
+                                lvi = new ListViewItem(new string[] { itemName, otherInfo }, imageIndex: iconIndex) { ToolTipText = otherInfo };
+                                outputWindow.imageList1.Images.Add(icon);
+                                iconIndex++;
+                            }
+                        }
+                         
+                        outputWindow.listViewOutput.Items.Add(lvi);
+                    }
+                }
 
                 if (outputWindow.listViewOutput.Items.Count > 0)
                 {
@@ -376,6 +433,8 @@ namespace Yal
             {
                 outputWindow.Hide();
             }
+
+            (new SQLiteCommand("delete from PLUGIN_ITEMS", pluginTempConnection)).ExecuteNonQuery();
         }
 
         internal void StartSelectedItem(bool elevatedRights = false, bool keepInHistory = true)

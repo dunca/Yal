@@ -179,11 +179,11 @@
             this.label11.TabIndex = 15;
             this.label11.Text = "Max plugin items";
             // 
-            // cbShowExt
+            // cbExtensionInFileName
             // 
             this.cbExtensionInFileName.AutoSize = true;
             this.cbExtensionInFileName.Location = new System.Drawing.Point(6, 115);
-            this.cbExtensionInFileName.Name = "cbShowExt";
+            this.cbExtensionInFileName.Name = "cbExtensionInFileName";
             this.cbExtensionInFileName.Size = new System.Drawing.Size(167, 17);
             this.cbExtensionInFileName.TabIndex = 3;
             this.cbExtensionInFileName.Text = "Show extensions in file names";
@@ -308,7 +308,6 @@
             // cbPluginSelectionsInHistory
             // 
             this.cbPluginSelectionsInHistory.AutoSize = true;
-            this.cbPluginSelectionsInHistory.Enabled = false;
             this.cbPluginSelectionsInHistory.Location = new System.Drawing.Point(6, 49);
             this.cbPluginSelectionsInHistory.Name = "cbPluginSelectionsInHistory";
             this.cbPluginSelectionsInHistory.Size = new System.Drawing.Size(153, 17);
@@ -333,7 +332,7 @@
             0,
             0});
             // 
-            // spinAutoIndexInterval
+            // spinAutoIndexingInterval
             // 
             this.spinAutoIndexingInterval.Location = new System.Drawing.Point(151, 122);
             this.spinAutoIndexingInterval.Maximum = new decimal(new int[] {
@@ -346,7 +345,7 @@
             0,
             0,
             0});
-            this.spinAutoIndexingInterval.Name = "spinAutoIndexInterval";
+            this.spinAutoIndexingInterval.Name = "spinAutoIndexingInterval";
             this.spinAutoIndexingInterval.Size = new System.Drawing.Size(61, 20);
             this.spinAutoIndexingInterval.TabIndex = 12;
             this.spinAutoIndexingInterval.Value = new decimal(new int[] {
@@ -384,11 +383,11 @@
             this.label9.TabIndex = 13;
             this.label9.Text = "Total items to keep in history";
             // 
-            // checkBoxAutostart
+            // cbAutostart
             // 
             this.cbAutostart.AutoSize = true;
             this.cbAutostart.Location = new System.Drawing.Point(6, 24);
-            this.cbAutostart.Name = "checkBoxAutostart";
+            this.cbAutostart.Name = "cbAutostart";
             this.cbAutostart.Size = new System.Drawing.Size(141, 17);
             this.cbAutostart.TabIndex = 2;
             this.cbAutostart.Text = "Launch at system statup\r\n";
@@ -456,11 +455,11 @@
             this.label3.TabIndex = 7;
             this.label3.Text = "Hotkey";
             // 
-            // cbCtrlMove
+            // cbMoveWithCtrl
             // 
             this.cbMoveWithCtrl.AutoSize = true;
             this.cbMoveWithCtrl.Location = new System.Drawing.Point(4, 160);
-            this.cbMoveWithCtrl.Name = "cbCtrlMove";
+            this.cbMoveWithCtrl.Name = "cbMoveWithCtrl";
             this.cbMoveWithCtrl.Size = new System.Drawing.Size(184, 17);
             this.cbMoveWithCtrl.TabIndex = 6;
             this.cbMoveWithCtrl.Text = "Only move while CTRL is pressed";
@@ -476,21 +475,21 @@
             this.cbTopMost.Text = "Always on top";
             this.cbTopMost.UseVisualStyleBackColor = true;
             // 
-            // cbVAlign
+            // cbVAlignment
             // 
             this.cbVAlignment.AutoSize = true;
             this.cbVAlignment.Location = new System.Drawing.Point(4, 114);
-            this.cbVAlignment.Name = "cbVAlign";
+            this.cbVAlignment.Name = "cbVAlignment";
             this.cbVAlignment.Size = new System.Drawing.Size(109, 17);
             this.cbVAlignment.TabIndex = 4;
             this.cbVAlignment.Text = "Vertical alignment";
             this.cbVAlignment.UseVisualStyleBackColor = true;
             // 
-            // cbHAlign
+            // cbHAlignment
             // 
             this.cbHAlignment.AutoSize = true;
             this.cbHAlignment.Location = new System.Drawing.Point(4, 137);
-            this.cbHAlignment.Name = "cbHAlign";
+            this.cbHAlignment.Name = "cbHAlignment";
             this.cbHAlignment.Size = new System.Drawing.Size(124, 17);
             this.cbHAlignment.TabIndex = 3;
             this.cbHAlignment.Text = "Horizontal  alignment";
@@ -630,11 +629,11 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Folders to index";
             // 
-            // cbSubdirs
+            // cbIncludeSubdirs
             // 
             this.cbIncludeSubdirs.AutoSize = true;
             this.cbIncludeSubdirs.Location = new System.Drawing.Point(345, 70);
-            this.cbIncludeSubdirs.Name = "cbSubdirs";
+            this.cbIncludeSubdirs.Name = "cbIncludeSubdirs";
             this.cbIncludeSubdirs.Size = new System.Drawing.Size(76, 17);
             this.cbIncludeSubdirs.TabIndex = 5;
             this.cbIncludeSubdirs.Text = "Subfolders";
