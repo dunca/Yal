@@ -447,26 +447,23 @@ namespace Yal
 
             // the first item in each row
             string item = outputWindow.listViewOutput.SelectedItems[0].SubItems[0].Text;
-
-            // the 2nd item in each row. Usually a plugin name or a file path
+            // the 2nd item in each row. Usually a plugin name or a full file path
             string subitem = outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text;
-            foreach (var plugin in PluginInstances)
-            {
-                if (subitem == plugin.Name)
-                {
-                    plugin.HandleExecution(item);
 
-                    if (plugin.FileLikeOutput && Properties.Settings.Default.PluginSelectionsInHistory)
-                    {
-                        FileManager.UpdateHistory(txtSearch.Text, item, plugin.Name);
-                    }
-                    return;
+            var plugin = PluginInstances.Find(pluginInstance => pluginInstance.Name == subitem);
+
+            if (plugin != null)
+            {
+                plugin.HandleExecution(item);
+
+                if (plugin.FileLikeOutput && Properties.Settings.Default.PluginSelectionsInHistory)
+                {
+                    FileManager.UpdateHistory(txtSearch.Text, item, plugin.Name);
                 }
+                return;
             }
 
-            // get the full path of the currently selected item
-            string filePath = outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text;
-            var startInfo = new ProcessStartInfo(filePath);
+            var startInfo = new ProcessStartInfo(subitem);
 
             if (elevatedRights)
             {
@@ -481,13 +478,13 @@ namespace Yal
                                     "Issue", MessageBoxButtons.YesNo, MessageBoxIcon.Error)
                     == DialogResult.Yes)
                 {
-                    FileManager.RemoveFromDb(filePath, FileManager.indexDbInfo);
-                    FileManager.RemoveFromDb(filePath, FileManager.historyDbInfo);
+                    FileManager.RemoveFromDb(subitem, FileManager.indexDbInfo);
+                    FileManager.RemoveFromDb(subitem, FileManager.historyDbInfo);
                 }
             }
             else if (keepInHistory)
             {
-                FileManager.UpdateHistory(txtSearch.Text, Path.GetFileName(filePath), filePath);
+                FileManager.UpdateHistory(txtSearch.Text, Path.GetFileName(subitem), subitem);
             }
         }
 
