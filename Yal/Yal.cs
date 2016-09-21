@@ -334,10 +334,12 @@ namespace Yal
                         string[] itemInfo;
                         string[] items = plugin.GetResults(txtSearch.Text, Properties.Settings.Default.MatchAnywhere,
                                                            Properties.Settings.Default.FuzzyMatching, out itemInfo);
+                        var other_info = itemInfo == null ? plugin.Name : itemInfo[pluginItemCount];
+
                         foreach (var item in items)
                         {
                             pluginItemCount++;
-                            var lvi = new ListViewItem(new string[] { item, itemInfo == null ? plugin.Name : itemInfo[pluginItemCount] } );
+                            var lvi = new ListViewItem(new string[] { item,  other_info } );
                             if (plugin.PluginIcon != null)
                             {
                                 outputWindow.imageList1.Images.Add(plugin.PluginIcon);
