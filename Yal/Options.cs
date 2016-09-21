@@ -6,6 +6,7 @@ using Microsoft.Win32;
 using PluginInterfaces;
 using System.Windows.Forms;
 using System.ComponentModel;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 
@@ -16,6 +17,9 @@ namespace Yal
     public partial class Options : Form
     {
         Regex extRegex = new Regex(@"^\w+$");
+
+        private const string pluginEnabledTemplate = "cbEnabled";
+        private List<CheckBox> pluginEnabledCheckboxes = new List<CheckBox>();
 
         // this type of list signals it's modification which causes our listbox to reread it's contents
         internal BindingList<string> FoldersToIndex { get; set; }
@@ -110,11 +114,17 @@ namespace Yal
                 var tab = new TabPage() { Text = plugin.Name };
                 tabControlPlugins.TabPages.Add(tab);
 
-                var panel = new Panel() { Dock = DockStyle.Top, Height = this.Height / 12 }; 
+                var panel = new Panel() { Dock = DockStyle.Top, Height = this.Height / 8 }; 
                 var pluginInfo = new Label() { TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill,
                                                BackColor = plugin.GetUserControl().BackColor };
+                var cbPluginEnabled = new CheckBox()
+                {
+                    Text = "Use this plugin", Checked = !Properties.Settings.Default.DisabledPlugins.Contains(plugin.Name),
+                    Dock = DockStyle.Bottom, Name = string.Concat(pluginEnabledTemplate, plugin.Name)
+                };
                 panel.Controls.Add(pluginInfo);
-
+                panel.Controls.Add(cbPluginEnabled);
+                pluginEnabledCheckboxes.Add(cbPluginEnabled);
                 pluginInfo.Text = string.Join(" ", plugin.Name, plugin.Version, string.Concat("- ", plugin.Description));
 
                 tab.Controls.AddRange(new Control[] {panel , plugin.GetUserControl() });
@@ -303,6 +313,15 @@ namespace Yal
             Properties.Settings.Default.MaxPluginItems = (int)spinMaxPluginItems.Value;
 
             Properties.Settings.Default.FuzzyMatching = cbFuzzyMatching.Checked;
+
+            Properties.Settings.Default.DisabledPlugins.Clear();
+            foreach (var cb in pluginEnabledCheckboxes)
+            {
+                if (!cb.Checked)
+                {
+                    Properties.Settings.Default.DisabledPlugins.Add(cb.Name.Replace(pluginEnabledTemplate, string.Empty));
+                }
+            }
 
             MainWindow.PluginInstances.ForEach(plugin => plugin.SaveSettings());
         }
