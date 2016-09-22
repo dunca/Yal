@@ -412,6 +412,7 @@ namespace Yal
                                 iconIndex++;
                             }
                         }
+                        lvi.SubItems[0].Text = TrimStringIfNeeded(itemName);
                         outputWindow.listViewOutput.Items.Add(lvi);
                     }
                     (new SQLiteCommand("delete from PLUGIN_ITEMS", pluginTempConnection)).ExecuteNonQuery();
@@ -433,9 +434,16 @@ namespace Yal
             else
             {
                 outputWindow.Hide();
-            }
+            }          
+        }
 
-            
+        private string TrimStringIfNeeded(string str)
+        {
+            if (str.Length > Properties.Settings.Default.MaxNameSize)
+            {
+                str = $"{str.Substring(0, Properties.Settings.Default.MaxNameSize)}...";
+            }
+            return str;
         }
 
         internal void StartSelectedItem(bool elevatedRights = false, bool keepInHistory = true)

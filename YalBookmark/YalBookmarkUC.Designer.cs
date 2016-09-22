@@ -28,50 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.numericUpDownTruncate = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
             this.cbOpenWithProvider = new System.Windows.Forms.CheckBox();
             this.listViewBrowsers = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1 = new System.Windows.Forms.Panel();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTruncate)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // numericUpDownTruncate
-            // 
-            this.numericUpDownTruncate.Location = new System.Drawing.Point(258, 3);
-            this.numericUpDownTruncate.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.numericUpDownTruncate.Name = "numericUpDownTruncate";
-            this.numericUpDownTruncate.Size = new System.Drawing.Size(46, 20);
-            this.numericUpDownTruncate.TabIndex = 0;
-            this.numericUpDownTruncate.Value = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 7);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(249, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Truncate bookmark names longer than (characters)";
             // 
             // cbOpenWithProvider
             // 
             this.cbOpenWithProvider.AutoSize = true;
-            this.cbOpenWithProvider.Location = new System.Drawing.Point(3, 28);
+            this.cbOpenWithProvider.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cbOpenWithProvider.Location = new System.Drawing.Point(0, 0);
             this.cbOpenWithProvider.Name = "cbOpenWithProvider";
-            this.cbOpenWithProvider.Size = new System.Drawing.Size(300, 17);
+            this.cbOpenWithProvider.Size = new System.Drawing.Size(307, 17);
             this.cbOpenWithProvider.TabIndex = 2;
             this.cbOpenWithProvider.Text = "Try visiting the bookmark via the browser that it belongs to";
             this.cbOpenWithProvider.UseVisualStyleBackColor = true;
@@ -84,10 +56,10 @@
             this.columnHeader3});
             this.listViewBrowsers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewBrowsers.FullRowSelect = true;
-            this.listViewBrowsers.Location = new System.Drawing.Point(0, 50);
+            this.listViewBrowsers.Location = new System.Drawing.Point(0, 20);
             this.listViewBrowsers.MultiSelect = false;
             this.listViewBrowsers.Name = "listViewBrowsers";
-            this.listViewBrowsers.Size = new System.Drawing.Size(307, 132);
+            this.listViewBrowsers.Size = new System.Drawing.Size(307, 162);
             this.listViewBrowsers.TabIndex = 3;
             this.listViewBrowsers.UseCompatibleStateImageBehavior = false;
             this.listViewBrowsers.View = System.Windows.Forms.View.Details;
@@ -111,12 +83,10 @@
             // panel1
             // 
             this.panel1.Controls.Add(this.cbOpenWithProvider);
-            this.panel1.Controls.Add(this.numericUpDownTruncate);
-            this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(307, 50);
+            this.panel1.Size = new System.Drawing.Size(307, 20);
             this.panel1.TabIndex = 4;
             // 
             // YalBookmarkUC
@@ -127,7 +97,6 @@
             this.Controls.Add(this.panel1);
             this.Name = "YalBookmarkUC";
             this.Size = new System.Drawing.Size(307, 182);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTruncate)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -135,9 +104,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.NumericUpDown numericUpDownTruncate;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox cbOpenWithProvider;
         private System.Windows.Forms.ListView listViewBrowsers;
         private System.Windows.Forms.ColumnHeader columnHeader1;

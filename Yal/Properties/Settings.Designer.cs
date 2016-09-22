@@ -364,5 +364,17 @@ namespace Yal.Properties {
                 this["PluginItemsFirst"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("35")]
+        public int MaxNameSize {
+            get {
+                return ((int)(this["MaxNameSize"]));
+            }
+            set {
+                this["MaxNameSize"] = value;
+            }
+        }
     }
 }

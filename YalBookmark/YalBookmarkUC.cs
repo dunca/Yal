@@ -19,7 +19,6 @@ namespace YalBookmark
         {
             InitializeComponent();
 
-            numericUpDownTruncate.Value = Properties.Settings.Default.Truncate;
             cbOpenWithProvider.Checked = Properties.Settings.Default.OpenWithProvider;
 
             foreach (var item in YalBookmark.browsers)
@@ -47,7 +46,6 @@ namespace YalBookmark
             }
 
             Properties.Settings.Default.OpenWithProvider = cbOpenWithProvider.Checked;
-            Properties.Settings.Default.Truncate = (int)numericUpDownTruncate.Value;
             Properties.Settings.Default.Save();
         }
 
