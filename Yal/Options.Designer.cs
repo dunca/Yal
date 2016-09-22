@@ -32,6 +32,8 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.spinMaxNameSize = new System.Windows.Forms.NumericUpDown();
+            this.label10 = new System.Windows.Forms.Label();
             this.cbPluginItemsFirst = new System.Windows.Forms.CheckBox();
             this.cbExtensionInFileName = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -86,11 +88,10 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.btnApplyOptions = new System.Windows.Forms.Button();
             this.btnCancelOpt = new System.Windows.Forms.Button();
-            this.spinMaxNameSize = new System.Windows.Forms.NumericUpDown();
-            this.label10 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinMaxNameSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinSearchDelay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinMaxVisible)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinMaxItems)).BeginInit();
@@ -107,7 +108,6 @@
             this.tabPagePlugins.SuspendLayout();
             this.tabPageAbout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spinMaxNameSize)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -152,6 +152,34 @@
             this.groupBox5.TabIndex = 6;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Output window";
+            // 
+            // spinMaxNameSize
+            // 
+            this.spinMaxNameSize.Enabled = false;
+            this.spinMaxNameSize.Location = new System.Drawing.Point(151, 62);
+            this.spinMaxNameSize.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.spinMaxNameSize.Name = "spinMaxNameSize";
+            this.spinMaxNameSize.Size = new System.Drawing.Size(61, 20);
+            this.spinMaxNameSize.TabIndex = 20;
+            this.spinMaxNameSize.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Enabled = false;
+            this.label10.Location = new System.Drawing.Point(6, 66);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(131, 13);
+            this.label10.TabIndex = 21;
+            this.label10.Text = "Trim long names to (chars)";
             // 
             // cbPluginItemsFirst
             // 
@@ -544,7 +572,7 @@
             this.tabPageIndexing.Controls.Add(this.groupBox1);
             this.tabPageIndexing.Location = new System.Drawing.Point(4, 22);
             this.tabPageIndexing.Name = "tabPageIndexing";
-            this.tabPageIndexing.Size = new System.Drawing.Size(442, 321);
+            this.tabPageIndexing.Size = new System.Drawing.Size(442, 339);
             this.tabPageIndexing.TabIndex = 1;
             this.tabPageIndexing.Text = "Indexing";
             this.tabPageIndexing.UseVisualStyleBackColor = true;
@@ -693,7 +721,7 @@
             this.tabPagePlugins.Location = new System.Drawing.Point(4, 22);
             this.tabPagePlugins.Name = "tabPagePlugins";
             this.tabPagePlugins.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePlugins.Size = new System.Drawing.Size(442, 321);
+            this.tabPagePlugins.Size = new System.Drawing.Size(442, 339);
             this.tabPagePlugins.TabIndex = 3;
             this.tabPagePlugins.Text = "Plugins";
             this.tabPagePlugins.UseVisualStyleBackColor = true;
@@ -704,7 +732,7 @@
             this.tabControlPlugins.Location = new System.Drawing.Point(3, 3);
             this.tabControlPlugins.Name = "tabControlPlugins";
             this.tabControlPlugins.SelectedIndex = 0;
-            this.tabControlPlugins.Size = new System.Drawing.Size(436, 315);
+            this.tabControlPlugins.Size = new System.Drawing.Size(436, 333);
             this.tabControlPlugins.TabIndex = 0;
             // 
             // tabPageAbout
@@ -714,7 +742,7 @@
             this.tabPageAbout.Location = new System.Drawing.Point(4, 22);
             this.tabPageAbout.Name = "tabPageAbout";
             this.tabPageAbout.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageAbout.Size = new System.Drawing.Size(442, 321);
+            this.tabPageAbout.Size = new System.Drawing.Size(442, 339);
             this.tabPageAbout.TabIndex = 2;
             this.tabPageAbout.Text = "About";
             this.tabPageAbout.UseVisualStyleBackColor = true;
@@ -722,7 +750,7 @@
             // label5
             // 
             this.label5.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label5.Location = new System.Drawing.Point(3, 305);
+            this.label5.Location = new System.Drawing.Point(3, 323);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(436, 13);
             this.label5.TabIndex = 0;
@@ -736,7 +764,7 @@
             this.pictureBox1.Image = global::Yal.Properties.Resources.ICON;
             this.pictureBox1.Location = new System.Drawing.Point(3, 3);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(436, 315);
+            this.pictureBox1.Size = new System.Drawing.Size(436, 333);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
@@ -761,32 +789,6 @@
             this.btnCancelOpt.UseVisualStyleBackColor = true;
             this.btnCancelOpt.Click += new System.EventHandler(this.btnCancelOpt_Click);
             // 
-            // spinMaxNameSize
-            // 
-            this.spinMaxNameSize.Location = new System.Drawing.Point(151, 62);
-            this.spinMaxNameSize.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.spinMaxNameSize.Name = "spinMaxNameSize";
-            this.spinMaxNameSize.Size = new System.Drawing.Size(61, 20);
-            this.spinMaxNameSize.TabIndex = 20;
-            this.spinMaxNameSize.Value = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(6, 66);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(131, 13);
-            this.label10.TabIndex = 21;
-            this.label10.Text = "Trim long names to (chars)";
-            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -806,6 +808,7 @@
             this.tabPageGeneral.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinMaxNameSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinSearchDelay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinMaxVisible)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinMaxItems)).EndInit();
@@ -827,7 +830,6 @@
             this.tabPagePlugins.ResumeLayout(false);
             this.tabPageAbout.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spinMaxNameSize)).EndInit();
             this.ResumeLayout(false);
 
         }

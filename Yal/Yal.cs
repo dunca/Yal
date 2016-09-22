@@ -470,10 +470,10 @@ namespace Yal
 
         private string TrimStringIfNeeded(string str)
         {
-            if (str.Length > Properties.Settings.Default.MaxNameSize)
-            {
-                str = $"{str.Substring(0, Properties.Settings.Default.MaxNameSize)}...";
-            }
+            //if (str.Length > Properties.Settings.Default.MaxNameSize)
+            //{
+            //    str = $"{str.Substring(0, Properties.Settings.Default.MaxNameSize)}...";
+            //}
             return str;
         }
 
