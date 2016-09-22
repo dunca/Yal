@@ -36,7 +36,7 @@
             // 
             // numericUpDownDecimalPlaces
             // 
-            this.numericUpDownDecimalPlaces.Location = new System.Drawing.Point(136, 3);
+            this.numericUpDownDecimalPlaces.Location = new System.Drawing.Point(127, 18);
             this.numericUpDownDecimalPlaces.Maximum = new decimal(new int[] {
             20,
             0,
@@ -49,7 +49,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 7);
+            this.label1.Location = new System.Drawing.Point(0, 22);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(124, 13);
             this.label1.TabIndex = 1;
@@ -58,9 +58,10 @@
             // cbReplaceClipboard
             // 
             this.cbReplaceClipboard.AutoSize = true;
-            this.cbReplaceClipboard.Location = new System.Drawing.Point(6, 26);
+            this.cbReplaceClipboard.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cbReplaceClipboard.Location = new System.Drawing.Point(0, 0);
             this.cbReplaceClipboard.Name = "cbReplaceClipboard";
-            this.cbReplaceClipboard.Size = new System.Drawing.Size(221, 17);
+            this.cbReplaceClipboard.Size = new System.Drawing.Size(390, 17);
             this.cbReplaceClipboard.TabIndex = 2;
             this.cbReplaceClipboard.Text = "Copy result to clipboard if Enter is presses";
             this.cbReplaceClipboard.UseVisualStyleBackColor = true;
