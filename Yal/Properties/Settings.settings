@@ -96,5 +96,8 @@
     <Setting Name="MaxNameSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">35</Value>
     </Setting>
+    <Setting Name="FuzzyMatchingPluginItems" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

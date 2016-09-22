@@ -113,6 +113,8 @@ namespace Yal
 
             spinMaxNameSize.Value = Properties.Settings.Default.MaxNameSize;
 
+            cbFuzzyMatchingPluginItems.Checked = Properties.Settings.Default.FuzzyMatchingPluginItems;
+
             foreach (IPlugin plugin in MainWindow.PluginInstances)
             {
                 var tab = new TabPage() { Text = plugin.Name };
@@ -321,6 +323,8 @@ namespace Yal
             Properties.Settings.Default.PluginItemsFirst = cbPluginItemsFirst.Checked;
 
             Properties.Settings.Default.MaxNameSize = (int)spinMaxNameSize.Value;
+
+            Properties.Settings.Default.FuzzyMatchingPluginItems = cbFuzzyMatchingPluginItems.Checked;
 
             Properties.Settings.Default.DisabledPlugins.Clear();
             foreach (var cb in pluginEnabledCheckboxes)

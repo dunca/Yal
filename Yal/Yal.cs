@@ -47,7 +47,7 @@ namespace Yal
                                                union
                                                select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, @file_priority as HITS from INDEX_CATALOG where NAME like @pattern
                                                union
-                                               select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, 0 as HITS from PLUGIN_ITEMS where ITEM_NAME like @pattern
+                                               select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, 0 as HITS from PLUGIN_ITEMS where ITEM_NAME like @plugin_pattern
                                                order by HITS desc, NAME asc) limit @limit";
         private SQLiteConnection pluginTempConnection = new SQLiteConnection("FullUri=file::memory:?cache=shared;Version=3;");
 
@@ -366,13 +366,13 @@ namespace Yal
 
                     var command = new SQLiteCommand(itemQueryString, connection);
 
-                    string pattern = Properties.Settings.Default.FuzzyMatching ? string.Concat(txtSearch.Text.Select(c => string.Concat(c, "%"))) :
-                                                                                 string.Concat(txtSearch.Text, "%");
-                    pattern = string.Concat(Properties.Settings.Default.MatchAnywhere ? "%" : "", pattern);
+                    string pattern = GetSearchPattern(Properties.Settings.Default.FuzzyMatching);
+                    string pluginPattern = GetSearchPattern(Properties.Settings.Default.FuzzyMatchingPluginItems);
 
                     command.Parameters.AddWithValue("@file_priority", Properties.Settings.Default.PluginItemsFirst ? 0 : 1);
                     command.Parameters.AddWithValue("@limit", Properties.Settings.Default.MaxItems);
                     command.Parameters.AddWithValue("@snippet", string.Concat(txtSearch.Text, "%"));
+                    command.Parameters.AddWithValue("@plugin_pattern", pluginPattern);
                     command.Parameters.AddWithValue("@pattern", pattern);
                     var reader = command.ExecuteReader();
 
@@ -434,6 +434,13 @@ namespace Yal
             {
                 outputWindow.Hide();
             }          
+        }
+
+        private string GetSearchPattern(bool fuzzyMatch)
+        {
+            var pattern =  fuzzyMatch ? string.Concat(txtSearch.Text.Select(c => string.Concat(c, "%"))) :
+                                        string.Concat(txtSearch.Text, "%");
+            return string.Concat(Properties.Settings.Default.MatchAnywhere ? "%" : "", pattern);
         }
 
         private string TrimStringIfNeeded(string str)
