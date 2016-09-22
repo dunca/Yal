@@ -33,11 +33,6 @@ namespace Yal
                                                listViewOutput.TileSize.Height);
         }
 
-        private void listViewOutput_MouseEnter(object sender, EventArgs e)
-        {
-            listViewOutput.Focus();
-        }
-
         private void listViewOutput_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)

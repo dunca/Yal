@@ -31,9 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OutputWindow));
             this.listViewOutput = new System.Windows.Forms.ListView();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.SuspendLayout();
             // 
             // listViewOutput
@@ -58,13 +58,6 @@
             this.listViewOutput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listViewOutput_KeyDown);
             this.listViewOutput.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listViewOutput_MouseClick);
             this.listViewOutput.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listViewOutput_MouseDoubleClick);
-            this.listViewOutput.MouseEnter += new System.EventHandler(this.listViewOutput_MouseEnter);
-            // 
-            // imageList1
-            // 
-            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            this.imageList1.ImageSize = new System.Drawing.Size(24, 24);
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // columnHeader1
             // 
@@ -73,6 +66,12 @@
             // columnHeader2
             // 
             this.columnHeader2.Text = "Details";
+            // 
+            // imageList1
+            // 
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(24, 24);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // OutputWindow
             // 
