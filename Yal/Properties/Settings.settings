@@ -54,13 +54,13 @@
       <Value Profile="(Default)">Gray</Value>
     </Setting>
     <Setting Name="MaxItems" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">15</Value>
+      <Value Profile="(Default)">30</Value>
     </Setting>
     <Setting Name="MaxVisible" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
+      <Value Profile="(Default)">15</Value>
     </Setting>
     <Setting Name="SearchDelay" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">150</Value>
+      <Value Profile="(Default)">100</Value>
     </Setting>
     <Setting Name="ExtensionInFileName" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
