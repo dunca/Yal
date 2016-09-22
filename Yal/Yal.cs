@@ -39,7 +39,6 @@ namespace Yal
         internal Options optionsWindow;
         internal List<IPlugin> PluginInstances;
 
-        private Dictionary<string, string> pluginItemsWithActivators = new Dictionary<string, string>();
         private const string attachTemplate = "attach database '{0}' as {1}";
         private const string pluginTableSchema = "create table if not exists PLUGIN_ITEMS (ITEM_NAME string, PLUGIN_NAME string, ADDITIONAL_INFO string)";
         private const string pluginInsertString = "insert into PLUGIN_ITEMS (ITEM_NAME, PLUGIN_NAME, ADDITIONAL_INFO) values (@item_name, @plugin_name, @additional_info)";
@@ -349,24 +348,6 @@ namespace Yal
                     string[] itemInfo;
                     string[] pluginItems = plugin.GetResults(txtSearch.Text, out itemInfo);
 
-                    if (!plugin.FileLikeOutput)
-                    {
-                        var pattern = Properties.Settings.Default.FuzzyMatching ? string.Concat(txtSearch.Text.Select(c => string.Concat(c, ".*"))) : txtSearch.Text;
-                        var regex = new Regex(Properties.Settings.Default.MatchAnywhere ? pattern : string.Concat("^", pattern));
-                        foreach (var pluginItem in pluginItems)
-                        {
-                            //if (pluginItem.StartsWith(txtSearch.Text.IndexOf(" ") == -1 ? txtSearch.Text : txtSearch.Text.Split()[0]))
-                            if (regex.IsMatch(pluginItem))
-                            {
-                                pluginItemsWithActivators.Add(pluginItem, plugin.Name);
-                            }
-                        }
-                        continue;
-                    }
-
-                    //// give higher priority to file-like plugins (used to order items in the SQL query)
-                    //var additionalInfo = plugin.FileLikeOutput ? 0 : -1;
-
                     foreach (var pluginItem in pluginItems)
                     {
                         pluginItemCount++;
@@ -405,7 +386,13 @@ namespace Yal
                         IPlugin pluginInstance = PluginInstances.Find(plugin => plugin.Name == otherInfo);
                         if (pluginInstance != null)
                         {
-                            lvi = GetPluginLvi(pluginInstance, itemName, otherInfo, ref iconIndex);
+                            lvi = new ListViewItem(new string[] { itemName, otherInfo, itemName });
+                            if (pluginInstance.PluginIcon != null)
+                            {
+                                outputWindow.imageList1.Images.Add(pluginInstance.PluginIcon);
+                                lvi.ImageIndex = iconIndex;
+                                iconIndex++;
+                            }
                         }
                         else
                         {
@@ -426,14 +413,7 @@ namespace Yal
                         lvi.SubItems[0].Text = TrimStringIfNeeded(itemName);
                         outputWindow.listViewOutput.Items.Add(lvi);
                     }
-                    foreach (var item in pluginItemsWithActivators)
-                    {
-                        var itemName = TrimStringIfNeeded(item.Key);
-                        ListViewItem lvi = GetPluginLvi(PluginInstances.Find(p => p.Name == item.Value), itemName, 
-                                                        item.Value, ref iconIndex);
-                        outputWindow.listViewOutput.Items.Add(lvi);
-                    }
-                    pluginItemsWithActivators.Clear();
+
                     (new SQLiteCommand("delete from PLUGIN_ITEMS", pluginTempConnection)).ExecuteNonQuery();
                 }
 
@@ -456,18 +436,6 @@ namespace Yal
             }          
         }
 
-        private ListViewItem GetPluginLvi(IPlugin pluginInstance, string itemName, string otherInfo, ref int iconIndex)
-        {
-            var lvi = new ListViewItem(new string[] { itemName, otherInfo, itemName });
-            if (pluginInstance.PluginIcon != null)
-            {
-                outputWindow.imageList1.Images.Add(pluginInstance.PluginIcon);
-                lvi.ImageIndex = iconIndex;
-                iconIndex++;
-            }
-            return lvi;
-        }
-
         private string TrimStringIfNeeded(string str)
         {
             if (str.Length > Properties.Settings.Default.MaxNameSize)
@@ -487,8 +455,10 @@ namespace Yal
             this.Hide();
             outputWindow.Hide();
 
-            // the first item in each row
-            string untouchedItem = outputWindow.listViewOutput.SelectedItems[0].SubItems[2].Text;
+            // the 3rd item in the row is the identifier of the item. The first item
+            // in the row is also derived from the identifier. It's length is trimmed based on the user's preference
+            string item = outputWindow.listViewOutput.SelectedItems[0].SubItems[2].Text;
+
             // the 2nd item in each row. Usually a plugin name or a full file path
             string subitem = outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text;
 
@@ -496,11 +466,11 @@ namespace Yal
 
             if (plugin != null)
             {
-                plugin.HandleExecution(untouchedItem);
+                plugin.HandleExecution(item);
 
-                if (plugin.FileLikeOutput && Properties.Settings.Default.PluginSelectionsInHistory)
+                if (Properties.Settings.Default.PluginSelectionsInHistory)
                 {
-                    FileManager.UpdateHistory(txtSearch.Text, untouchedItem, plugin.Name);
+                    FileManager.UpdateHistory(txtSearch.Text, item, plugin.Name);
                 }
                 return;
             }

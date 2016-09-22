@@ -18,7 +18,6 @@ namespace YalCommand
         public string Description { get; } = "Yal plugin that allows you to quickly run programs with different parameters";
 
         public Icon PluginIcon { get; }
-        public bool FileLikeOutput { get; } = false;
 
         private Regex digitRegex;
         private IEnumerable<string> activators;
