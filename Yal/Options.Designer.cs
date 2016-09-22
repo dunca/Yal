@@ -657,11 +657,6 @@
             // spinMaxItems
             // 
             this.spinMaxItems.Location = new System.Drawing.Point(151, 35);
-            this.spinMaxItems.Maximum = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
             this.spinMaxItems.Minimum = new decimal(new int[] {
             1,
             0,
