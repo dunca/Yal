@@ -59,7 +59,10 @@ namespace YalWeb
         public string[] GetResults(string input, out string[] itemInfo)
         {
             itemInfo = null;
-            return Entries.Keys.Select(activator => string.Join(" ", activator, input)).ToArray();
+            var array = new string[Entries.Count + 1];
+            array[0] = string.Join(" ", defaultActivator, input);
+            Array.Copy(Entries.Keys.Select(activator => string.Join(" ", activator, input)).ToArray(), 0, array, 1, Entries.Count);
+            return array;
         }
 
         public void HandleExecution(string input)
