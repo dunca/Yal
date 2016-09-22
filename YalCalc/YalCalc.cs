@@ -45,8 +45,8 @@ namespace YalCalc
             var dt = new DataTable();
             try
             {
-                double result = Convert.ToDouble(dt.Compute(input.Substring(1), filter: ""));
-                return new string[] { Convert.ToString(Math.Round(result, Properties.Settings.Default.DecimalPlaces)) };
+                double result = Convert.ToDouble(dt.Compute(input, filter: ""));
+                return new string[] { string.Concat(input, "=", Convert.ToString(Math.Round(result, Properties.Settings.Default.DecimalPlaces))) };
             }
             catch
             {
