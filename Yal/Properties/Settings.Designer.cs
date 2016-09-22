@@ -352,5 +352,17 @@ namespace Yal.Properties {
                 this["DisabledPlugins"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool PluginItemsFirst {
+            get {
+                return ((bool)(this["PluginItemsFirst"]));
+            }
+            set {
+                this["PluginItemsFirst"] = value;
+            }
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace Yal
         private const string itemQueryString = @"select distinct ITEM_NAME, OTHER_INFO from 
                                                (select ITEM_NAME, OTHER_INFO, HITS from HISTORY_CATALOG where SNIPPET like @snippet
                                                union
-                                               select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, 0 as HITS from INDEX_CATALOG where NAME like @pattern
+                                               select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, @file_priority as HITS from INDEX_CATALOG where NAME like @pattern
                                                union
                                                select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, ADDITIONAL_INFO as HITS from PLUGIN_ITEMS where ITEM_NAME like @pattern
                                                order by HITS desc, NAME asc) limit @limit";
@@ -372,6 +372,7 @@ namespace Yal
                                                                                  string.Concat(txtSearch.Text, "%");
                     pattern = string.Concat(Properties.Settings.Default.MatchAnywhere ? "%" : "", pattern);
 
+                    command.Parameters.AddWithValue("@file_priority", Properties.Settings.Default.PluginItemsFirst ? 0 : 1);
                     command.Parameters.AddWithValue("@limit", Properties.Settings.Default.MaxItems);
                     command.Parameters.AddWithValue("@snippet", string.Concat(txtSearch.Text, "%"));
                     command.Parameters.AddWithValue("@pattern", pattern);

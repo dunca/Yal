@@ -109,6 +109,8 @@ namespace Yal
 
             cbFuzzyMatching.Checked = Properties.Settings.Default.FuzzyMatching;
 
+            cbPluginItemsFirst.Checked = Properties.Settings.Default.PluginItemsFirst;
+
             foreach (IPlugin plugin in MainWindow.PluginInstances)
             {
                 var tab = new TabPage() { Text = plugin.Name };
@@ -313,6 +315,8 @@ namespace Yal
             Properties.Settings.Default.MaxPluginItems = (int)spinMaxPluginItems.Value;
 
             Properties.Settings.Default.FuzzyMatching = cbFuzzyMatching.Checked;
+
+            Properties.Settings.Default.PluginItemsFirst = cbPluginItemsFirst.Checked;
 
             Properties.Settings.Default.DisabledPlugins.Clear();
             foreach (var cb in pluginEnabledCheckboxes)
