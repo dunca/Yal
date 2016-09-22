@@ -418,7 +418,7 @@ namespace Yal
                             Icon icon;
                             if (FileManager.GetFileIcon(otherInfo, out icon))
                             {
-                                lvi = new ListViewItem(new string[] { itemName, otherInfo }, imageIndex: iconIndex) { ToolTipText = otherInfo };
+                                lvi = new ListViewItem(new string[] { itemName, otherInfo, itemName }, imageIndex: iconIndex) { ToolTipText = otherInfo };
                                 outputWindow.imageList1.Images.Add(icon);
                                 iconIndex++;
                             }
@@ -458,7 +458,7 @@ namespace Yal
 
         private ListViewItem GetPluginLvi(IPlugin pluginInstance, string itemName, string otherInfo, ref int iconIndex)
         {
-            var lvi = new ListViewItem(new string[] { itemName, otherInfo });
+            var lvi = new ListViewItem(new string[] { itemName, otherInfo, itemName });
             if (pluginInstance.PluginIcon != null)
             {
                 outputWindow.imageList1.Images.Add(pluginInstance.PluginIcon);
@@ -470,10 +470,10 @@ namespace Yal
 
         private string TrimStringIfNeeded(string str)
         {
-            //if (str.Length > Properties.Settings.Default.MaxNameSize)
-            //{
-            //    str = $"{str.Substring(0, Properties.Settings.Default.MaxNameSize)}...";
-            //}
+            if (str.Length > Properties.Settings.Default.MaxNameSize)
+            {
+                str = $"{str.Substring(0, Properties.Settings.Default.MaxNameSize)}...";
+            }
             return str;
         }
 
@@ -488,7 +488,7 @@ namespace Yal
             outputWindow.Hide();
 
             // the first item in each row
-            string item = outputWindow.listViewOutput.SelectedItems[0].SubItems[0].Text;
+            string untouchedItem = outputWindow.listViewOutput.SelectedItems[0].SubItems[2].Text;
             // the 2nd item in each row. Usually a plugin name or a full file path
             string subitem = outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text;
 
@@ -496,11 +496,11 @@ namespace Yal
 
             if (plugin != null)
             {
-                plugin.HandleExecution(item);
+                plugin.HandleExecution(untouchedItem);
 
                 if (plugin.FileLikeOutput && Properties.Settings.Default.PluginSelectionsInHistory)
                 {
-                    FileManager.UpdateHistory(txtSearch.Text, item, plugin.Name);
+                    FileManager.UpdateHistory(txtSearch.Text, untouchedItem, plugin.Name);
                 }
                 return;
             }

@@ -155,7 +155,6 @@
             // 
             // spinMaxNameSize
             // 
-            this.spinMaxNameSize.Enabled = false;
             this.spinMaxNameSize.Location = new System.Drawing.Point(151, 62);
             this.spinMaxNameSize.Minimum = new decimal(new int[] {
             5,
@@ -174,7 +173,6 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Enabled = false;
             this.label10.Location = new System.Drawing.Point(6, 66);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(131, 13);
