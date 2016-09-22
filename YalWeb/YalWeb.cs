@@ -58,10 +58,24 @@ namespace YalWeb
 
         public string[] GetResults(string input, out string[] itemInfo)
         {
+            //itemInfo = null;
+            //var array = new string[Entries.Count + 1];
+            //array[0] = string.Join(" ", defaultActivator, input);
+            //Array.Copy(Entries.Keys.Select(activator => string.Join(" ", activator, input.Replace(activator, ""))).ToArray(), 0, array, 1, Entries.Count);
+            //return array;
+
             itemInfo = null;
+            
+            foreach (var activator in Entries.Keys)
+            {
+                input = input.Replace(activator, "");
+            }
+
+            input = input.TrimStart();
             var array = new string[Entries.Count + 1];
             array[0] = string.Join(" ", defaultActivator, input);
             Array.Copy(Entries.Keys.Select(activator => string.Join(" ", activator, input)).ToArray(), 0, array, 1, Entries.Count);
+
             return array;
         }
 

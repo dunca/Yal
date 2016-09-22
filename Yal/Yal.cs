@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Collections.Specialized;
+using System.Text.RegularExpressions;
 
 using PluginInterfaces;
 
@@ -38,6 +39,7 @@ namespace Yal
         internal Options optionsWindow;
         internal List<IPlugin> PluginInstances;
 
+        private Dictionary<string, string> pluginItemsWithActivators = new Dictionary<string, string>();
         private const string attachTemplate = "attach database '{0}' as {1}";
         private const string pluginTableSchema = "create table if not exists PLUGIN_ITEMS (ITEM_NAME string, PLUGIN_NAME string, ADDITIONAL_INFO string)";
         private const string pluginInsertString = "insert into PLUGIN_ITEMS (ITEM_NAME, PLUGIN_NAME, ADDITIONAL_INFO) values (@item_name, @plugin_name, @additional_info)";
@@ -46,7 +48,7 @@ namespace Yal
                                                union
                                                select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, @file_priority as HITS from INDEX_CATALOG where NAME like @pattern
                                                union
-                                               select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, ADDITIONAL_INFO as HITS from PLUGIN_ITEMS where ITEM_NAME like @pattern
+                                               select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, 0 as HITS from PLUGIN_ITEMS where ITEM_NAME like @pattern
                                                order by HITS desc, NAME asc) limit @limit";
         private SQLiteConnection pluginTempConnection = new SQLiteConnection("FullUri=file::memory:?cache=shared;Version=3;");
 
@@ -347,8 +349,23 @@ namespace Yal
                     string[] itemInfo;
                     string[] pluginItems = plugin.GetResults(txtSearch.Text, out itemInfo);
 
-                    // give higher priority to file-like plugins (used to order items in the SQL query)
-                    var additionalInfo = plugin.FileLikeOutput ? 0 : -1;
+                    if (!plugin.FileLikeOutput)
+                    {
+                        var pattern = Properties.Settings.Default.FuzzyMatching ? string.Concat(txtSearch.Text.Select(c => string.Concat(c, ".*"))) : txtSearch.Text;
+                        var regex = new Regex(Properties.Settings.Default.MatchAnywhere ? pattern : string.Concat("^", pattern));
+                        foreach (var pluginItem in pluginItems)
+                        {
+                            //if (pluginItem.StartsWith(txtSearch.Text.IndexOf(" ") == -1 ? txtSearch.Text : txtSearch.Text.Split()[0]))
+                            if (regex.IsMatch(pluginItem))
+                            {
+                                pluginItemsWithActivators.Add(pluginItem, plugin.Name);
+                            }
+                        }
+                        continue;
+                    }
+
+                    //// give higher priority to file-like plugins (used to order items in the SQL query)
+                    //var additionalInfo = plugin.FileLikeOutput ? 0 : -1;
 
                     foreach (var pluginItem in pluginItems)
                     {
@@ -356,7 +373,7 @@ namespace Yal
                         var command = new SQLiteCommand(pluginInsertString, pluginTempConnection);
                         command.Parameters.AddWithValue("@item_name", pluginItem);
                         command.Parameters.AddWithValue("@plugin_name", plugin.Name);
-                        command.Parameters.AddWithValue("@additional_info", additionalInfo);
+                        command.Parameters.AddWithValue("@additional_info", 0);
                         command.ExecuteNonQuery();
                     }
                 }
@@ -388,13 +405,7 @@ namespace Yal
                         IPlugin pluginInstance = PluginInstances.Find(plugin => plugin.Name == otherInfo);
                         if (pluginInstance != null)
                         {
-                            lvi = new ListViewItem(new string[] { itemName, otherInfo });
-                            if (pluginInstance.PluginIcon != null)
-                            {
-                                outputWindow.imageList1.Images.Add(pluginInstance.PluginIcon);
-                                lvi.ImageIndex = iconIndex;
-                                iconIndex++;
-                            }
+                            lvi = GetPluginLvi(pluginInstance, itemName, otherInfo, ref iconIndex);
                         }
                         else
                         {
@@ -415,6 +426,14 @@ namespace Yal
                         lvi.SubItems[0].Text = TrimStringIfNeeded(itemName);
                         outputWindow.listViewOutput.Items.Add(lvi);
                     }
+                    foreach (var item in pluginItemsWithActivators)
+                    {
+                        var itemName = TrimStringIfNeeded(item.Key);
+                        ListViewItem lvi = GetPluginLvi(PluginInstances.Find(p => p.Name == item.Value), itemName, 
+                                                        item.Value, ref iconIndex);
+                        outputWindow.listViewOutput.Items.Add(lvi);
+                    }
+                    pluginItemsWithActivators.Clear();
                     (new SQLiteCommand("delete from PLUGIN_ITEMS", pluginTempConnection)).ExecuteNonQuery();
                 }
 
@@ -435,6 +454,18 @@ namespace Yal
             {
                 outputWindow.Hide();
             }          
+        }
+
+        private ListViewItem GetPluginLvi(IPlugin pluginInstance, string itemName, string otherInfo, ref int iconIndex)
+        {
+            var lvi = new ListViewItem(new string[] { itemName, otherInfo });
+            if (pluginInstance.PluginIcon != null)
+            {
+                outputWindow.imageList1.Images.Add(pluginInstance.PluginIcon);
+                lvi.ImageIndex = iconIndex;
+                iconIndex++;
+            }
+            return lvi;
         }
 
         private string TrimStringIfNeeded(string str)
