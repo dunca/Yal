@@ -41,7 +41,6 @@ namespace YalBookmark
         public string Description { get; } = "Yal plugin that allows you to easily visit your browser bookmarks";
 
         public Icon PluginIcon { get; }
-        public bool FileLikeOutput { get; } = true;
 
         private YalBookmarkUC BookmarkPluginInstance { get; set; }
 

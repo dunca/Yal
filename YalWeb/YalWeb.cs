@@ -18,7 +18,6 @@ namespace YalWeb
         public string Description { get; } = "Yal plugin that allows you to quickly search the web using your favorite search engine";
 
         public Icon PluginIcon { get; }
-        public bool FileLikeOutput { get; } = false;
 
         private YalWebUC WebPluginInstance { get; set; }
         private Dictionary<string, string> Entries = new Dictionary<string, string>();

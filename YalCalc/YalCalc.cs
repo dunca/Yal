@@ -15,7 +15,6 @@ namespace YalCalc
         public string Description { get; } = "Perform simple calculations using Yal";
 
         public Icon PluginIcon { get; }
-        public bool FileLikeOutput { get; } = false;
 
         private YalCalcUC CalcPluginInstance { get; set; }
 
