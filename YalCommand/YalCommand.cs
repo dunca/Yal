@@ -103,7 +103,7 @@ is mandatory.";
                 // key: command; values: path, parameters, confirm before processing
                 Entries.Add(split[0], new List<string>()
                 {
-                    path, split[2] == emptyPlaceholder ? string.Empty : split[2], split[3]
+                    path, split[2] == emptyPlaceholder ? "" : split[2], split[3]
                 });
             }
         }
@@ -137,7 +137,7 @@ is mandatory.";
 
             var arguments = new List<string>();
 
-            if (parameters != string.Empty)
+            if (parameters != "")
             {
                 foreach (var item in parameters.Split())
                 {
@@ -204,7 +204,7 @@ is mandatory.";
                 {
                     proc.StartInfo.Arguments = string.Join(" ", arguments);
                 }
-                else if (parameters != string.Empty)
+                else if (parameters != "")
                 {
                     proc.StartInfo.Arguments = parameters;
                 }

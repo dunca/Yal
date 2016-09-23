@@ -93,7 +93,7 @@ specific bookmark in it's bookmark database.";
         {
             foreach (string rootKey in rootRegistryKeys)
             {
-                var path = (string)Registry.GetValue(string.Format(appPathsTemplate, rootKey, programName), string.Empty, null);
+                var path = (string)Registry.GetValue(string.Format(appPathsTemplate, rootKey, programName), "", null);
                 if (path != null && File.Exists(path))
                 {
                     return path;
@@ -108,7 +108,7 @@ specific bookmark in it's bookmark database.";
             var profilesPath = string.Concat(firefoxPath, @"\profiles.ini");
             if (File.Exists(profilesPath))
             {
-                string profilePath = string.Empty;
+                string profilePath = "";
                 var content = File.ReadAllLines(profilesPath);
 
                 for (int i = 0; i < content.Length; i++)

@@ -357,7 +357,7 @@ namespace Yal
             {
                 if (!cb.Checked)
                 {
-                    Properties.Settings.Default.DisabledPlugins.Add(cb.Name.Replace(pluginEnabledTemplate, string.Empty));
+                    Properties.Settings.Default.DisabledPlugins.Add(cb.Name.Replace(pluginEnabledTemplate, ""));
                 }
             }
 

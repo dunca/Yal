@@ -336,7 +336,7 @@ namespace Yal
             outputWindow.imageList1.Images?.Clear();
             outputWindow.listViewOutput.Items.Clear();
 
-            if (txtSearch.Text != string.Empty)
+            if (txtSearch.Text != "")
             {
                 int pluginItemCount = 0;
                 foreach (var plugin in pluginInstances)

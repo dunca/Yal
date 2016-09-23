@@ -63,7 +63,7 @@ namespace YalCommand
             var parameters = txtParameters.Text;
             var confirm = (string)cbxConfirm.SelectedItem;
 
-            string errorMessage = string.Empty;
+            string errorMessage = "";
 
             if (command == "" || target == "")
             {
@@ -106,7 +106,7 @@ namespace YalCommand
                 }
             }
 
-            if (errorMessage != string.Empty)
+            if (errorMessage != "")
             {
                 MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
