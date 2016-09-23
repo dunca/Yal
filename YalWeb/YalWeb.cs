@@ -72,7 +72,7 @@ pick the self explanatory menu item.";
             
             foreach (var activator in Entries.Keys)
             {
-                input = input.Replace(activator, string.Empty);
+                input = input.Replace(activator, "");
             }
 
             input = input.TrimStart();

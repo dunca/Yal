@@ -44,7 +44,7 @@ namespace YalWeb
             string name = txtName.Text;
             string url = txtUrl.Text;
 
-            if (name == string.Empty || url == string.Empty)
+            if (name == "" || url == "")
             {
                 errorMessage = "Cell values can't be empty";
             }
