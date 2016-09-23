@@ -369,7 +369,7 @@ namespace Yal
                     string pattern = GetSearchPattern(Properties.Settings.Default.FuzzyMatching);
                     string pluginPattern = GetSearchPattern(Properties.Settings.Default.FuzzyMatchingPluginItems);
 
-                    command.Parameters.AddWithValue("@file_priority", Properties.Settings.Default.PluginItemsFirst ? 0 : 1);
+                    command.Parameters.AddWithValue("@file_priority", Properties.Settings.Default.PluginItemsFirst ? -1 : 1);
                     command.Parameters.AddWithValue("@limit", Properties.Settings.Default.MaxItems);
                     command.Parameters.AddWithValue("@snippet", string.Concat(txtSearch.Text, "%"));
                     command.Parameters.AddWithValue("@plugin_pattern", pluginPattern);
