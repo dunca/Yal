@@ -14,8 +14,5 @@
   &lt;string&gt;!imdb|http://www.imdb.com/find?s=all&amp;amp;q=%1&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
-    <Setting Name="DefaultEntry" Type="System.String" Scope="User">
-      <Value Profile="(Default)">!g</Value>
-    </Setting>
   </Settings>
 </SettingsFile>

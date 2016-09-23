@@ -42,7 +42,6 @@
             this.copyNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeEntryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setAsDefaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -133,38 +132,30 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.copyNameToolStripMenuItem,
             this.copyURLToolStripMenuItem,
-            this.removeEntryToolStripMenuItem,
-            this.setAsDefaultToolStripMenuItem});
+            this.removeEntryToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(148, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 92);
             // 
             // copyNameToolStripMenuItem
             // 
             this.copyNameToolStripMenuItem.Name = "copyNameToolStripMenuItem";
-            this.copyNameToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.copyNameToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.copyNameToolStripMenuItem.Text = "Copy name";
             this.copyNameToolStripMenuItem.Click += new System.EventHandler(this.copyNameToolStripMenuItem_Click);
             // 
             // copyURLToolStripMenuItem
             // 
             this.copyURLToolStripMenuItem.Name = "copyURLToolStripMenuItem";
-            this.copyURLToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.copyURLToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.copyURLToolStripMenuItem.Text = "Copy URL";
             this.copyURLToolStripMenuItem.Click += new System.EventHandler(this.copyURLToolStripMenuItem_Click);
             // 
             // removeEntryToolStripMenuItem
             // 
             this.removeEntryToolStripMenuItem.Name = "removeEntryToolStripMenuItem";
-            this.removeEntryToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.removeEntryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.removeEntryToolStripMenuItem.Text = "Remove entry";
             this.removeEntryToolStripMenuItem.Click += new System.EventHandler(this.removeEntryToolStripMenuItem_Click);
-            // 
-            // setAsDefaultToolStripMenuItem
-            // 
-            this.setAsDefaultToolStripMenuItem.Name = "setAsDefaultToolStripMenuItem";
-            this.setAsDefaultToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
-            this.setAsDefaultToolStripMenuItem.Text = "Set as default";
-            this.setAsDefaultToolStripMenuItem.Click += new System.EventHandler(this.setAsDefaultToolStripMenuItem_Click);
             // 
             // YalWebUC
             // 
@@ -195,6 +186,5 @@
         private System.Windows.Forms.ToolStripMenuItem copyNameToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyURLToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeEntryToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem setAsDefaultToolStripMenuItem;
     }
 }

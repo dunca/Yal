@@ -18,29 +18,13 @@ namespace YalWeb
 
         private void ParseEntries()
         {
-            bool defaultExists = false;
             foreach (string line in Properties.Settings.Default.Entries)
             {
                 var split = line.Split('|');
                 var name = split[0];
                 var url = split[1];
                 listViewEntries.Items.Add(new ListViewItem(new string[] { name, url }));
-
-                if (name == Properties.Settings.Default.DefaultEntry)
-                {
-                    defaultExists = true;
-                    SetDefaultRow(name);
-                }
             }
-            if (!defaultExists && Properties.Settings.Default.DefaultEntry != "")
-            { // just in case the default is set to something it doesn't actually exist in the list of available options
-                Properties.Settings.Default.DefaultEntry = "";
-            }
-        }
-
-        private void SetDefaultRow(string name)
-        {
-           Properties.Settings.Default.DefaultEntry = name;
         }
 
         internal void SaveSettings()
@@ -108,23 +92,17 @@ namespace YalWeb
         {
             if (listViewEntries.SelectedItems.Count > 0)
             {
-                ListViewItem lvi = listViewEntries.FocusedItem;
-                if (lvi.SubItems[0].Text == Properties.Settings.Default.DefaultEntry || listViewEntries.Items.Count == 1)
-                {
-                    Properties.Settings.Default.DefaultEntry = "";
-                }
-                listViewEntries.Items.Remove(lvi);
+                listViewEntries.Items.Remove(listViewEntries.FocusedItem);
             }
         }
 
         private void setAsDefaultToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listViewEntries.SelectedIndices.Count == 0)
+            if (listViewEntries.SelectedItems.Count == 0)
             {
                 MessageBox.Show("Select an item first", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            SetDefaultRow(listViewEntries.FocusedItem.SubItems[0].Text);
         }
     }
 }
