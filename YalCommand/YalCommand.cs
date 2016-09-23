@@ -18,9 +18,9 @@ namespace YalCommand
         public string Description { get; } = "Yal plugin that allows you to quickly run programs with different parameters";
 
         public Icon PluginIcon { get; }
-
-        private Regex digitRegex;
+        
         private IEnumerable<string> activators;
+        private Regex digitRegex = new Regex(@"\d+");
         private YalCommandUC CommandPluginInstance { get; set; }
         private Dictionary<string, List<string>> Entries = new Dictionary<string, List<string>>();
 
@@ -41,7 +41,6 @@ namespace YalCommand
             }
 
             activators = Entries.Keys;
-            digitRegex = new Regex(@"\d+");
         }
 
         public string[] GetResults(string input, out string[] itemInfo)

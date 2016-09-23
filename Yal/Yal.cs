@@ -16,7 +16,7 @@ using PluginInterfaces;
 namespace Yal
 {
     // https://msdn.microsoft.com/en-us/library/windows/desktop/ms646309(v=vs.85).aspx
-    public enum FsModifier
+    internal enum FsModifier
     {
         ALT = 0x0001,
         CTRL = 0x0002,
@@ -26,18 +26,19 @@ namespace Yal
 
     public partial class Yal : Form
     {
-        const int HOTKEY_REG_ID = 1;
-        const int WM_HOTKEY = 0x312;  // message code that occurs when hotkeys are detected
-        
-        Timer timerSearchDelay;
-        Timer timerTrimHistory;
-        bool LmbIsDown { get; set; }
-        Form OptionsForm { get; set; }
-        Point LastPointerLocation { get; set; }
+        private const int HOTKEY_REG_ID = 1;
+        private const int WM_HOTKEY = 0x312;  // message code that occurs when hotkeys are detected
 
-        OutputWindow outputWindow;
-        internal Options optionsWindow;
-        internal List<IPlugin> PluginInstances;
+        private Timer timerSearchDelay;
+        private Timer timerTrimHistory;
+
+        private bool lmbIsDown;
+        private Form optionsForm;
+        private Point lastPointerLocation;
+
+        private Options optionsWindow;
+        private OutputWindow outputWindow;
+        internal List<IPlugin> pluginInstances;
 
         private const string attachTemplate = "attach database '{0}' as {1}";
         private const string pluginTableSchema = "create table if not exists PLUGIN_ITEMS (ITEM_NAME string, PLUGIN_NAME string, ADDITIONAL_INFO string)";
@@ -75,7 +76,7 @@ namespace Yal
                 Properties.Settings.Default.DisabledPlugins = new StringCollection();
             }
 
-            PluginInstances = PluginLoader.InstantiatePlugins(PluginLoader.Load("plugins"));
+            pluginInstances = PluginLoader.InstantiatePlugins(PluginLoader.Load("plugins"));
 
             pluginTempConnection.Open();
             (new SQLiteCommand(pluginTableSchema, pluginTempConnection)).ExecuteNonQuery();
@@ -83,7 +84,7 @@ namespace Yal
 
         internal void ShowOptionsWindow()
         {
-            if (optionsWindow == null)
+            if (optionsWindow == null || optionsWindow.IsDisposed)
             {
                 optionsWindow = new Options(this);
             }
@@ -253,12 +254,12 @@ namespace Yal
 
         private void Yal_MouseMove(object sender, MouseEventArgs e)
         {
-            if ((LmbIsDown && !Properties.Settings.Default.MoveWithCtrl) ||
-                (LmbIsDown && Properties.Settings.Default.MoveWithCtrl &&
+            if ((lmbIsDown && !Properties.Settings.Default.MoveWithCtrl) ||
+                (lmbIsDown && Properties.Settings.Default.MoveWithCtrl &&
                 (Control.ModifierKeys == Keys.Control)))
             {
-                this.Location = new Point(this.Location.X + (e.X - LastPointerLocation.X),
-                                          this.Location.Y + (e.Y - LastPointerLocation.Y));
+                this.Location = new Point(this.Location.X + (e.X - lastPointerLocation.X),
+                                          this.Location.Y + (e.Y - lastPointerLocation.Y));
             }
         }
 
@@ -266,8 +267,8 @@ namespace Yal
         {
             if (e.Button == MouseButtons.Left)
             {
-                LmbIsDown = true;
-                LastPointerLocation = e.Location;
+                lmbIsDown = true;
+                lastPointerLocation = e.Location;
                 this.Cursor = Cursors.SizeAll;  // the little crosshair like cursor
             }
         }
@@ -276,7 +277,7 @@ namespace Yal
         {
             if (e.Button == MouseButtons.Left)
             {
-                LmbIsDown = false;
+                lmbIsDown = false;
                 this.Cursor = Cursors.Default;  // we only want the crosshair cursor when moving the window
             }
         }
@@ -338,7 +339,7 @@ namespace Yal
             if (txtSearch.Text != string.Empty)
             {
                 int pluginItemCount = 0;
-                foreach (var plugin in PluginInstances)
+                foreach (var plugin in pluginInstances)
                 {
                     if (Properties.Settings.Default.DisabledPlugins.Contains(plugin.Name))
                     {
@@ -383,7 +384,7 @@ namespace Yal
                         var otherInfo = reader["OTHER_INFO"].ToString();
 
                         ListViewItem lvi = null;
-                        IPlugin pluginInstance = PluginInstances.Find(plugin => plugin.Name == otherInfo);
+                        IPlugin pluginInstance = pluginInstances.Find(plugin => plugin.Name == otherInfo);
                         if (pluginInstance != null)
                         {
                             lvi = new ListViewItem(new string[] { itemName, otherInfo, itemName });
@@ -469,7 +470,7 @@ namespace Yal
             // the 2nd item in each row. Usually a plugin name or a full file path
             string subitem = outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text;
 
-            var plugin = PluginInstances.Find(pluginInstance => pluginInstance.Name == subitem);
+            var plugin = pluginInstances.Find(pluginInstance => pluginInstance.Name == subitem);
 
             if (plugin != null)
             {
