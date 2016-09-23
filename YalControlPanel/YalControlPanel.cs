@@ -19,10 +19,20 @@ namespace YalControlPanel
 
         public Icon PluginIcon { get; }
         public string HelpText { get; } = @"The plugin's description is self explanatory.";
+        public UserControl PluginUserControl
+        {
+            get
+            {
+                if (pluginUserControl == null || pluginUserControl.IsDisposed)
+                {
+                    pluginUserControl = new YalControlPanelUC();
+                }
+                return pluginUserControl;
+            }
+        }
 
-        private YalControlPanelUC ControlPanelPluginInstance { get; set; }
+        private YalControlPanelUC pluginUserControl;
         private Dictionary<string, string> ControlPanelItems { get; } = new Dictionary<string, string>();
-
         private string controlPath = string.Concat(Environment.GetEnvironmentVariable("SYSTEMROOT"), @"\system32\control.exe");
         private string osString = Utils.GetOsVersion();
         private string[] canonicalNames = @"Action Center;Microsoft.ActionCenter;7,8,8.1,10
@@ -100,16 +110,16 @@ Work Folders;Microsoft.WorkFolders;8.1,10
 
         public void SaveSettings()
         {
-            ControlPanelPluginInstance.SaveSettings();
+            pluginUserControl.SaveSettings();
         }
 
         public UserControl GetUserControl()
         {
-            if (ControlPanelPluginInstance == null || ControlPanelPluginInstance.IsDisposed)
+            if (pluginUserControl == null || pluginUserControl.IsDisposed)
             {
-                ControlPanelPluginInstance = new YalControlPanelUC();
+                pluginUserControl = new YalControlPanelUC();
             }
-            return ControlPanelPluginInstance;
+            return pluginUserControl;
         }
 
         public string[] GetResults(string input, out string[] itemInfo)

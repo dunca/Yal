@@ -7,7 +7,6 @@ using System.Data.SQLite;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Web.Script.Serialization;
 
 using Utilities;
@@ -42,13 +41,22 @@ namespace YalBookmark
         
         public Icon PluginIcon { get; }
         public string HelpText { get; }
+        public UserControl PluginUserControl
+        {
+            get
+            {
+                if (pluginUserControl == null || pluginUserControl.IsDisposed)
+                {
+                    pluginUserControl = new YalBookmarkUC();
+                }
+                return pluginUserControl;
+            }
+        }
 
-        private YalBookmarkUC BookmarkPluginInstance { get; set; }
-
+        private YalBookmarkUC pluginUserControl;
         internal static Dictionary<string, BrowserInfo> browsers;
         private const string dbConnectionString = "Data Source={0};Version=3;";
         private Dictionary<string, string[]> localQueryCache = new Dictionary<string, string[]>();
-
         private static string roamingAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         private static string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
@@ -189,16 +197,7 @@ specific bookmark in it's bookmark database.";
 
         public void SaveSettings()
         {
-            BookmarkPluginInstance.SaveSettings();
-        }
-
-        public UserControl GetUserControl()
-        {
-            if (BookmarkPluginInstance == null || BookmarkPluginInstance.IsDisposed)
-            {
-                BookmarkPluginInstance = new YalBookmarkUC();
-            }
-            return BookmarkPluginInstance;
+            pluginUserControl.SaveSettings();
         }
 
         public string[] GetResults(string input, out string[] itemInfo)

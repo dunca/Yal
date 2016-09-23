@@ -16,8 +16,19 @@ namespace YalCalc
 
         public Icon PluginIcon { get; }
         public string HelpText { get; } = @"The plugin's description is self explanatory.";
+        public UserControl PluginUserControl
+        {
+            get
+            {
+                if (pluginUserControl == null || pluginUserControl.IsDisposed)
+                {
+                    pluginUserControl = new YalCalcUC();
+                }
+                return pluginUserControl;
+            }
+        }
 
-        private YalCalcUC CalcPluginInstance { get; set; }
+        private YalCalcUC pluginUserControl;
 
         public YalCalc()
         {
@@ -26,16 +37,7 @@ namespace YalCalc
 
         public void SaveSettings()
         {
-            CalcPluginInstance.SaveSettings();
-        }
-
-        public UserControl GetUserControl()
-        {
-            if (CalcPluginInstance == null || CalcPluginInstance.IsDisposed)
-            {
-                CalcPluginInstance = new YalCalcUC();
-            }
-            return CalcPluginInstance;
+            pluginUserControl.SaveSettings();
         }
 
         public string[] GetResults(string input, out string[] itemInfo)

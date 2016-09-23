@@ -125,7 +125,7 @@ namespace Yal
 
                 var pluginInfo = new Label()
                 {
-                    Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter, BackColor = plugin.GetUserControl().BackColor,
+                    Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter, BackColor = plugin.PluginUserControl.BackColor,
                     Text = string.Join(" ", plugin.Name, plugin.Version, string.Concat("- ", plugin.Description))
                 };
 
@@ -144,11 +144,11 @@ namespace Yal
 
                 pluginEnabledCheckboxes.Add(cbPluginEnabled);
 
-                tab.Controls.AddRange(new Control[] {panel, plugin.GetUserControl() });
+                tab.Controls.AddRange(new Control[] {panel, plugin.PluginUserControl });
                 
                 // if we don't bring it to front, it will most likely ignore and cover other controls
-                plugin.GetUserControl().BringToFront();
-                plugin.GetUserControl().Dock = DockStyle.Fill;
+                plugin.PluginUserControl.BringToFront();
+                plugin.PluginUserControl.Dock = DockStyle.Fill;
             }
         }
 
