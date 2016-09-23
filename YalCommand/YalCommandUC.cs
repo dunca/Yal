@@ -10,43 +10,37 @@ namespace YalCommand
 {
     public partial class YalCommandUC : UserControl
     {
+        YalCommand pluginInstance;
         private Dictionary<string, List<string>> Entries;
 
         internal const string optionalParameterTag = "?";
         internal const string mandatoryParameterTag = "!";
-        internal const string emptyPlaceholder = "~notset~";
+
         internal static Regex placeholderRegex = new Regex(@"^(?<TAG>[!\?])(?<ID>[1-9]+[0-9]*|n|[1-9]+[0-9]*-n|[1-9]+[0-9]*-[1-9]+[0-9]*)\k<TAG>$");
 
-        public YalCommandUC(Dictionary<string, List<string>> entires)
+        public YalCommandUC(YalCommand pluginInstance, Dictionary<string, List<string>> entires)
         {
             InitializeComponent();
 
-            ParseEntries();
             Entries = entires;
+            this.pluginInstance = pluginInstance;
+
+            PopulateListView();
             cbxConfirm.SelectedIndex = 0;
         }
 
-        private void ParseEntries()
+        private void PopulateListView()
         {
             // eg.: ~reboot|%windir%\system32\shutdown.exe|-r|1
-            foreach (string entry in Properties.Settings.Default.Entries)
+            foreach (var entry in Entries)
             {
-                var split = entry.Split('|');
-
-                string target = split[1];
-                if (!Utils.LocalizePath(target, out target))
-                { 
-                    continue;
-                }
-                var parameters = split[2] == emptyPlaceholder ? "" : split[2];
-                listViewEntries.Items.Add(new ListViewItem(new string[] { split[0], target, parameters,
-                                                                          Convert.ToBoolean(split[3]).ToString() }) { Name = split[0]});
+                listViewEntries.Items.Add(new ListViewItem(new string[] { entry.Key, entry.Value[0], entry.Value[1],
+                                                                          Convert.ToBoolean(entry.Value[2]).ToString() }));
             }
         }
 
         internal void SaveSettings()
         {
-            Entries.Clear();
             Properties.Settings.Default.Entries.Clear();
             foreach (ListViewItem lvi in listViewEntries.Items)
             {
@@ -54,10 +48,11 @@ namespace YalCommand
                 var target = lvi.SubItems[1].Text;
                 var parameters = lvi.SubItems[2].Text;
                 var confirm = lvi.SubItems[3].Text;
-                Properties.Settings.Default.Entries.Add(string.Join("|", command, target, 
-                                                                    parameters == "" ? emptyPlaceholder : parameters, confirm));
-                Entries.Add(command, new List<string>() { target, parameters, confirm });
+
+                var finalParameters = parameters == "" ? YalCommand.emptyPlaceholder : parameters;
+                Properties.Settings.Default.Entries.Add(string.Join("|", command, target, finalParameters, confirm));
             }
+            pluginInstance.PopulateEntries();
             Properties.Settings.Default.Save();
         }
 
@@ -98,7 +93,7 @@ namespace YalCommand
                             errorMessage = $"Invalid parameter '{item}'";
                             break;
                         }
-                        else if (matchValue.Contains('-') && matchValue.Last() != 'n')
+                        else if (matchValue.Contains('-') && matchValue[matchValue.Length - 1] != 'n')
                         {
                             var split = matchValue.Split('-');
                             if (int.Parse(split[0]) >= int.Parse(split[1]))
@@ -118,7 +113,7 @@ namespace YalCommand
                 return;
             }
 
-            listViewEntries.Items.Add(new ListViewItem(new string[] { command, target, parameters, confirm }) { Name = command });
+            listViewEntries.Items.Add(new ListViewItem(new string[] { command, target, parameters, confirm }));
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
