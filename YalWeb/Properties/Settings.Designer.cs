@@ -43,17 +43,5 @@ namespace YalWeb.Properties {
                 this["Entries"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("!g")]
-        public string DefaultEntry {
-            get {
-                return ((string)(this["DefaultEntry"]));
-            }
-            set {
-                this["DefaultEntry"] = value;
-            }
-        }
     }
 }
