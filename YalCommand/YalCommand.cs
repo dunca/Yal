@@ -22,26 +22,15 @@ namespace YalCommand
 
         private IEnumerable<string> activators;
         private Regex digitRegex = new Regex(@"\d+");
+        internal const string emptyPlaceholder = "~notset~";
         private YalCommandUC CommandPluginInstance { get; set; }
         private Dictionary<string, List<string>> Entries = new Dictionary<string, List<string>>();
 
         public YalCommand()
         {
-            PluginIcon = Utils.GetPluginIcon(Name);
-
-            foreach (var entry in Properties.Settings.Default.Entries)
-            {
-                var split = entry.Split('|');
-                string path;
-                if (!Utils.LocalizePath(split[1], out path))
-                {
-                    continue;
-                }
-                // key: command; values: path, parameters, confirm before processing
-                Entries.Add(split[0], new List<string>() { path, split[2], split[3] });
-            }
-
+            PopulateEntries();
             activators = Entries.Keys;
+            PluginIcon = Utils.GetPluginIcon(Name);
 
             HelpText = $@"This plugin lets you run programs with 1 or more
 optional parameters, using shortcuts (commands).
@@ -94,6 +83,31 @@ the next argument is ignored.
 is mandatory.";
         }
 
+        internal void PopulateEntries()
+        {
+            if (Entries.Count > 0)
+            {
+                Entries.Clear();
+            }
+
+            foreach (var entry in Properties.Settings.Default.Entries)
+            {
+                var split = entry.Split('|');
+
+                string path;
+                if (!Utils.LocalizePath(split[1], out path))
+                {
+                    continue;
+                }
+
+                // key: command; values: path, parameters, confirm before processing
+                Entries.Add(split[0], new List<string>()
+                {
+                    path, split[2] == emptyPlaceholder ? string.Empty : split[2], split[3]
+                });
+            }
+        }
+
         public string[] GetResults(string input, out string[] itemInfo)
         {
             itemInfo = null;
@@ -104,7 +118,7 @@ is mandatory.";
         {
             if (CommandPluginInstance == null || CommandPluginInstance.IsDisposed)
             {
-                CommandPluginInstance = new YalCommandUC(Entries);
+                CommandPluginInstance = new YalCommandUC(this, Entries);
             }
             return CommandPluginInstance;
         }
@@ -123,54 +137,56 @@ is mandatory.";
 
             var arguments = new List<string>();
 
-            foreach (var item in parameters.Split())
+            if (parameters != string.Empty)
             {
-                string currentParameter;
-                Match match = YalCommandUC.placeholderRegex.Match(item);
-
-                if (!match.Success)
+                foreach (var item in parameters.Split())
                 {
-                    currentParameter = item;
-                }
-                else
-                {
-                    var currentIdMatch = match.Groups["ID"];
-                    var currentTagMatch = match.Groups["TAG"];
+                    string currentParameter;
+                    Match match = YalCommandUC.placeholderRegex.Match(item);
 
-                    bool? result = SkipCurrentParameter(currentIdMatch.Value, currentTagMatch.Value, splitUserInput);
-
-                    if (result == null)
+                    if (!match.Success)
                     {
-                        return; // index out of range, simply return
-                    }
-                    else if (result == true)
-                    {
-                        continue;  // skip this optional parameter
-                    }
-
-                    int number;
-                    if (int.TryParse(currentIdMatch.Value, out number))
-                    {
-                        currentParameter = splitUserInput[number];
+                        currentParameter = item;
                     }
                     else
                     {
-                        int start = 1; // we always ignore the first item, which is the input command itself
-                        int end = splitUserInput.Length - 1;
-                        if (currentIdMatch.Value.Contains('-'))
-                        {
-                            var splitMatchValue = currentIdMatch.Value.Split('-');
-                            start = int.Parse(splitMatchValue[0]);
-                            if (splitMatchValue[1] != "n")
-                            {
-                                end = int.Parse(splitMatchValue[1]);
-                            }
-                        }
-                        currentParameter = string.Join(" ", new ArraySegment<string>(splitUserInput, start, end));
-                    }
-                }
+                        var currentIdMatch = match.Groups["ID"];
+                        var currentTagMatch = match.Groups["TAG"];
 
-                arguments.Add(currentParameter);
+                        bool? result = SkipCurrentParameter(currentIdMatch.Value, currentTagMatch.Value, splitUserInput);
+
+                        if (result == null)
+                        {
+                            return; // index out of range, simply return
+                        }
+                        else if (result == true)
+                        {
+                            continue;  // skip this optional parameter
+                        }
+
+                        int number;
+                        if (int.TryParse(currentIdMatch.Value, out number))
+                        {
+                            currentParameter = splitUserInput[number];
+                        }
+                        else
+                        {
+                            int start = 1; // we always ignore the first item, which is the input command itself
+                            int end = splitUserInput.Length - 1;
+                            if (currentIdMatch.Value.Contains('-'))
+                            {
+                                var splitMatchValue = currentIdMatch.Value.Split('-');
+                                start = int.Parse(splitMatchValue[0]);
+                                if (splitMatchValue[1] != "n")
+                                {
+                                    end = int.Parse(splitMatchValue[1]);
+                                }
+                            }
+                            currentParameter = string.Join(" ", new ArraySegment<string>(splitUserInput, start, end));
+                        }
+                    }
+                    arguments.Add(currentParameter);
+                }
             }
 
             try
@@ -188,7 +204,7 @@ is mandatory.";
                 {
                     proc.StartInfo.Arguments = string.Join(" ", arguments);
                 }
-                else if (parameters != YalCommandUC.emptyPlaceholder)
+                else if (parameters != string.Empty)
                 {
                     proc.StartInfo.Arguments = parameters;
                 }
