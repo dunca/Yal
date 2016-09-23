@@ -104,11 +104,11 @@
         }
 
         #endregion
-        private System.Windows.Forms.CheckBox cbOpenWithProvider;
         private System.Windows.Forms.ListView listViewBrowsers;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.Panel panel1;
+        public System.Windows.Forms.CheckBox cbOpenWithProvider;
     }
 }

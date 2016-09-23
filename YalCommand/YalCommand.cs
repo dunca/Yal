@@ -18,7 +18,8 @@ namespace YalCommand
         public string Description { get; } = "Yal plugin that allows you to quickly run programs with different parameters";
 
         public Icon PluginIcon { get; }
-        
+        public string HelpText { get; }
+
         private IEnumerable<string> activators;
         private Regex digitRegex = new Regex(@"\d+");
         private YalCommandUC CommandPluginInstance { get; set; }
@@ -41,6 +42,56 @@ namespace YalCommand
             }
 
             activators = Entries.Keys;
+
+            HelpText = $@"This plugin lets you run programs with 1 or more
+optional parameters, using shortcuts (commands).
+To run a program, type it's assigned shortcut/command
+followed by any necessary arguments. If a command takes
+no arguments but the user specifies any, they will be
+simply ignored.
+
+To add a new command, use the functionality bellow the
+list of entries.
+If the '{(GetUserControl() as YalCommandUC).lblConfirm.Text}' option
+is set to 'True', the user will be prompted with a
+message box before the command is ran. The message box
+will allow the user to prevent the command from running.
+
+Commands support optional parameters, bellow are the
+supported placeholders and their meaning:
+!x! - replaced with the value of the argument specified
+at runtime at index 'x'.
+
+!x-y! - replaced with the values of the
+arguments between indices 'x' and 'y' (inclusive).
+
+!x-n! - replaced with the values of all the
+arguments in the input, excluding those with
+indices below 'x'.
+
+!n! - replaced with all the available arguments
+
+Question marks ('?') can also be used instead of
+exclamation marks ('!'). The parameters that use
+question marks are optional. If the command is ran
+without an argument at the specified index or range,
+the parameter is simply skipped, and no value is
+assigned to it.
+
+Examples:
+for a command '~nopen' that expects '?n?'
+~nopen hello world.txt -> '?n?' is replaced with
+'hello world.txt'.
+
+~nopen -> '?n?' is an optional parameter, so the
+command runs without any arguments.
+
+for a command '~hhh' that expects '!1!'
+~hhh hello world.txt -> '!1!' is replaced with 'hello',
+the next argument is ignored.
+
+~hhh -> Error, the command expects an argument, since '!1!'
+is mandatory.";
         }
 
         public string[] GetResults(string input, out string[] itemInfo)

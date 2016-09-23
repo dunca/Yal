@@ -15,6 +15,7 @@ namespace YalCalc
         public string Description { get; } = "Perform simple calculations using Yal";
 
         public Icon PluginIcon { get; }
+        public string HelpText { get; } = @"The plugin's description is self explanatory.";
 
         private YalCalcUC CalcPluginInstance { get; set; }
 

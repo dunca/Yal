@@ -120,25 +120,56 @@ namespace Yal
                 var tab = new TabPage() { Text = plugin.Name };
                 tabControlPlugins.TabPages.Add(tab);
 
-                var panel = new Panel() { Dock = DockStyle.Top, Height = this.Height / 8 }; 
-                var pluginInfo = new Label() { TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill,
-                                               BackColor = plugin.GetUserControl().BackColor };
+                // gotta love magic numbers...that just fit
+                var panel = new Panel() { Dock = DockStyle.Top, Height = this.Height / 8 };
+
+                var pluginInfo = new Label()
+                {
+                    Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter, BackColor = plugin.GetUserControl().BackColor,
+                    Text = string.Join(" ", plugin.Name, plugin.Version, string.Concat("- ", plugin.Description))
+                };
+
                 var cbPluginEnabled = new CheckBox()
                 {
                     Text = "Use this plugin", Checked = !Properties.Settings.Default.DisabledPlugins.Contains(plugin.Name),
                     Dock = DockStyle.Bottom, Name = string.Concat(pluginEnabledTemplate, plugin.Name)
                 };
+
+                var helpLabel = new LinkLabel() { Text = "?", AutoSize = true, Dock = DockStyle.Right };
+                helpLabel.Click += pluginHelpButton_Click;
+
+                panel.Controls.Add(helpLabel);
                 panel.Controls.Add(pluginInfo);
                 panel.Controls.Add(cbPluginEnabled);
-                pluginEnabledCheckboxes.Add(cbPluginEnabled);
-                pluginInfo.Text = string.Join(" ", plugin.Name, plugin.Version, string.Concat("- ", plugin.Description));
 
-                tab.Controls.AddRange(new Control[] {panel , plugin.GetUserControl() });
+                pluginEnabledCheckboxes.Add(cbPluginEnabled);
+
+                tab.Controls.AddRange(new Control[] {panel, plugin.GetUserControl() });
                 
                 // if we don't bring it to front, it will most likely ignore and cover other controls
                 plugin.GetUserControl().BringToFront();
                 plugin.GetUserControl().Dock = DockStyle.Fill;
             }
+        }
+
+        private void pluginHelpButton_Click(object sender, EventArgs e)
+        {
+            var currentTab = tabControlPlugins.SelectedTab;
+            IPlugin currentPlugin = MainWindow.pluginInstances.Find(plugin => plugin.Name == currentTab.Text);
+
+            var helpForm = new Form()
+            {
+                FormBorderStyle = FormBorderStyle.FixedToolWindow, MaximizeBox = false,
+                Text = string.Concat(currentPlugin.Name, " help"), StartPosition = FormStartPosition.CenterScreen
+            };
+
+            var helpRichBox = new RichTextBox()
+            {
+                ReadOnly = true, Text = currentPlugin.HelpText, Dock = DockStyle.Fill,
+            };
+
+            helpForm.Controls.Add(helpRichBox);
+            helpForm.Show();
         }
 
         internal void UpdateIndexingStatus()
