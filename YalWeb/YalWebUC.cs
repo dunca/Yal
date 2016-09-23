@@ -40,7 +40,6 @@ namespace YalWeb
 
         private void SetDefaultRow(string name)
         {
-           lblDefault.Text = name;
            Properties.Settings.Default.DefaultEntry = name;
         }
 
@@ -112,7 +111,6 @@ namespace YalWeb
                 ListViewItem lvi = listViewEntries.FocusedItem;
                 if (lvi.SubItems[0].Text == Properties.Settings.Default.DefaultEntry || listViewEntries.Items.Count == 1)
                 {
-                    lblDefault.Text = "not set";
                     Properties.Settings.Default.DefaultEntry = "";
                 }
                 listViewEntries.Items.Remove(lvi);

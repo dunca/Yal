@@ -34,8 +34,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtUrl = new System.Windows.Forms.TextBox();
             this.txtName = new System.Windows.Forms.TextBox();
-            this.lblDefault = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.btnAddEntry = new System.Windows.Forms.Button();
             this.listViewEntries = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -55,19 +53,17 @@
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.txtUrl);
             this.panel1.Controls.Add(this.txtName);
-            this.panel1.Controls.Add(this.lblDefault);
-            this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.btnAddEntry);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 215);
+            this.panel1.Location = new System.Drawing.Point(0, 245);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(423, 61);
+            this.panel1.Size = new System.Drawing.Size(423, 31);
             this.panel1.TabIndex = 1;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(111, 36);
+            this.label3.Location = new System.Drawing.Point(111, 8);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(29, 13);
             this.label3.TabIndex = 8;
@@ -76,7 +72,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 37);
+            this.label2.Location = new System.Drawing.Point(6, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 7;
@@ -84,39 +80,21 @@
             // 
             // txtUrl
             // 
-            this.txtUrl.Location = new System.Drawing.Point(142, 33);
+            this.txtUrl.Location = new System.Drawing.Point(142, 5);
             this.txtUrl.Name = "txtUrl";
             this.txtUrl.Size = new System.Drawing.Size(197, 20);
             this.txtUrl.TabIndex = 6;
             // 
             // txtName
             // 
-            this.txtName.Location = new System.Drawing.Point(44, 33);
+            this.txtName.Location = new System.Drawing.Point(44, 5);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(61, 20);
             this.txtName.TabIndex = 5;
             // 
-            // lblDefault
-            // 
-            this.lblDefault.AutoSize = true;
-            this.lblDefault.Location = new System.Drawing.Point(144, 10);
-            this.lblDefault.Name = "lblDefault";
-            this.lblDefault.Size = new System.Drawing.Size(39, 13);
-            this.lblDefault.TabIndex = 4;
-            this.lblDefault.Text = "not set";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 10);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(143, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "The \'!s\' activator will point to:";
-            // 
             // btnAddEntry
             // 
-            this.btnAddEntry.Location = new System.Drawing.Point(345, 32);
+            this.btnAddEntry.Location = new System.Drawing.Point(345, 4);
             this.btnAddEntry.Name = "btnAddEntry";
             this.btnAddEntry.Size = new System.Drawing.Size(75, 23);
             this.btnAddEntry.TabIndex = 0;
@@ -134,7 +112,7 @@
             this.listViewEntries.Location = new System.Drawing.Point(0, 0);
             this.listViewEntries.MultiSelect = false;
             this.listViewEntries.Name = "listViewEntries";
-            this.listViewEntries.Size = new System.Drawing.Size(423, 215);
+            this.listViewEntries.Size = new System.Drawing.Size(423, 245);
             this.listViewEntries.TabIndex = 2;
             this.listViewEntries.UseCompatibleStateImageBehavior = false;
             this.listViewEntries.View = System.Windows.Forms.View.Details;
@@ -206,8 +184,6 @@
         #endregion
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnAddEntry;
-        private System.Windows.Forms.Label lblDefault;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListView listViewEntries;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
