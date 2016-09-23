@@ -39,8 +39,9 @@ namespace YalBookmark
         public string Name { get; } = "YalBookmark";
         public string Version { get; } = "1.0";
         public string Description { get; } = "Yal plugin that allows you to easily visit your browser bookmarks";
-
+        
         public Icon PluginIcon { get; }
+        public string HelpText { get; }
 
         private YalBookmarkUC BookmarkPluginInstance { get; set; }
 
@@ -75,6 +76,17 @@ namespace YalBookmark
                 }
                 Properties.Settings.Default.FirstRun = false;
             }
+
+            HelpText = $@"By default, bookmarks found
+in all of the detected browser profile
+folders are made available through Yal. 
+You can right click on any backend in
+the list to alter the default functionality.
+
+You can instruct {Name} to open bookmarks
+through the operating system's default browser,
+or through the browser that stores the 
+specific bookmark in it's bookmark database.";
         }
 
         private static string GetExecutablePath(string programName)

@@ -10,6 +10,11 @@ namespace PluginInterfaces
         string Description { get; }
 
         /// <summary>
+        /// Instructions on how to use the plugin
+        /// </summary>
+        string HelpText { get; }
+
+        /// <summary>
         /// An icon that will be shown in the output window, next to the plugin provided entries
         /// </summary>
         Icon PluginIcon { get; }

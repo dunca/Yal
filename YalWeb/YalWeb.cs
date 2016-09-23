@@ -16,8 +16,22 @@ namespace YalWeb
         public string Name { get; } = "YalWeb";
         public string Version { get; } = "1.0";
         public string Description { get; } = "Yal plugin that allows you to quickly search the web using your favorite search engine";
-
+        
         public Icon PluginIcon { get; }
+        public string HelpText { get; } = @"To use this plugin, type an activator's
+name, followed by the keyworld you'd like to search for.
+For example: -> !w rats <- will (by default) search 
+Wikipedia for the 'rats' keyword.
+
+You can add new shortcuts using the input boxes
+located bellow the current list of entries.
+The '%1' character group can be optionally
+used in newly added shortcut URLs as a
+placeholder for the keywords specified 
+at runtime after the shortcut's name.
+
+To remove an entry, right click on it, and
+pick the self explanatory menu item.";
 
         private YalWebUC WebPluginInstance { get; set; }
         private Dictionary<string, string> Entries = new Dictionary<string, string>();

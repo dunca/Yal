@@ -41,11 +41,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.txtParameters = new System.Windows.Forms.TextBox();
             this.cbxConfirm = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.lblConfirm = new System.Windows.Forms.Label();
             this.btnAdd = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnBrowse = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
+            this.btnBrowse = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyCommandToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyTargetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -153,14 +153,14 @@
             this.cbxConfirm.Size = new System.Drawing.Size(122, 21);
             this.cbxConfirm.TabIndex = 8;
             // 
-            // label4
+            // lblConfirm
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(143, 32);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(113, 13);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "Confirm before running";
+            this.lblConfirm.AutoSize = true;
+            this.lblConfirm.Location = new System.Drawing.Point(143, 32);
+            this.lblConfirm.Name = "lblConfirm";
+            this.lblConfirm.Size = new System.Drawing.Size(113, 13);
+            this.lblConfirm.TabIndex = 9;
+            this.lblConfirm.Text = "Confirm before running";
             // 
             // btnAdd
             // 
@@ -178,7 +178,7 @@
             this.panel1.Controls.Add(this.btnBrowse);
             this.panel1.Controls.Add(this.btnAdd);
             this.panel1.Controls.Add(this.txtCommand);
-            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.lblConfirm);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.cbxConfirm);
             this.panel1.Controls.Add(this.txtTarget);
@@ -191,6 +191,15 @@
             this.panel1.Size = new System.Drawing.Size(437, 52);
             this.panel1.TabIndex = 11;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(339, 9);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(16, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "or";
+            // 
             // btnBrowse
             // 
             this.btnBrowse.Location = new System.Drawing.Point(357, 4);
@@ -200,15 +209,6 @@
             this.btnBrowse.Text = "...";
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(339, 9);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(16, 13);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "or";
             // 
             // contextMenuStrip1
             // 
@@ -277,7 +277,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtParameters;
         private System.Windows.Forms.ComboBox cbxConfirm;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label5;
@@ -287,5 +286,6 @@
         private System.Windows.Forms.ToolStripMenuItem copyTargetToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyParametersToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeEntryToolStripMenuItem;
+        internal System.Windows.Forms.Label lblConfirm;
     }
 }

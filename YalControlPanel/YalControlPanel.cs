@@ -18,7 +18,8 @@ namespace YalControlPanel
         public string Description { get; } = "Access Windows control panel items using Yal";
 
         public Icon PluginIcon { get; }
-        
+        public string HelpText { get; } = @"The plugin's description is self explanatory.";
+
         private YalControlPanelUC ControlPanelPluginInstance { get; set; }
         private Dictionary<string, string> ControlPanelItems { get; } = new Dictionary<string, string>();
 
