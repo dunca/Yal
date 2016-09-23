@@ -57,14 +57,33 @@ namespace YalWeb
 
         private void btnAddEntry_Click(object sender, EventArgs e)
         {
+            string errorMessage = null;
             string name = txtName.Text;
             string url = txtUrl.Text;
-            if (name == string.Empty || url == string.Empty || name == YalWeb.defaultActivator)
+
+            if (name == string.Empty || url == string.Empty)
             {
-                MessageBox.Show($"Cell value is empty or uses an already assigned value", "Error",
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                errorMessage = "Cell values can't be empty";
+            }
+            else
+            {
+                foreach (ListViewItem lvi in listViewEntries.Items)
+                {
+                    if (lvi.SubItems[0].Text == name)
+                    {
+                        errorMessage = $"An entry named '{name}' already exists";
+                        break;
+                    }
+                }
+            }
+
+            if (errorMessage != null)
+            {
+                MessageBox.Show(errorMessage, "Error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
             listViewEntries.Items.Add(new ListViewItem(new string[] { name, url }));
         }
 
