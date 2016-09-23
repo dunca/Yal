@@ -22,9 +22,6 @@ namespace YalWeb
         private YalWebUC WebPluginInstance { get; set; }
         private Dictionary<string, string> Entries = new Dictionary<string, string>();
 
-        // when this activator is used, the search is done using the default activator (!ddg/!yt/!a)
-        internal const string defaultActivator = "!s";
-
         public YalWeb()
         {
             PopulateEntries();
@@ -63,31 +60,14 @@ namespace YalWeb
             {
                 input = input.Replace(activator, string.Empty);
             }
-            input = input.Replace(defaultActivator, "");
 
             input = input.TrimStart();
-            var array = new string[Entries.Count + 1];
-            array[0] = string.Join(" ", defaultActivator, input);
-            Array.Copy(Entries.Keys.Select(activator => string.Join(" ", activator, input)).ToArray(), 0, array, 1, Entries.Count);
-
-            return array;
+            return Entries.Keys.Select(activator => string.Join(" ", activator, input)).ToArray();
         }
 
         public void HandleExecution(string input)
         {
             string providerName = input.Substring(0, input.IndexOf(' '));
-            if (providerName == defaultActivator)
-            {
-                if (Properties.Settings.Default.DefaultEntry != string.Empty)
-                {
-                    providerName = Properties.Settings.Default.DefaultEntry;
-                }
-                else
-                {
-                    MessageBox.Show("The default activator is not set", this.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-            }
             string url = Entries[providerName].Replace("%1", Uri.EscapeDataString(input.Substring(input.IndexOf(' ') + 1)));
             try
             {
