@@ -19,17 +19,26 @@ namespace YalCommand
 
         public Icon PluginIcon { get; }
         public string HelpText { get; }
+        public UserControl PluginUserControl
+        {
+            get
+            {
+                if (pluginUserControl == null || pluginUserControl.IsDisposed)
+                {
+                    pluginUserControl = new YalCommandUC(this, Entries);
+                }
+                return pluginUserControl;
+            }
+        }
 
-        private IEnumerable<string> activators;
+        private YalCommandUC pluginUserControl;
         private Regex digitRegex = new Regex(@"\d+");
         internal const string emptyPlaceholder = "~notset~";
-        private YalCommandUC CommandPluginInstance { get; set; }
         private Dictionary<string, List<string>> Entries = new Dictionary<string, List<string>>();
 
         public YalCommand()
         {
             PopulateEntries();
-            activators = Entries.Keys;
             PluginIcon = Utils.GetPluginIcon(Name);
 
             HelpText = $@"This plugin lets you run programs with 1 or more
@@ -116,11 +125,11 @@ is mandatory.";
 
         public UserControl GetUserControl()
         {
-            if (CommandPluginInstance == null || CommandPluginInstance.IsDisposed)
+            if (pluginUserControl == null || pluginUserControl.IsDisposed)
             {
-                CommandPluginInstance = new YalCommandUC(this, Entries);
+                pluginUserControl = new YalCommandUC(this, Entries);
             }
-            return CommandPluginInstance;
+            return pluginUserControl;
         }
 
         public void HandleExecution(string input)
@@ -237,7 +246,7 @@ is mandatory.";
 
         public void SaveSettings()
         {
-            CommandPluginInstance.SaveSettings();
+            pluginUserControl.SaveSettings();
         }
     }
 }

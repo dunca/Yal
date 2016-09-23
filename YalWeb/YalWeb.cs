@@ -32,8 +32,19 @@ at runtime after the shortcut's name.
 
 To remove an entry, right click on it, and
 pick the self explanatory menu item.";
+        public UserControl PluginUserControl
+        {
+            get
+            {
+                if (pluginUserControl == null || pluginUserControl.IsDisposed)
+                {
+                    pluginUserControl = new YalWebUC(this);
+                }
+                return pluginUserControl;
+            }
+        }
 
-        private YalWebUC WebPluginInstance { get; set; }
+        private YalWebUC pluginUserControl;
         private Dictionary<string, string> Entries = new Dictionary<string, string>();
 
         public YalWeb()
@@ -44,7 +55,7 @@ pick the self explanatory menu item.";
 
         public void SaveSettings()
         {
-            WebPluginInstance.SaveSettings();
+            pluginUserControl.SaveSettings();
         }
 
         internal void PopulateEntries()
@@ -59,11 +70,11 @@ pick the self explanatory menu item.";
 
         public UserControl GetUserControl()
         {
-            if (WebPluginInstance == null || WebPluginInstance.IsDisposed)
+            if (pluginUserControl == null || pluginUserControl.IsDisposed)
             {
-                WebPluginInstance = new YalWebUC(this);
+                pluginUserControl = new YalWebUC(this);
             }
-            return WebPluginInstance;
+            return pluginUserControl;
         }
 
         public string[] GetResults(string input, out string[] itemInfo)

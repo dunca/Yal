@@ -15,6 +15,14 @@ namespace PluginInterfaces
         string HelpText { get; }
 
         /// <summary>
+        /// This method should return a UserControl object that will be displayed by the main program in a dynamically 
+        /// created tab page that will be located in the Options>Plugins window. The user control should contain the plugin's user
+        /// changeble settings, if any
+        /// </summary>
+        /// <returns></returns>
+        UserControl PluginUserControl { get; }
+
+        /// <summary>
         /// An icon that will be shown in the output window, next to the plugin provided entries
         /// </summary>
         Icon PluginIcon { get; }
@@ -24,14 +32,6 @@ namespace PluginInterfaces
         /// code that saves the plugin's own settings and/or it's control's state, if any
         /// </summary>
         void SaveSettings();
-
-        /// <summary>
-        /// This method should return a UserControl object that will be displayed by the main program in a dynamically 
-        /// created tab page that will be located in the Options>Plugins window. The user control should contain the plugin's user
-        /// changeble settings, if any
-        /// </summary>
-        /// <returns></returns>
-        UserControl GetUserControl();
 
         /// <summary>
         /// This method should return an array with the identifiers of all the items that the plugin can provide
