@@ -16,16 +16,16 @@ namespace Yal
 {
     public partial class Options : Form
     {
-        Regex extRegex = new Regex(@"^\w+$");
+        private Regex extRegex = new Regex(@"^\w+$");
 
         private const string pluginEnabledTemplate = "cbEnabled";
         private List<CheckBox> pluginEnabledCheckboxes = new List<CheckBox>();
 
         // this type of list signals it's modification which causes our listbox to reread it's contents
-        internal BindingList<string> FoldersToIndex { get; set; }
-        internal BindingList<string> FoldersToExclude { get; set; }
+        private BindingList<string> foldersToIndex;
+        private BindingList<string> foldersToExclude;
 
-        Yal MainWindow { get; }
+        private Yal MainWindow { get; }
 
         public Options(Yal mainWindow)
         {
@@ -41,24 +41,24 @@ namespace Yal
             StringCollection locations = Properties.Settings.Default.FoldersToIndex;
             if (locations == null)
             {
-                FoldersToIndex = new BindingList<string>();
+                foldersToIndex = new BindingList<string>();
             }
             else
             {
-                FoldersToIndex = new BindingList<string>(locations.Cast<string>().ToList<string>());
+                foldersToIndex = new BindingList<string>(locations.Cast<string>().ToList<string>());
             }
-            listBoxLocations.DataSource = FoldersToIndex;
+            listBoxLocations.DataSource = foldersToIndex;
 
             StringCollection excludedLocations = Properties.Settings.Default.FoldersToExclude;
             if (excludedLocations == null)
             {
-                FoldersToExclude = new BindingList<string>();
+                foldersToExclude = new BindingList<string>();
             }
             else
             {
-                FoldersToExclude = new BindingList<string>(excludedLocations.Cast<string>().ToList<string>());
+                foldersToExclude = new BindingList<string>(excludedLocations.Cast<string>().ToList<string>());
             }
-            listBoxExcludedLocations.DataSource = FoldersToExclude;
+            listBoxExcludedLocations.DataSource = foldersToExclude;
 
             UpdateIndexingStatus();
 
@@ -115,7 +115,7 @@ namespace Yal
 
             cbFuzzyMatchingPluginItems.Checked = Properties.Settings.Default.FuzzyMatchingPluginItems;
 
-            foreach (IPlugin plugin in MainWindow.PluginInstances)
+            foreach (IPlugin plugin in MainWindow.pluginInstances)
             {
                 var tab = new TabPage() { Text = plugin.Name };
                 tabControlPlugins.TabPages.Add(tab);
@@ -146,26 +146,21 @@ namespace Yal
             lblIndexStatus.Text = $"{FileManager.DbRowCount(FileManager.indexDbInfo)} items indexed at {Properties.Settings.Default.DateLastIndexed}";
         }
 
-        private void Options_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            MainWindow.optionsWindow = null;
-        }
-
         private void btnAddLocation_Click(object sender, EventArgs e)
         {
             var dialog = new FolderBrowserDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                if (!FoldersToIndex.Contains(dialog.SelectedPath))
+                if (!foldersToIndex.Contains(dialog.SelectedPath))
                 {
-                    FoldersToIndex.Add(dialog.SelectedPath);
+                    foldersToIndex.Add(dialog.SelectedPath);
                 }
             }
         }
 
         private void btnRemoveLocation_Click(object sender, EventArgs e)
         {
-            FoldersToIndex.Remove((string)listBoxLocations.SelectedItem);
+            foldersToIndex.Remove((string)listBoxLocations.SelectedItem);
         }
 
         private void btnAddExcludedLocation_Click(object sender, EventArgs e)
@@ -173,16 +168,16 @@ namespace Yal
             var dialog = new FolderBrowserDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                if (!FoldersToExclude.Contains(dialog.SelectedPath))
+                if (!foldersToExclude.Contains(dialog.SelectedPath))
                 {
-                    FoldersToExclude.Add(dialog.SelectedPath);
+                    foldersToExclude.Add(dialog.SelectedPath);
                 }
             }
         }
 
         private void btnRemoveExcludedLocation_Click(object sender, EventArgs e)
         {
-            FoldersToExclude.Remove((string)listBoxExcludedLocations.SelectedItem);
+            foldersToExclude.Remove((string)listBoxExcludedLocations.SelectedItem);
         }
 
         private void btnRebuild_Click(object sender, EventArgs e)
@@ -308,9 +303,9 @@ namespace Yal
             
             Properties.Settings.Default.MatchAnywhere = cbMatchAnywhere.Checked;
 
-            Properties.Settings.Default.FoldersToIndex = FoldersToIndex.ToStringCollection();
+            Properties.Settings.Default.FoldersToIndex = foldersToIndex.ToStringCollection();
 
-            Properties.Settings.Default.FoldersToExclude = FoldersToExclude.ToStringCollection();
+            Properties.Settings.Default.FoldersToExclude = foldersToExclude.ToStringCollection();
 
             Properties.Settings.Default.MaxHistorySize = (int)spinMaxHistorySize.Value;
 
@@ -335,7 +330,7 @@ namespace Yal
                 }
             }
 
-            MainWindow.PluginInstances.ForEach(plugin => plugin.SaveSettings());
+            MainWindow.pluginInstances.ForEach(plugin => plugin.SaveSettings());
         }
 
         private bool ValidFileExtensions()

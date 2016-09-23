@@ -22,7 +22,7 @@ namespace YalControlPanel
         private YalControlPanelUC ControlPanelPluginInstance { get; set; }
         private Dictionary<string, string> ControlPanelItems { get; } = new Dictionary<string, string>();
 
-        string controlPath = string.Concat(Environment.GetEnvironmentVariable("SYSTEMROOT"), @"\system32\control.exe");
+        private string controlPath = string.Concat(Environment.GetEnvironmentVariable("SYSTEMROOT"), @"\system32\control.exe");
         private string osString = Utils.GetOsVersion();
         private string[] canonicalNames = @"Action Center;Microsoft.ActionCenter;7,8,8.1,10
 Administrative Tools;Microsoft.AdministrativeTools;Vista,7,8,8.1,10

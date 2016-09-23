@@ -9,7 +9,7 @@ namespace Yal
 {
     public partial class OutputWindow : Form
     {
-        Yal MainWindow { get; }
+        private Yal MainWindow { get; }
 
         public OutputWindow(Yal mainWindow)
         {
