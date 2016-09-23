@@ -69,6 +69,7 @@ namespace YalWeb
             {
                 input = input.Replace(activator, "");
             }
+            input = input.Replace(defaultActivator, "");
 
             input = input.TrimStart();
             var array = new string[Entries.Count + 1];
