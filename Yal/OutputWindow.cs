@@ -15,8 +15,8 @@ namespace Yal
         {
             InitializeComponent();
 
+            UpdateIconState();
             MainWindow = mainWindow;
-
             listViewOutput.ShowItemToolTips = true;
         }
 
@@ -104,6 +104,23 @@ namespace Yal
         private void listViewOutput_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             MainWindow.StartSelectedItem();
+        }
+
+        internal void UpdateIconState()
+        {
+            if (Properties.Settings.Default.ShowItemIcons && listViewOutput.LargeImageList == null)
+            {
+                listViewOutput.LargeImageList = imageList1;
+            }
+            else
+            {
+                listViewOutput.LargeImageList = null;
+            }
+
+            // For some reason, just changing the LargeImageList reference to null doesn't get rid of the space
+            // taken up by icons. Switching the view style makes it work as expected
+            listViewOutput.View = View.Details;
+            listViewOutput.View = View.Tile;
         }
 
         internal void BuildContextMenu(Point? location = null)
