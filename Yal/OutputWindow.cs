@@ -70,21 +70,34 @@ namespace Yal
                     inputChar = char.ToLower(inputChar);
                 }
 
-                MainWindow.txtSearch.Text += inputChar;
-                MainWindow.txtSearch.SelectionStart = MainWindow.txtSearch.Text.Length;
-                MainWindow.txtSearch.Focus();
+                AlterSearchBoxText(string.Concat(MainWindow.txtSearch.Text, inputChar));
+
+            }
+            else if (e.KeyCode == Keys.Space)
+            {
+                AlterSearchBoxText(string.Concat(MainWindow.txtSearch.Text, ' '));
             }
             else if (e.KeyCode == Keys.Back)
             {
-                MainWindow.txtSearch.Text = MainWindow.txtSearch.Text.Substring(0, MainWindow.txtSearch.Text.Length - 1);
-                MainWindow.txtSearch.SelectionStart = MainWindow.txtSearch.Text.Length;
-                MainWindow.txtSearch.Focus();
+                AlterSearchBoxText(MainWindow.txtSearch.Text.Substring(0, MainWindow.txtSearch.Text.Length - 1));
+
             }
             else if (e.KeyCode == Keys.Enter)
             {
                 // the user can hold CTRL+SHIFT+ENTER to run the item with elevated rights. If just SHIFT+ENTER are pressed,
                 // the search term won't be saved in the history database
                 MainWindow.StartSelectedItem(e.Modifiers == (Keys.Shift | Keys.Control), !(e.Modifiers == Keys.Shift));
+            }
+        }
+
+        private void AlterSearchBoxText(string text, bool focus = true)
+        {
+            MainWindow.txtSearch.Text = text;
+            MainWindow.txtSearch.SelectionStart = MainWindow.txtSearch.Text.Length;
+
+            if (focus)
+            {
+                MainWindow.txtSearch.Focus();
             }
         }
 
