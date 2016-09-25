@@ -16,7 +16,8 @@ namespace YalWeb
         public string Name { get; } = "YalWeb";
         public string Version { get; } = "1.0";
         public string Description { get; } = "Yal plugin that allows you to quickly search the web using your favorite search engine";
-        
+        public bool RequiresActivator { get; } = true;
+
         public Icon PluginIcon { get; }
         public string HelpText { get; } = @"To use this plugin, type an activator's
 name, followed by the keyworld you'd like to search for.
@@ -80,14 +81,7 @@ pick the self explanatory menu item.";
         public string[] GetResults(string input, out string[] itemInfo)
         {
             itemInfo = null;
-            
-            foreach (var activator in Entries.Keys)
-            {
-                input = input.Replace(activator, "");
-            }
-
-            input = input.TrimStart();
-            return Entries.Keys.Select(activator => string.Join(" ", activator, input)).ToArray();
+            return Entries.Keys.ToArray();
         }
 
         public void HandleExecution(string input)
