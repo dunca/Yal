@@ -33,7 +33,6 @@ namespace Yal
         private Timer timerTrimHistory;
 
         private bool lmbIsDown;
-        private Form optionsForm;
         private Point lastPointerLocation;
 
         private Options optionsWindow;
@@ -41,16 +40,17 @@ namespace Yal
         internal List<IPlugin> pluginInstances;
 
         private const string attachTemplate = "attach database '{0}' as {1}";
-        private const string pluginTableSchema = "create table if not exists PLUGIN_ITEMS (ITEM_NAME string, PLUGIN_NAME string, ADDITIONAL_INFO string)";
-        private const string pluginInsertString = "insert into PLUGIN_ITEMS (ITEM_NAME, PLUGIN_NAME, ADDITIONAL_INFO) values (@item_name, @plugin_name, @additional_info)";
+        private const string pluginTableSchema = "create table if not exists PLUGIN_ITEM (ITEM_NAME string, PLUGIN_NAME string, ADDITIONAL_INFO string, REQUIRES_ACTIVATOR numeric)";
+        private const string pluginInsertString = "insert into PLUGIN_ITEM (ITEM_NAME, PLUGIN_NAME, ADDITIONAL_INFO, REQUIRES_ACTIVATOR) values (@item_name, @plugin_name, @additional_info, @requires_activator)";
         private const string itemQueryString = @"select distinct ITEM_NAME, OTHER_INFO from 
                                                (select ITEM_NAME, OTHER_INFO, HITS from HISTORY_CATALOG where SNIPPET like @snippet
                                                union
                                                select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, @file_priority as HITS from INDEX_CATALOG where NAME like @pattern
                                                union
-                                               select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, 0 as HITS from PLUGIN_ITEMS where ITEM_NAME like @plugin_pattern
+                                               select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, 0 as HITS from PLUGIN_ITEM where (REQUIRES_ACTIVATOR == 0 and ITEM_NAME like @plugin_pattern) OR (REQUIRES_ACTIVATOR == 1 and ITEM_NAME like @act_plugin_pattern)
                                                order by HITS desc, NAME asc) limit @limit";
-        private SQLiteConnection pluginTempConnection = new SQLiteConnection("FullUri=file::memory:?cache=shared;Version=3;");
+        
+        private SQLiteConnection pluginItemDb = new SQLiteConnection("FullUri=file::memory:?cache=shared;Version=3;");
 
         public Yal()
         {
@@ -78,8 +78,8 @@ namespace Yal
 
             pluginInstances = PluginLoader.InstantiatePlugins(PluginLoader.Load("plugins"));
 
-            pluginTempConnection.Open();
-            (new SQLiteCommand(pluginTableSchema, pluginTempConnection)).ExecuteNonQuery();
+            pluginItemDb.Open();
+            (new SQLiteCommand(string.Format(pluginTableSchema, "PLUGIN_ITEM"), pluginItemDb)).ExecuteNonQuery();
         }
 
         internal void ShowOptionsWindow()
@@ -352,9 +352,10 @@ namespace Yal
                     foreach (var pluginItem in pluginItems)
                     {
                         pluginItemCount++;
-                        var command = new SQLiteCommand(pluginInsertString, pluginTempConnection);
-                        command.Parameters.AddWithValue("@item_name", pluginItem);
+                        var command = new SQLiteCommand(pluginInsertString, pluginItemDb);
+                        command.Parameters.AddWithValue("@requires_activator", plugin.RequiresActivator ? 1 : 0);
                         command.Parameters.AddWithValue("@plugin_name", plugin.Name);
+                        command.Parameters.AddWithValue("@item_name", pluginItem);
                         command.Parameters.AddWithValue("@additional_info", 0);
                         command.ExecuteNonQuery();
                     }
@@ -362,17 +363,19 @@ namespace Yal
 
                 using (var connection = FileManager.GetDbConnection(FileManager.historyDbInfo))
                 {
-                    (new SQLiteCommand(string.Format(attachTemplate, "file::memory:?cache=shared", "PLUGIN_ITEMS"), connection)).ExecuteNonQuery();
+                    (new SQLiteCommand(string.Format(attachTemplate, "file::memory:?cache=shared", "PLUGIN_ITEM"), connection)).ExecuteNonQuery();
                     (new SQLiteCommand(string.Format(attachTemplate, FileManager.indexDbInfo.fileName, "INDEX_DB"), connection)).ExecuteNonQuery();
 
                     var command = new SQLiteCommand(itemQueryString, connection);
 
-                    string pattern = GetSearchPattern(Properties.Settings.Default.FuzzyMatching);
-                    string pluginPattern = GetSearchPattern(Properties.Settings.Default.FuzzyMatchingPluginItems);
+                    string actPluginPattern = string.Concat(txtSearch.Text.Split()[0], "%");
+                    string pattern = GetSearchPattern(txtSearch.Text, Properties.Settings.Default.FuzzyMatching);
+                    string pluginPattern = GetSearchPattern(txtSearch.Text, Properties.Settings.Default.FuzzyMatchingPluginItems);
 
                     command.Parameters.AddWithValue("@file_priority", Properties.Settings.Default.PluginItemsFirst ? -1 : 1);
                     command.Parameters.AddWithValue("@limit", Properties.Settings.Default.MaxItems);
                     command.Parameters.AddWithValue("@snippet", string.Concat(txtSearch.Text, "%"));
+                    command.Parameters.AddWithValue("@act_plugin_pattern", actPluginPattern);
                     command.Parameters.AddWithValue("@plugin_pattern", pluginPattern);
                     command.Parameters.AddWithValue("@pattern", pattern);
                     var reader = command.ExecuteReader();
@@ -387,6 +390,12 @@ namespace Yal
                         IPlugin pluginInstance = pluginInstances.Find(plugin => plugin.Name == otherInfo);
                         if (pluginInstance != null)
                         {
+                            var spaceIndex = txtSearch.Text.IndexOf(" ");
+                            if (pluginInstance.RequiresActivator && spaceIndex != -1)
+                            {
+                                itemName = string.Join(" ", itemName, txtSearch.Text.Substring(spaceIndex + 1));
+                            }
+
                             lvi = new ListViewItem(new string[] { itemName, otherInfo, itemName });
                             if (pluginInstance.PluginIcon != null)
                             {
@@ -415,7 +424,7 @@ namespace Yal
                         outputWindow.listViewOutput.Items.Add(lvi);
                     }
 
-                    (new SQLiteCommand("delete from PLUGIN_ITEMS", pluginTempConnection)).ExecuteNonQuery();
+                    (new SQLiteCommand("delete from PLUGIN_ITEM", pluginItemDb)).ExecuteNonQuery();
                 }
 
                 if (outputWindow.listViewOutput.Items.Count > 0)
@@ -437,10 +446,10 @@ namespace Yal
             }          
         }
 
-        private string GetSearchPattern(bool fuzzyMatch)
+        private string GetSearchPattern(string input, bool fuzzyMatch)
         {
-            var pattern =  fuzzyMatch ? string.Concat(txtSearch.Text.Select(c => string.Concat(c, "%"))) :
-                                        string.Concat(txtSearch.Text, "%");
+            var pattern =  fuzzyMatch ? string.Concat(input.Select(c => string.Concat(c, "%"))) :
+                                        string.Concat(input, "%");
             return string.Concat(Properties.Settings.Default.MatchAnywhere ? "%" : "", pattern);
         }
 

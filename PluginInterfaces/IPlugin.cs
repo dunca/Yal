@@ -10,6 +10,11 @@ namespace PluginInterfaces
         string Description { get; }
 
         /// <summary>
+        /// Should be set to 'true' by plugins that rely on special keywords to do their mojo.
+        /// </summary>
+        bool RequiresActivator { get; }
+
+        /// <summary>
         /// Instructions on how to use the plugin
         /// </summary>
         string HelpText { get; }
@@ -44,7 +49,8 @@ namespace PluginInterfaces
         /// <summary>
         /// This method should take care of the execution of the specified parameter
         /// </summary>
-        /// <param name="input">one of the strings returned by the GetResults method</param>
+        /// <param name="input">one of the strings returned by the GetResults method, with additional user input
+        /// in case of plugins that require activators</param>
         void HandleExecution(string input);
     }
 }
