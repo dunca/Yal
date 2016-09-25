@@ -469,8 +469,11 @@ namespace Yal
                 return;
             }
 
-            this.Hide();
-            outputWindow.Hide();
+            if (!Properties.Settings.Default.TopMost)
+            {
+                this.Hide();
+                outputWindow.Hide();
+            }
 
             // the 3rd item in the row is the identifier of the item. The first item
             // in the row is also derived from the identifier. It's length is trimmed based on the user's preference
