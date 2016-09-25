@@ -115,6 +115,8 @@ namespace Yal
 
             cbFuzzyMatchingPluginItems.Checked = Properties.Settings.Default.FuzzyMatchingPluginItems;
 
+            cbShowItemIcons.Checked = Properties.Settings.Default.ShowItemIcons;
+
             foreach (IPlugin plugin in MainWindow.pluginInstances)
             {
                 var tab = new TabPage() { Text = plugin.Name };
@@ -351,6 +353,9 @@ namespace Yal
             Properties.Settings.Default.MaxNameSize = (int)spinMaxNameSize.Value;
 
             Properties.Settings.Default.FuzzyMatchingPluginItems = cbFuzzyMatchingPluginItems.Checked;
+
+            Properties.Settings.Default.ShowItemIcons = cbShowItemIcons.Checked;
+            MainWindow.outputWindow.UpdateIconState();
 
             Properties.Settings.Default.DisabledPlugins.Clear();
             foreach (var cb in pluginEnabledCheckboxes)

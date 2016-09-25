@@ -46,7 +46,6 @@
             this.listViewOutput.FullRowSelect = true;
             this.listViewOutput.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.listViewOutput.HideSelection = false;
-            this.listViewOutput.LargeImageList = this.imageList1;
             this.listViewOutput.Location = new System.Drawing.Point(0, 0);
             this.listViewOutput.MultiSelect = false;
             this.listViewOutput.Name = "listViewOutput";

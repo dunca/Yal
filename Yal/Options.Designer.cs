@@ -32,6 +32,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.cbShowItemIcons = new System.Windows.Forms.CheckBox();
             this.spinMaxNameSize = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.cbPluginItemsFirst = new System.Windows.Forms.CheckBox();
@@ -120,7 +121,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(450, 366);
+            this.tabControl1.Size = new System.Drawing.Size(450, 390);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPageGeneral
@@ -130,13 +131,14 @@
             this.tabPageGeneral.Controls.Add(this.groupBox3);
             this.tabPageGeneral.Location = new System.Drawing.Point(4, 22);
             this.tabPageGeneral.Name = "tabPageGeneral";
-            this.tabPageGeneral.Size = new System.Drawing.Size(442, 340);
+            this.tabPageGeneral.Size = new System.Drawing.Size(442, 364);
             this.tabPageGeneral.TabIndex = 0;
             this.tabPageGeneral.Text = "General";
             this.tabPageGeneral.UseVisualStyleBackColor = true;
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.cbShowItemIcons);
             this.groupBox5.Controls.Add(this.spinMaxNameSize);
             this.groupBox5.Controls.Add(this.label10);
             this.groupBox5.Controls.Add(this.cbPluginItemsFirst);
@@ -149,10 +151,20 @@
             this.groupBox5.Controls.Add(this.label6);
             this.groupBox5.Location = new System.Drawing.Point(214, 193);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(218, 144);
+            this.groupBox5.Size = new System.Drawing.Size(218, 167);
             this.groupBox5.TabIndex = 6;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Output window";
+            // 
+            // cbShowItemIcons
+            // 
+            this.cbShowItemIcons.AutoSize = true;
+            this.cbShowItemIcons.Location = new System.Drawing.Point(6, 102);
+            this.cbShowItemIcons.Name = "cbShowItemIcons";
+            this.cbShowItemIcons.Size = new System.Drawing.Size(149, 17);
+            this.cbShowItemIcons.TabIndex = 22;
+            this.cbShowItemIcons.Text = "Load and show item icons";
+            this.cbShowItemIcons.UseVisualStyleBackColor = true;
             // 
             // spinMaxNameSize
             // 
@@ -183,7 +195,7 @@
             // cbPluginItemsFirst
             // 
             this.cbPluginItemsFirst.AutoSize = true;
-            this.cbPluginItemsFirst.Location = new System.Drawing.Point(6, 123);
+            this.cbPluginItemsFirst.Location = new System.Drawing.Point(6, 146);
             this.cbPluginItemsFirst.Name = "cbPluginItemsFirst";
             this.cbPluginItemsFirst.Size = new System.Drawing.Size(174, 17);
             this.cbPluginItemsFirst.TabIndex = 17;
@@ -193,7 +205,7 @@
             // cbExtensionInFileName
             // 
             this.cbExtensionInFileName.AutoSize = true;
-            this.cbExtensionInFileName.Location = new System.Drawing.Point(6, 100);
+            this.cbExtensionInFileName.Location = new System.Drawing.Point(6, 123);
             this.cbExtensionInFileName.Name = "cbExtensionInFileName";
             this.cbExtensionInFileName.Size = new System.Drawing.Size(167, 17);
             this.cbExtensionInFileName.TabIndex = 3;
@@ -427,7 +439,7 @@
             this.groupBox3.Controls.Add(this.trackBarOpacity);
             this.groupBox3.Location = new System.Drawing.Point(9, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(200, 331);
+            this.groupBox3.Size = new System.Drawing.Size(200, 354);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Look and feel";
@@ -577,7 +589,7 @@
             this.tabPageIndexing.Controls.Add(this.groupBox1);
             this.tabPageIndexing.Location = new System.Drawing.Point(4, 22);
             this.tabPageIndexing.Name = "tabPageIndexing";
-            this.tabPageIndexing.Size = new System.Drawing.Size(442, 340);
+            this.tabPageIndexing.Size = new System.Drawing.Size(442, 364);
             this.tabPageIndexing.TabIndex = 1;
             this.tabPageIndexing.Text = "Indexing";
             this.tabPageIndexing.UseVisualStyleBackColor = true;
@@ -589,7 +601,7 @@
             this.groupBox6.Controls.Add(this.btnRemoveExcluded);
             this.groupBox6.Location = new System.Drawing.Point(8, 162);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(426, 81);
+            this.groupBox6.Size = new System.Drawing.Size(426, 109);
             this.groupBox6.TabIndex = 8;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Folders to exclude";
@@ -600,7 +612,7 @@
             this.listBoxExcludedLocations.HorizontalScrollbar = true;
             this.listBoxExcludedLocations.Location = new System.Drawing.Point(6, 19);
             this.listBoxExcludedLocations.Name = "listBoxExcludedLocations";
-            this.listBoxExcludedLocations.Size = new System.Drawing.Size(333, 56);
+            this.listBoxExcludedLocations.Size = new System.Drawing.Size(333, 82);
             this.listBoxExcludedLocations.TabIndex = 4;
             // 
             // btnAddExcludedLocation
@@ -615,7 +627,7 @@
             // 
             // btnRemoveExcluded
             // 
-            this.btnRemoveExcluded.Location = new System.Drawing.Point(345, 52);
+            this.btnRemoveExcluded.Location = new System.Drawing.Point(345, 45);
             this.btnRemoveExcluded.Name = "btnRemoveExcluded";
             this.btnRemoveExcluded.Size = new System.Drawing.Size(75, 23);
             this.btnRemoveExcluded.TabIndex = 2;
@@ -625,7 +637,7 @@
             // 
             // btnRebuild
             // 
-            this.btnRebuild.Location = new System.Drawing.Point(353, 296);
+            this.btnRebuild.Location = new System.Drawing.Point(353, 335);
             this.btnRebuild.Name = "btnRebuild";
             this.btnRebuild.Size = new System.Drawing.Size(75, 23);
             this.btnRebuild.TabIndex = 7;
@@ -636,7 +648,7 @@
             // lblIndexStatus
             // 
             this.lblIndexStatus.AutoSize = true;
-            this.lblIndexStatus.Location = new System.Drawing.Point(76, 301);
+            this.lblIndexStatus.Location = new System.Drawing.Point(76, 340);
             this.lblIndexStatus.Name = "lblIndexStatus";
             this.lblIndexStatus.Size = new System.Drawing.Size(10, 13);
             this.lblIndexStatus.TabIndex = 3;
@@ -645,7 +657,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 301);
+            this.label1.Location = new System.Drawing.Point(8, 340);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(70, 13);
             this.label1.TabIndex = 2;
@@ -654,7 +666,7 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.txtExtensions);
-            this.groupBox2.Location = new System.Drawing.Point(8, 249);
+            this.groupBox2.Location = new System.Drawing.Point(8, 277);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(426, 45);
             this.groupBox2.TabIndex = 1;
@@ -726,7 +738,7 @@
             this.tabPagePlugins.Location = new System.Drawing.Point(4, 22);
             this.tabPagePlugins.Name = "tabPagePlugins";
             this.tabPagePlugins.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePlugins.Size = new System.Drawing.Size(442, 340);
+            this.tabPagePlugins.Size = new System.Drawing.Size(442, 364);
             this.tabPagePlugins.TabIndex = 3;
             this.tabPagePlugins.Text = "Plugins";
             this.tabPagePlugins.UseVisualStyleBackColor = true;
@@ -737,7 +749,7 @@
             this.tabControlPlugins.Location = new System.Drawing.Point(3, 3);
             this.tabControlPlugins.Name = "tabControlPlugins";
             this.tabControlPlugins.SelectedIndex = 0;
-            this.tabControlPlugins.Size = new System.Drawing.Size(436, 334);
+            this.tabControlPlugins.Size = new System.Drawing.Size(436, 358);
             this.tabControlPlugins.TabIndex = 0;
             // 
             // tabPageAbout
@@ -747,7 +759,7 @@
             this.tabPageAbout.Location = new System.Drawing.Point(4, 22);
             this.tabPageAbout.Name = "tabPageAbout";
             this.tabPageAbout.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageAbout.Size = new System.Drawing.Size(442, 340);
+            this.tabPageAbout.Size = new System.Drawing.Size(442, 364);
             this.tabPageAbout.TabIndex = 2;
             this.tabPageAbout.Text = "About";
             this.tabPageAbout.UseVisualStyleBackColor = true;
@@ -755,7 +767,7 @@
             // label5
             // 
             this.label5.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label5.Location = new System.Drawing.Point(3, 324);
+            this.label5.Location = new System.Drawing.Point(3, 348);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(436, 13);
             this.label5.TabIndex = 0;
@@ -769,14 +781,14 @@
             this.pictureBox1.Image = global::Yal.Properties.Resources.ICON;
             this.pictureBox1.Location = new System.Drawing.Point(3, 3);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(436, 334);
+            this.pictureBox1.Size = new System.Drawing.Size(436, 358);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             // 
             // btnApplyOptions
             // 
-            this.btnApplyOptions.Location = new System.Drawing.Point(146, 367);
+            this.btnApplyOptions.Location = new System.Drawing.Point(146, 392);
             this.btnApplyOptions.Name = "btnApplyOptions";
             this.btnApplyOptions.Size = new System.Drawing.Size(75, 23);
             this.btnApplyOptions.TabIndex = 12;
@@ -786,7 +798,7 @@
             // 
             // btnCancelOpt
             // 
-            this.btnCancelOpt.Location = new System.Drawing.Point(227, 367);
+            this.btnCancelOpt.Location = new System.Drawing.Point(227, 392);
             this.btnCancelOpt.Name = "btnCancelOpt";
             this.btnCancelOpt.Size = new System.Drawing.Size(75, 23);
             this.btnCancelOpt.TabIndex = 13;
@@ -798,7 +810,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(448, 392);
+            this.ClientSize = new System.Drawing.Size(448, 417);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnCancelOpt);
             this.Controls.Add(this.btnApplyOptions);
@@ -901,5 +913,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.NumericUpDown spinMaxItems;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.CheckBox cbShowItemIcons;
     }
 }

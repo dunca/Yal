@@ -388,5 +388,17 @@ namespace Yal.Properties {
                 this["FuzzyMatchingPluginItems"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowItemIcons {
+            get {
+                return ((bool)(this["ShowItemIcons"]));
+            }
+            set {
+                this["ShowItemIcons"] = value;
+            }
+        }
     }
 }

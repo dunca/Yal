@@ -36,7 +36,7 @@ namespace Yal
         private Point lastPointerLocation;
 
         private Options optionsWindow;
-        private OutputWindow outputWindow;
+        internal OutputWindow outputWindow;
         internal List<IPlugin> pluginInstances;
 
         private const string attachTemplate = "attach database '{0}' as {1}";
@@ -343,7 +343,7 @@ namespace Yal
         private void PerformSearch()
         {
             timerSearchDelay.Stop();
-            outputWindow.imageList1.Images?.Clear();
+            outputWindow.imageList1.Images.Clear();
             outputWindow.listViewOutput.Items.Clear();
 
             if (txtSearch.Text != "")
@@ -407,7 +407,7 @@ namespace Yal
                             }
 
                             lvi = new ListViewItem(new string[] { itemName, otherInfo, itemName });
-                            if (pluginInstance.PluginIcon != null)
+                            if (Properties.Settings.Default.ShowItemIcons && pluginInstance.PluginIcon != null)
                             {
                                 outputWindow.imageList1.Images.Add(pluginInstance.PluginIcon);
                                 lvi.ImageIndex = iconIndex;
@@ -422,10 +422,12 @@ namespace Yal
                                 itemName = Path.GetFileNameWithoutExtension(otherInfo);
                             }
 
+                            lvi = new ListViewItem(new string[] { itemName, otherInfo, itemName }) { ToolTipText = otherInfo };
+
                             Icon icon;
-                            if (FileManager.GetFileIcon(otherInfo, out icon))
+                            if (Properties.Settings.Default.ShowItemIcons && FileManager.GetFileIcon(otherInfo, out icon))
                             {
-                                lvi = new ListViewItem(new string[] { itemName, otherInfo, itemName }, imageIndex: iconIndex) { ToolTipText = otherInfo };
+                                lvi.ImageIndex = iconIndex;
                                 outputWindow.imageList1.Images.Add(icon);
                                 iconIndex++;
                             }
