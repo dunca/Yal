@@ -20,6 +20,15 @@ namespace Yal
             listViewOutput.ShowItemToolTips = true;
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Tab && MainWindow.TabComplete())
+            {
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         internal void ResizeToFitContent()
         {
             int neededRows = Math.Min(Properties.Settings.Default.MaxVisible, listViewOutput.Items.Count);

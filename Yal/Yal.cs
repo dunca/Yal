@@ -222,12 +222,22 @@ namespace Yal
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == Keys.Tab && txtSearch.Focused && outputWindow.listViewOutput.SelectedIndices.Count > 0)
+            if (keyData == Keys.Tab && TabComplete())
+            {
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        internal bool TabComplete()
+        {
+            if (outputWindow.listViewOutput.SelectedIndices.Count > 0)
             {
                 txtSearch.Text = outputWindow.listViewOutput.SelectedItems[0].SubItems[2].Text;
+                txtSearch.SelectionStart = txtSearch.Text.Length;
+                return true;
             }
-
-            return base.ProcessCmdKey(ref msg, keyData);
+            return false;
         }
 
         private void ActivateYal()
