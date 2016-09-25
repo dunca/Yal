@@ -220,6 +220,16 @@ namespace Yal
             }
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Tab && txtSearch.Focused && outputWindow.listViewOutput.SelectedIndices.Count > 0)
+            {
+                txtSearch.Text = outputWindow.listViewOutput.SelectedItems[0].SubItems[2].Text;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         private void ActivateYal()
         {
             this.Show();
