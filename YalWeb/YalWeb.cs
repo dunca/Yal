@@ -19,8 +19,8 @@ namespace YalWeb
         public bool RequiresActivator { get; } = true;
 
         public Icon PluginIcon { get; }
-        public string HelpText { get; } = @"To use this plugin, type an activator's
-name, followed by the keyworld you'd like to search for.
+        public string HelpText { get; } = @"To use this plugin, type the name of an
+activator, followed by the keyword you'd like to search for.
 For example: -> !w rats <- will (by default) search 
 Wikipedia for the 'rats' keyword.
 
@@ -31,8 +31,8 @@ used in newly added shortcut URLs as a
 placeholder for the keywords specified 
 at runtime after the shortcut's name.
 
-To remove an entry, right click on it, and
-pick the self explanatory menu item.";
+To remove an entry, right click on it and
+pick the relevant menu item.";
         public UserControl PluginUserControl
         {
             get
