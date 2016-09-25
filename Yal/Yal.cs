@@ -409,9 +409,7 @@ namespace Yal
                             lvi = new ListViewItem(new string[] { itemName, otherInfo, itemName });
                             if (Properties.Settings.Default.ShowItemIcons && pluginInstance.PluginIcon != null)
                             {
-                                outputWindow.imageList1.Images.Add(pluginInstance.PluginIcon);
-                                lvi.ImageIndex = iconIndex;
-                                iconIndex++;
+                                UpdateImageList(pluginInstance.PluginIcon, lvi, ref iconIndex);
                             }
                         }
                         else
@@ -427,9 +425,7 @@ namespace Yal
                             Icon icon;
                             if (Properties.Settings.Default.ShowItemIcons && FileManager.GetFileIcon(otherInfo, out icon))
                             {
-                                lvi.ImageIndex = iconIndex;
-                                outputWindow.imageList1.Images.Add(icon);
-                                iconIndex++;
+                                UpdateImageList(icon, lvi, ref iconIndex);
                             }
                         }
                         lvi.SubItems[0].Text = TrimStringIfNeeded(itemName);
@@ -456,6 +452,13 @@ namespace Yal
             {
                 outputWindow.Hide();
             }          
+        }
+
+        private void UpdateImageList(Icon icon, ListViewItem lvi, ref int iconIndex)
+        {
+            outputWindow.imageList1.Images.Add(icon);
+            lvi.ImageIndex = iconIndex;
+            iconIndex++;
         }
 
         private string GetSearchPattern(string input, bool fuzzyMatch)
