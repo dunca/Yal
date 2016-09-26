@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 using Utilities;
 using PluginInterfaces;
@@ -65,6 +66,11 @@ named '{(PluginUserControl as YalPathUC).cbOpenPath.Text}' is checked.
         {
             itemInfo = null;
             string[] results = null;
+
+            //if (Regex.IsMatch(input, "^[a-zA-Z]:$"))
+            //{
+            //    return GetResults(string.Concat(input, Path.DirectorySeparatorChar), out itemInfo);
+            //}
 
             if (Directory.Exists(input))
             {
