@@ -117,7 +117,7 @@ namespace Yal
 
         internal void UpdateIconState()
         {
-            if (Properties.Settings.Default.ShowItemIcons && listViewOutput.LargeImageList == null)
+            if (Properties.Settings.Default.ShowItemIcons)
             {
                 listViewOutput.LargeImageList = imageList1;
             }
