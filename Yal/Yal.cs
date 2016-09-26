@@ -47,7 +47,7 @@ namespace Yal
                                                union
                                                select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, @file_priority as HITS from INDEX_CATALOG where NAME like @pattern
                                                union
-                                               select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, 0 as HITS from PLUGIN_ITEM where (REQUIRES_ACTIVATOR == 0 and ITEM_NAME like @plugin_pattern) OR (REQUIRES_ACTIVATOR == 1 and ITEM_NAME like @act_plugin_pattern)
+                                               select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, -1 as HITS from PLUGIN_ITEM where (REQUIRES_ACTIVATOR == 0 and ITEM_NAME like @plugin_pattern) OR (REQUIRES_ACTIVATOR == 1 and ITEM_NAME like @act_plugin_pattern)
                                                order by HITS desc, NAME asc) limit @limit";
         
         private SQLiteConnection pluginItemDb = new SQLiteConnection("FullUri=file::memory:?cache=shared;Version=3;");
@@ -395,7 +395,7 @@ namespace Yal
                     string pattern = GetSearchPattern(txtSearch.Text, Properties.Settings.Default.FuzzyMatching);
                     string pluginPattern = GetSearchPattern(txtSearch.Text, Properties.Settings.Default.FuzzyMatchingPluginItems);
 
-                    command.Parameters.AddWithValue("@file_priority", Properties.Settings.Default.PluginItemsFirst ? -1 : 1);
+                    command.Parameters.AddWithValue("@file_priority", Properties.Settings.Default.PluginItemsFirst ? -2 : 0);
                     command.Parameters.AddWithValue("@limit", Properties.Settings.Default.MaxItems);
                     command.Parameters.AddWithValue("@snippet", string.Concat(txtSearch.Text, "%"));
                     command.Parameters.AddWithValue("@act_plugin_pattern", actPluginPattern);
