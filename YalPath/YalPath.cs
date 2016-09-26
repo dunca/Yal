@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.ComponentModel;
+using System.Collections.Generic;
 
 using Utilities;
 using PluginInterfaces;
@@ -56,9 +57,21 @@ namespace YalPath
                 // list the dir's contents if the path ends with the directory separator
                 if (input[input.Length - 1] == Path.DirectorySeparatorChar)
                 {
-                    // it seems that EnumerateFSEntries can't deal with 'junction points' (C:\Documents and Settings -> C:\Users),
-                    // so we simply ignore those
-                    results = Directory.EnumerateFileSystemEntries(input).Where(path => !Utils.FileIsLink(path)).ToArray();
+                    var resultsList = new List<string>();
+                    var itemInfoList = new List<string>();
+
+                    foreach (var entry in Directory.EnumerateFileSystemEntries(input))
+                    {
+                        // it seems that EnumerateFSEntries can't deal with 'junction points' (C:\Documents and Settings -> C:\Users),
+                        // so we simply ignore those
+                        if (!Utils.FileIsLink(entry))
+                        {
+                            itemInfoList.Add(entry);
+                            resultsList.Add(Path.GetFileName(entry));
+                        }
+                    }
+                    results = resultsList.ToArray();
+                    itemInfo = itemInfoList.ToArray();
                 }
                 else
                 {
