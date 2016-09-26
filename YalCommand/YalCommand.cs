@@ -50,7 +50,7 @@ they will be simply ignored.
 
 To add a new command, use the functionality bellow the
 list of entries.
-If the '{(GetUserControl() as YalCommandUC).lblConfirm.Text}' option
+If the '{(PluginUserControl as YalCommandUC).lblConfirm.Text}' option
 is set to 'True', the user will be prompted with a
 message box before the command is ran. The message box
 will allow the user to prevent the command from running.
@@ -130,15 +130,6 @@ for a command '~hhh' that expects '!2-n!'
         {
             itemInfo = null;
             return Entries.Count > 0 ? Entries.Keys.ToArray() : null;
-        }
-
-        public UserControl GetUserControl()
-        {
-            if (pluginUserControl == null || pluginUserControl.IsDisposed)
-            {
-                pluginUserControl = new YalCommandUC(this, Entries);
-            }
-            return pluginUserControl;
         }
 
         public void HandleExecution(string input)

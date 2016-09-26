@@ -69,15 +69,6 @@ pick the relevant menu item.";
             }
         }
 
-        public UserControl GetUserControl()
-        {
-            if (pluginUserControl == null || pluginUserControl.IsDisposed)
-            {
-                pluginUserControl = new YalWebUC(this);
-            }
-            return pluginUserControl;
-        }
-
         public string[] GetResults(string input, out string[] itemInfo)
         {
             itemInfo = null;
