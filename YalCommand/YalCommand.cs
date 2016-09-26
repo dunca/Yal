@@ -129,7 +129,7 @@ for a command '~hhh' that expects '!2-n!'
         public string[] GetResults(string input, out string[] itemInfo)
         {
             itemInfo = null;
-            return Entries.Keys.ToArray();
+            return Entries.Count > 0 ? Entries.Keys.ToArray() : null;
         }
 
         public UserControl GetUserControl()

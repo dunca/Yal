@@ -81,7 +81,7 @@ pick the relevant menu item.";
         public string[] GetResults(string input, out string[] itemInfo)
         {
             itemInfo = null;
-            return Entries.Keys.ToArray();
+            return Entries.Count > 0 ? Entries.Keys.ToArray() : null;
         }
 
         public void HandleExecution(string input)

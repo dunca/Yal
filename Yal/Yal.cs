@@ -369,15 +369,18 @@ namespace Yal
                     string[] itemInfo;
                     string[] pluginItems = plugin.GetResults(txtSearch.Text, out itemInfo);
 
-                    foreach (var pluginItem in pluginItems)
+                    if (pluginItems != null)
                     {
-                        pluginItemCount++;
-                        var command = new SQLiteCommand(pluginInsertString, pluginItemDb);
-                        command.Parameters.AddWithValue("@requires_activator", plugin.RequiresActivator ? 1 : 0);
-                        command.Parameters.AddWithValue("@plugin_name", plugin.Name);
-                        command.Parameters.AddWithValue("@item_name", pluginItem);
-                        command.Parameters.AddWithValue("@additional_info", 0);
-                        command.ExecuteNonQuery();
+                        foreach (var pluginItem in pluginItems)
+                        {
+                            pluginItemCount++;
+                            var command = new SQLiteCommand(pluginInsertString, pluginItemDb);
+                            command.Parameters.AddWithValue("@requires_activator", plugin.RequiresActivator ? 1 : 0);
+                            command.Parameters.AddWithValue("@plugin_name", plugin.Name);
+                            command.Parameters.AddWithValue("@item_name", pluginItem);
+                            command.Parameters.AddWithValue("@additional_info", 0);
+                            command.ExecuteNonQuery();
+                        }
                     }
                 }
 

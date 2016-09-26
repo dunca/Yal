@@ -39,7 +39,8 @@ namespace PluginInterfaces
         void SaveSettings();
 
         /// <summary>
-        /// This method should return an array with the identifiers of all the items that the plugin can provide
+        /// This method should return an array with the identifiers of all the items that the plugin can provide or 'null'
+        /// when the plugin can't provide any items
         /// </summary>
         /// <param name="input">the string the user inserts in the launcher's text/search box</param>
         /// <param name="itemInfo">an optional array of additional strings, one for each of the items in the returned array</param>

@@ -214,7 +214,7 @@ specific bookmark in it's bookmark database.";
                 }
                 browser.Value.QueryDatabase();
             }
-            return localQueryCache.Keys.ToArray();
+            return localQueryCache.Count > 0 ? localQueryCache.Keys.ToArray() : null;
         }
 
         public void HandleExecution(string input)
