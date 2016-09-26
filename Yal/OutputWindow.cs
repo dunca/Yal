@@ -50,46 +50,36 @@ namespace Yal
             }
         }
 
+        private void listViewOutput_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar))
+            {
+                AlterSearchBoxText(string.Concat(MainWindow.txtSearch.Text, e.KeyChar));
+            }
+        }
+
         private void listViewOutput_KeyDown(object sender, KeyEventArgs e)
         {
-            char inputChar = (char)e.KeyCode;
-
-            if (char.IsLetter(inputChar))
+            if (e.Modifiers == Keys.Control)
             {
-                if (e.Modifiers == Keys.Control)
+                if (e.KeyCode == Keys.O)
                 {
-                    if (e.KeyCode == Keys.O)
-                    {
-                        MainWindow.ShowOptionsWindow();
-                    }
-                    else if (e.KeyCode == Keys.A)
-                    {
-                        MainWindow.txtSearch.Focus();
-                        MainWindow.txtSearch.SelectAll();
-                    }
-                    else if (listViewOutput.SelectedItems.Count != 0 && e.KeyCode == Keys.P)
-                    {
-                        BuildContextMenu();
-                    }
-                    return;
+                    MainWindow.ShowOptionsWindow();
                 }
-
-                if (!Control.IsKeyLocked(Keys.CapsLock) || (Control.IsKeyLocked(Keys.CapsLock) && e.Modifiers == Keys.Shift))
+                else if (e.KeyCode == Keys.A)
                 {
-                    inputChar = char.ToLower(inputChar);
+                    MainWindow.txtSearch.Focus();
+                    MainWindow.txtSearch.SelectAll();
                 }
-
-                AlterSearchBoxText(string.Concat(MainWindow.txtSearch.Text, inputChar));
-
-            }
-            else if (e.KeyCode == Keys.Space)
-            {
-                AlterSearchBoxText(string.Concat(MainWindow.txtSearch.Text, ' '));
+                else if (e.KeyCode == Keys.P && listViewOutput.SelectedItems.Count != 0)
+                {
+                    BuildContextMenu();
+                }
+                return;
             }
             else if (e.KeyCode == Keys.Back)
             {
                 AlterSearchBoxText(MainWindow.txtSearch.Text.Substring(0, MainWindow.txtSearch.Text.Length - 1));
-
             }
             else if (e.KeyCode == Keys.Enter)
             {

@@ -55,6 +55,7 @@
             this.listViewOutput.UseCompatibleStateImageBehavior = false;
             this.listViewOutput.View = System.Windows.Forms.View.Tile;
             this.listViewOutput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listViewOutput_KeyDown);
+            this.listViewOutput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.listViewOutput_KeyPress);
             this.listViewOutput.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listViewOutput_MouseClick);
             this.listViewOutput.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listViewOutput_MouseDoubleClick);
             // 
