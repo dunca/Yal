@@ -354,8 +354,11 @@ namespace Yal
 
             Properties.Settings.Default.FuzzyMatchingPluginItems = cbFuzzyMatchingPluginItems.Checked;
 
-            Properties.Settings.Default.ShowItemIcons = cbShowItemIcons.Checked;
-            MainWindow.outputWindow.UpdateIconState();
+            if (cbShowItemIcons.Checked != Properties.Settings.Default.ShowItemIcons)
+            {
+                Properties.Settings.Default.ShowItemIcons = cbShowItemIcons.Checked;
+                MainWindow.outputWindow.UpdateIconState();
+            }
 
             Properties.Settings.Default.DisabledPlugins.Clear();
             foreach (var cb in pluginEnabledCheckboxes)
