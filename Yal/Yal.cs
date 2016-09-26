@@ -42,12 +42,12 @@ namespace Yal
         private const string attachTemplate = "attach database '{0}' as {1}";
         private const string pluginTableSchema = "create table if not exists PLUGIN_ITEM (ITEM_NAME string, PLUGIN_NAME string, ADDITIONAL_INFO string, REQUIRES_ACTIVATOR numeric)";
         private const string pluginInsertString = "insert into PLUGIN_ITEM (ITEM_NAME, PLUGIN_NAME, ADDITIONAL_INFO, REQUIRES_ACTIVATOR) values (@item_name, @plugin_name, @additional_info, @requires_activator)";
-        private const string itemQueryString = @"select distinct ITEM_NAME, OTHER_INFO from 
-                                               (select ITEM_NAME, OTHER_INFO, HITS from HISTORY_CATALOG where SNIPPET like @snippet
+        private const string itemQueryString = @"select distinct ITEM_NAME, OTHER_INFO, ADDITIONAL_INFO from 
+                                               (select ITEM_NAME, OTHER_INFO, '' as ADDITIONAL_INFO, HITS from HISTORY_CATALOG where SNIPPET like @snippet
                                                union
-                                               select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, @file_priority as HITS from INDEX_CATALOG where NAME like @pattern
+                                               select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, '' as ADDITIONAL_INFO, @file_priority as HITS from INDEX_CATALOG where NAME like @pattern
                                                union
-                                               select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, -1 as HITS from PLUGIN_ITEM where (REQUIRES_ACTIVATOR == 0 and ITEM_NAME like @plugin_pattern) OR (REQUIRES_ACTIVATOR == 1 and ITEM_NAME like @act_plugin_pattern)
+                                               select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, ADDITIONAL_INFO, -1 as HITS from PLUGIN_ITEM where (REQUIRES_ACTIVATOR == 0 and ITEM_NAME like @plugin_pattern) OR (REQUIRES_ACTIVATOR == 1 and ITEM_NAME like @act_plugin_pattern)
                                                order by HITS desc, NAME asc) limit @limit";
         
         private SQLiteConnection pluginItemDb = new SQLiteConnection("FullUri=file::memory:?cache=shared;Version=3;");
@@ -358,7 +358,6 @@ namespace Yal
 
             if (txtSearch.Text != "")
             {
-                int pluginItemCount = 0;
                 foreach (var plugin in pluginInstances)
                 {
                     if (Properties.Settings.Default.DisabledPlugins.Contains(plugin.Name))
@@ -371,14 +370,20 @@ namespace Yal
 
                     if (pluginItems != null)
                     {
-                        foreach (var pluginItem in pluginItems)
+                        // itemInfo can't have more(less) items than pluginItems since it should contain alternative info
+                        // about each plugin item
+                        if (itemInfo != null && pluginItems.Length != itemInfo.Length)
                         {
-                            pluginItemCount++;
+                            continue;
+                        }
+
+                        for (int i = 0; i < pluginItems.Length; i++)
+                        {
                             var command = new SQLiteCommand(pluginInsertString, pluginItemDb);
                             command.Parameters.AddWithValue("@requires_activator", plugin.RequiresActivator ? 1 : 0);
+                            command.Parameters.AddWithValue("@additional_info", itemInfo != null ? itemInfo[i] : "");
+                            command.Parameters.AddWithValue("@item_name", pluginItems[i]);
                             command.Parameters.AddWithValue("@plugin_name", plugin.Name);
-                            command.Parameters.AddWithValue("@item_name", pluginItem);
-                            command.Parameters.AddWithValue("@additional_info", 0);
                             command.ExecuteNonQuery();
                         }
                     }
@@ -419,7 +424,8 @@ namespace Yal
                                 itemName = string.Join(" ", itemName, txtSearch.Text.Substring(spaceIndex + 1));
                             }
 
-                            lvi = new ListViewItem(new string[] { itemName, otherInfo, itemName });
+                            var additionalItemInfo = reader["ADDITIONAL_INFO"].ToString();
+                            lvi = new ListViewItem(new string[] { itemName, otherInfo, additionalItemInfo != "" ? additionalItemInfo : itemName });
                             if (Properties.Settings.Default.ShowItemIcons && pluginInstance.PluginIcon != null)
                             {
                                 UpdateImageList(pluginInstance.PluginIcon, lvi, ref iconIndex);
