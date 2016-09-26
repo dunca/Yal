@@ -114,15 +114,6 @@ Work Folders;Microsoft.WorkFolders;8.1,10
             pluginUserControl.SaveSettings();
         }
 
-        public UserControl GetUserControl()
-        {
-            if (pluginUserControl == null || pluginUserControl.IsDisposed)
-            {
-                pluginUserControl = new YalControlPanelUC();
-            }
-            return pluginUserControl;
-        }
-
         public string[] GetResults(string input, out string[] itemInfo)
         {
             itemInfo = null;
