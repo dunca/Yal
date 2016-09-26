@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YalBookmark", "YalBookmark\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YalPath", "YalPath\YalPath.csproj", "{3D861509-0A1C-4FFB-8BCE-BE325E94F197}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YalProcessKiller", "YalProcessKiller\YalProcessKiller.csproj", "{6E37DDF8-BF6D-4A47-BB01-C4AB120EBE0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{3D861509-0A1C-4FFB-8BCE-BE325E94F197}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D861509-0A1C-4FFB-8BCE-BE325E94F197}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D861509-0A1C-4FFB-8BCE-BE325E94F197}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E37DDF8-BF6D-4A47-BB01-C4AB120EBE0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E37DDF8-BF6D-4A47-BB01-C4AB120EBE0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E37DDF8-BF6D-4A47-BB01-C4AB120EBE0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E37DDF8-BF6D-4A47-BB01-C4AB120EBE0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
