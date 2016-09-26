@@ -85,7 +85,7 @@ namespace YalPath
 
         public void HandleExecution(string input)
         {
-            if (Utils.PathExists(input.TrimEnd(Path.DirectorySeparatorChar)))
+            if (Utils.PathExists(input))
             {
                 if (Properties.Settings.Default.CopyPath)
                 {
