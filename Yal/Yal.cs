@@ -209,7 +209,7 @@ namespace Yal
 
             if (m.Msg == WM_HOTKEY)
             {
-                if (this.Visible)
+                if (this.txtSearch.Focused)
                 {
                     this.Hide();
                 }
