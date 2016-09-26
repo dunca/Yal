@@ -56,9 +56,18 @@ namespace YalPath
 
             if (Directory.Exists(input))
             {
-                // it seems that EnumerateFSEntries can't deal with 'junction points' (C:\Documents and Settings -> C:\Users),
-                // so we simply ignore those
-                results = Directory.EnumerateFileSystemEntries(input).Where(path => !Utils.FileIsLink(path)).ToArray();
+                // list the dir's contents if the path ends with the directory separator
+                if (input[input.Length - 1] == Path.DirectorySeparatorChar)
+                {
+                    // it seems that EnumerateFSEntries can't deal with 'junction points' (C:\Documents and Settings -> C:\Users),
+                    // so we simply ignore those
+                    results = Directory.EnumerateFileSystemEntries(input).Where(path => !Utils.FileIsLink(path)).ToArray();
+                }
+                else
+                {
+                    results = new string[] { input };
+                }
+
             }
             else if (File.Exists(input))
             {
