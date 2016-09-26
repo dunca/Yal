@@ -69,5 +69,17 @@ namespace Utilities
             }
             return null;
         }
+
+        public static bool FileIsLink(string path)
+        {
+            // http://stackoverflow.com/a/21558051
+            return new FileInfo(path).Attributes.HasFlag(FileAttributes.ReparsePoint);
+        }
+
+        public static bool DirIsLink(string path)
+        {
+            // http://stackoverflow.com/a/21558051
+            return new DirectoryInfo(path).Attributes.HasFlag(FileAttributes.ReparsePoint);
+        }
     }
 }
