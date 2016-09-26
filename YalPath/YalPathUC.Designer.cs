@@ -82,7 +82,7 @@
         #endregion
 
         private System.Windows.Forms.CheckBox cbCopyPath;
-        private System.Windows.Forms.CheckBox cbOpenPath;
         private System.Windows.Forms.GroupBox groupBox1;
+        internal System.Windows.Forms.CheckBox cbOpenPath;
     }
 }
