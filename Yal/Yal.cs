@@ -47,7 +47,7 @@ namespace Yal
                                                union
                                                select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, '' as ADDITIONAL_INFO, @file_priority as HITS from INDEX_CATALOG where NAME like @pattern
                                                union
-                                               select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, ADDITIONAL_INFO, -1 as HITS from PLUGIN_ITEM where (REQUIRES_ACTIVATOR == 0 and ITEM_NAME like @plugin_pattern) OR (REQUIRES_ACTIVATOR == 1 and ITEM_NAME like @act_plugin_pattern)
+                                               select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, ADDITIONAL_INFO, -1 as HITS from PLUGIN_ITEM where (REQUIRES_ACTIVATOR == 0 and (case ADDITIONAL_INFO when '' then ITEM_NAME else ADDITIONAL_INFO end) like @plugin_pattern) OR (REQUIRES_ACTIVATOR == 1 and (case ADDITIONAL_INFO when '' then ITEM_NAME else ADDITIONAL_INFO end) like @act_plugin_pattern)
                                                order by HITS desc, NAME asc) limit @limit";
         
         private SQLiteConnection pluginItemDb = new SQLiteConnection("FullUri=file::memory:?cache=shared;Version=3;");
