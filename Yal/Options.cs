@@ -161,6 +161,7 @@ namespace Yal
 
             var helpForm = new Form()
             {
+                ShowInTaskbar = false,
                 FormBorderStyle = FormBorderStyle.FixedToolWindow, MaximizeBox = false,
                 Text = string.Concat(currentPlugin.Name, " help"), StartPosition = FormStartPosition.CenterScreen
             };
