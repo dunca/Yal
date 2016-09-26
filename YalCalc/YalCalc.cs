@@ -44,17 +44,18 @@ namespace YalCalc
         public string[] GetResults(string input, out string[] itemInfo)
         {
             itemInfo = null;
+            string[] result = null;
 
             var dt = new DataTable();
             try
             {
-                double result = Convert.ToDouble(dt.Compute(input, filter: ""));
-                return new string[] { string.Concat(input, "=", Convert.ToString(Math.Round(result, Properties.Settings.Default.DecimalPlaces))) };
+                double output = Convert.ToDouble(dt.Compute(input, filter: ""));
+                result = new string[] { string.Concat(input, "=", Convert.ToString(Math.Round(output, Properties.Settings.Default.DecimalPlaces))) };
             }
             catch
             {
             }
-            return new string[0];
+            return result;
         }
 
         public void HandleExecution(string input)

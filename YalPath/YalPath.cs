@@ -52,16 +52,17 @@ namespace YalPath
         public string[] GetResults(string input, out string[] itemInfo)
         {
             itemInfo = null;
+            string[] results = null;
 
             if (Directory.Exists(input))
             {
                 // it seems that EnumerateFSEntries can't deal with 'junction points' (C:\Documents and Settings -> C:\Users),
                 // so we simply ignore those
-                return Directory.EnumerateFileSystemEntries(input).Where(path => !Utils.FileIsLink(path)).ToArray();
+                results = Directory.EnumerateFileSystemEntries(input).Where(path => !Utils.FileIsLink(path)).ToArray();
             }
             else if (File.Exists(input))
             {
-                return new string[] { input };
+                results = new string[] { input };
             }
             else
             {
@@ -74,13 +75,13 @@ namespace YalPath
                     directory = directory.Substring(0, lastSeparatorIndex + 1);
                     if (Directory.Exists(directory))
                     {
-                        return Directory.EnumerateFileSystemEntries(directory).Where(
-                               path => path.StartsWith(input, StringComparison.CurrentCultureIgnoreCase) && 
-                                       !Utils.FileIsLink(path)).ToArray();
+                        results = Directory.EnumerateFileSystemEntries(directory).Where(
+                                            path => path.StartsWith(input, StringComparison.CurrentCultureIgnoreCase) && 
+                                            !Utils.FileIsLink(path)).ToArray();
                     }
                 }
             }
-            return new string[0];
+            return results;
         }
 
         public void HandleExecution(string input)

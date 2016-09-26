@@ -126,7 +126,7 @@ Work Folders;Microsoft.WorkFolders;8.1,10
         public string[] GetResults(string input, out string[] itemInfo)
         {
             itemInfo = null;
-            return ControlPanelItems.Keys.ToArray();
+            return ControlPanelItems.Count > 0 ? ControlPanelItems.Keys.ToArray() : null;
         }
 
         public void HandleExecution(string name)
