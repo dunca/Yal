@@ -62,14 +62,14 @@ named '{(PluginUserControl as YalPathUC).cbOpenPath.Text}' is checked.
             pluginUserControl.SaveSettings();
         }
 
-        public string[] GetResults(string input, out string[] itemInfo)
+        public string[] GetItems(string input, out string[] itemInfo)
         {
             itemInfo = null;
             string[] results = null;
 
             //if (Regex.IsMatch(input, "^[a-zA-Z]:$"))
             //{
-            //    return GetResults(string.Concat(input, Path.DirectorySeparatorChar), out itemInfo);
+            //    return GetItems(string.Concat(input, Path.DirectorySeparatorChar), out itemInfo);
             //}
 
             if (Directory.Exists(input))

@@ -356,7 +356,9 @@ namespace Yal
             outputWindow.imageList1.Images.Clear();
             outputWindow.listViewOutput.Items.Clear();
 
-            if (txtSearch.Text != "")
+            var userInput = txtSearch.Text;
+
+            if (userInput != "")
             {
                 foreach (var plugin in pluginInstances)
                 {
@@ -366,7 +368,7 @@ namespace Yal
                     }
 
                     string[] itemInfo;
-                    string[] pluginItems = plugin.GetResults(txtSearch.Text, out itemInfo);
+                    string[] pluginItems = plugin.GetItems(userInput, out itemInfo);
 
                     if (pluginItems != null)
                     {
@@ -396,13 +398,13 @@ namespace Yal
 
                     var command = new SQLiteCommand(itemQueryString, connection);
 
-                    string actPluginPattern = string.Concat(txtSearch.Text.Split()[0], "%");
-                    string pattern = GetSearchPattern(txtSearch.Text, Properties.Settings.Default.FuzzyMatching);
-                    string pluginPattern = GetSearchPattern(txtSearch.Text, Properties.Settings.Default.FuzzyMatchingPluginItems);
+                    string pattern = ConstructSearchPattern(userInput, Properties.Settings.Default.FuzzyMatching);
+                    string pluginPattern = ConstructSearchPattern(userInput, Properties.Settings.Default.FuzzyMatchingPluginItems);
+                    string actPluginPattern = ConstructSearchPattern(userInput, Properties.Settings.Default.FuzzyMatchingPluginItems, true);
 
                     command.Parameters.AddWithValue("@file_priority", Properties.Settings.Default.PluginItemsFirst ? -2 : 0);
                     command.Parameters.AddWithValue("@limit", Properties.Settings.Default.MaxItems);
-                    command.Parameters.AddWithValue("@snippet", string.Concat(txtSearch.Text, "%"));
+                    command.Parameters.AddWithValue("@snippet", string.Concat(userInput, "%"));
                     command.Parameters.AddWithValue("@act_plugin_pattern", actPluginPattern);
                     command.Parameters.AddWithValue("@plugin_pattern", pluginPattern);
                     command.Parameters.AddWithValue("@pattern", pattern);
@@ -418,12 +420,6 @@ namespace Yal
                         IPlugin pluginInstance = pluginInstances.Find(plugin => plugin.Name == otherInfo);
                         if (pluginInstance != null)
                         {
-                            var spaceIndex = txtSearch.Text.IndexOf(" ");
-                            if (pluginInstance.RequiresActivator && spaceIndex != -1)
-                            {
-                                itemName = string.Join(" ", itemName, txtSearch.Text.Substring(spaceIndex + 1));
-                            }
-
                             var additionalItemInfo = reader["ADDITIONAL_INFO"].ToString();
                             lvi = new ListViewItem(new string[] { itemName, otherInfo, additionalItemInfo != "" ? additionalItemInfo : itemName });
                             if (Properties.Settings.Default.ShowItemIcons && pluginInstance.PluginIcon != null)
@@ -480,11 +476,15 @@ namespace Yal
             iconIndex++;
         }
 
-        private string GetSearchPattern(string input, bool fuzzyMatch)
+        private string ConstructSearchPattern(string input, bool fuzzyMatch, bool ignoreMatchAnywhere = false)
         {
             var pattern =  fuzzyMatch ? string.Concat(input.Select(c => string.Concat(c, "%"))) :
                                         string.Concat(input, "%");
-            return string.Concat(Properties.Settings.Default.MatchAnywhere ? "%" : "", pattern);
+            if (!ignoreMatchAnywhere)
+            {
+                pattern = string.Concat(Properties.Settings.Default.MatchAnywhere ? "%" : "", pattern);
+            }
+            return pattern;
         }
 
         private string TrimStringIfNeeded(string str)

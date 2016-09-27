@@ -48,7 +48,7 @@ pick the relevant menu item.";
         private YalWebUC pluginUserControl;
         private Dictionary<string, string> Entries = new Dictionary<string, string>();
 
-        public YalWeb()
+        public YalWeb() 
         {
             PopulateEntries();
             PluginIcon = Utils.GetPluginIcon(Name);
@@ -69,10 +69,21 @@ pick the relevant menu item.";
             }
         }
 
-        public string[] GetResults(string input, out string[] itemInfo)
+        public string[] GetItems(string input, out string[] itemInfo)
         {
             itemInfo = null;
-            return Entries.Count > 0 ? Entries.Keys.ToArray() : null;
+            string[] result = null;
+
+            var firstArgIndex = input.IndexOf(" ") + 1;
+            if (firstArgIndex != 0 && firstArgIndex < input.Length)
+            {
+                result = Entries.Keys.Select(entry => string.Join(" ", entry, input.Substring(firstArgIndex))).ToArray();
+            }
+            else
+            {
+                result = Entries.Keys.Select(entry => string.Concat(entry, " ")).ToArray();
+            }
+            return result;
         }
 
         public void HandleExecution(string input)

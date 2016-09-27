@@ -201,7 +201,7 @@ specific bookmark in it's bookmark database.";
             pluginUserControl.SaveSettings();
         }
 
-        public string[] GetResults(string input, out string[] itemInfo)
+        public string[] GetItems(string input, out string[] itemInfo)
         {
             itemInfo = null;
             localQueryCache.Clear();

@@ -12,7 +12,7 @@ namespace YalClipboardHistory
         public string Name { get; } = "YalClipboardHistory";
         public string Version { get; } = "1.0";
         public string Description { get; } = "Easily access your clipboard's history through Yal";
-        public bool RequiresActivator { get; } = false;
+        public bool RequiresActivator { get; } = true;
 
         public Icon PluginIcon { get; }
         public string HelpText { get; }
@@ -55,7 +55,7 @@ between sessions, if the
             pluginUserControl.SaveSettings();
         }
 
-        public string[] GetResults(string input, out string[] itemInfo)
+        public string[] GetItems(string input, out string[] itemInfo)
         {
             itemInfo = null;
             string[] result = null;
