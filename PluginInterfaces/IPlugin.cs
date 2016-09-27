@@ -10,7 +10,9 @@ namespace PluginInterfaces
         string Description { get; }
 
         /// <summary>
-        /// Should be set to 'true' by plugins that rely on special keywords to do their mojo.
+        /// Should be set to 'true' by plugins that rely on special keywords to do their mojo. When this is 'true', Yal will
+        /// always try to match the user's input against item names starting from index 0, thus it will completelly
+        /// ignore the 'Match anywhere in the item's name' option.
         /// </summary>
         bool RequiresActivator { get; }
 
@@ -45,12 +47,12 @@ namespace PluginInterfaces
         /// <param name="input">the string the user inserts in the launcher's text/search box</param>
         /// <param name="itemInfo">an optional array of additional strings, one for each of the items in the returned array</param>
         /// <returns></returns>
-        string[] GetResults(string input, out string[] itemInfo);
+        string[] GetItems(string input, out string[] itemInfo);
 
         /// <summary>
         /// This method should take care of the execution of the specified parameter
         /// </summary>
-        /// <param name="input">one of the strings returned by the GetResults method, with additional user input
+        /// <param name="input">one of the strings returned by the GetItems method, with additional user input
         /// in case of plugins that require activators</param>
         void HandleExecution(string input);
     }

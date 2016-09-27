@@ -114,7 +114,7 @@ Work Folders;Microsoft.WorkFolders;8.1,10
             pluginUserControl.SaveSettings();
         }
 
-        public string[] GetResults(string input, out string[] itemInfo)
+        public string[] GetItems(string input, out string[] itemInfo)
         {
             itemInfo = null;
             return ControlPanelItems.Count > 0 ? ControlPanelItems.Keys.ToArray() : null;

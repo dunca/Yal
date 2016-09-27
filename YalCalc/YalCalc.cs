@@ -41,7 +41,7 @@ namespace YalCalc
             pluginUserControl.SaveSettings();
         }
 
-        public string[] GetResults(string input, out string[] itemInfo)
+        public string[] GetItems(string input, out string[] itemInfo)
         {
             itemInfo = null;
             string[] result = null;
