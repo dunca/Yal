@@ -29,9 +29,6 @@ namespace YalClipboardHistory
         }
 
         private YalClipboardHistoryUC pluginUserControl;
-        
-        // This object isn't actually used. An instance is created so that it's destructor is called
-        private HistoryManager _ = new HistoryManager();
         private Form clipboardListener = new ClipboardListener();
 
         public YalClipboardHistory()
@@ -48,6 +45,14 @@ you can either hit Enter or double click the item.
 between sessions, if the
 '{(PluginUserControl as YalClipboardHistoryUC).cbStoreInDb.Text}' option is checked.
 ";
+        }
+
+        ~YalClipboardHistory()
+        {
+            if (Properties.Settings.Default.StoreInDb)
+            {
+                HistoryManager.UpdateLocalDb();
+            }
         }
 
         public void SaveSettings()
