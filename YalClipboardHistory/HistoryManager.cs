@@ -1,35 +1,28 @@
 ﻿using System.IO;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 using System.Collections.Generic;
 
 namespace YalClipboardHistory
 {
-    class HistoryManager
+    static class HistoryManager
     {
-        private const string historyFile = "ychdb.dat";
-        internal static LinkedList<string> HistoryItems { get; }
+        private const string historyFile = "ychdb.xml";
+        internal static List<string> HistoryItems { get; } = new List<string>();
 
         static HistoryManager()
         {
-            HistoryItems = new LinkedList<string>();
-            if (Properties.Settings.Default.StoreInDb && File.Exists(historyFile))
-            {
-                foreach (var line in File.ReadAllLines(historyFile))
-                {
-                    HistoryItems.AddLast(line);
-                }
-            }
-        }
-
-        ~HistoryManager()
-        {
-            if (Properties.Settings.Default.StoreInDb)
-            {
-                UpdateLocalDb();
-            }
-            else
+            if (!Properties.Settings.Default.StoreInDb)
             {
                 File.Delete(historyFile);
+            }    
+            else if (File.Exists(historyFile))
+            {
+                var serializer = new XmlSerializer(HistoryItems.GetType());
+                using (var file = File.OpenText(historyFile))
+                {
+                    HistoryItems = (List<string>)serializer.Deserialize(file);
+                }
             }
         }
 
@@ -46,18 +39,22 @@ namespace YalClipboardHistory
                     HistoryItems.Remove(data);
                 }
 
-                HistoryItems.AddFirst(data);
+                HistoryItems.Add(data);
 
                 if (HistoryItems.Count > Properties.Settings.Default.MaxHistorySize)
                 {
-                    HistoryItems.RemoveLast();
+                    HistoryItems.RemoveAt(HistoryItems.Count - 1);
                 }
             }
         }
 
-        private void UpdateLocalDb()
+        internal static void UpdateLocalDb()
         {
-            File.WriteAllLines(historyFile, HistoryItems);
+            using (var fs = File.OpenWrite(historyFile))
+            {
+                var serializer = new XmlSerializer(HistoryItems.GetType());
+                serializer.Serialize(fs, HistoryItems);
+            }
         }
     }
 }
