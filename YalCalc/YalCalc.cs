@@ -14,7 +14,7 @@ namespace YalCalc
         public string Version { get; } = "1.0";
         public string Description { get; } = "Perform simple calculations using Yal";
         public bool RequiresActivator { get; } = false;
-        public PluginItemSortingOption SortingOption { get; } = PluginItemSortingOption.ByName;
+        public PluginItemSortingOption SortingOption { get; } = PluginItemSortingOption.ByNameLength;
 
         public Icon PluginIcon { get; }
         public string HelpText { get; } = @"The plugin's description is self explanatory.";

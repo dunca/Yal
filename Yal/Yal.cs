@@ -45,13 +45,13 @@ namespace Yal
 (
 select * from
 (
-	select ITEM_NAME, OTHER_INFO, '' as ADDITIONAL_INFO, HITS, 1 as SORT_BY_NAME, ROWID from HISTORY_CATALOG where SNIPPET like @snippet
+	select ITEM_NAME, OTHER_INFO, '' as ADDITIONAL_INFO, HITS, 1 as SORT_BY_NAME, ROWID, 0 as IS_PLUGIN_ITEM from HISTORY_CATALOG where SNIPPET like @snippet
 	union
-	select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, '' as ADDITIONAL_INFO, @file_priority as HITS, 1 as SORT_BY_NAME, ROWID from INDEX_CATALOG where NAME like @pattern
+	select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, '' as ADDITIONAL_INFO, @file_priority as HITS, 1 as SORT_BY_NAME, ROWID, 0 as IS_PLUGIN_ITEM from INDEX_CATALOG where NAME like @pattern
 	union
-	select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, ADDITIONAL_INFO, -1 as HITS, SORT_BY_NAME, ROWID from PLUGIN_ITEM where (REQUIRES_ACTIVATOR = 0 and (case ADDITIONAL_INFO when '' then ITEM_NAME else ADDITIONAL_INFO end) like @plugin_pattern) OR (REQUIRES_ACTIVATOR = 1 and (case ADDITIONAL_INFO when '' then ITEM_NAME else ADDITIONAL_INFO end) like @act_plugin_pattern)
+	select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, ADDITIONAL_INFO, -1 as HITS, SORT_BY_NAME, ROWID, 1 as IS_PLUGIN_ITEM from PLUGIN_ITEM where (REQUIRES_ACTIVATOR = 0 and (case ADDITIONAL_INFO when '' then ITEM_NAME else ADDITIONAL_INFO end) like @plugin_pattern) OR (REQUIRES_ACTIVATOR = 1 and (case ADDITIONAL_INFO when '' then ITEM_NAME else ADDITIONAL_INFO end) like @act_plugin_pattern)
 )
-order by HITS desc, case when SORT_BY_NAME = 1 then ITEM_NAME else -ROWID end
+order by HITS desc, case SORT_BY_NAME when 1 then (case IS_PLUGIN_ITEM when 1 then length(ITEM_NAME) else ITEM_NAME end) else -ROWID end
 ) limit @limit";
 
         private SQLiteConnection pluginItemDb = new SQLiteConnection("FullUri=file::memory:?cache=shared;Version=3;");
@@ -388,7 +388,7 @@ order by HITS desc, case when SORT_BY_NAME = 1 then ITEM_NAME else -ROWID end
                             var command = new SQLiteCommand(pluginInsertString, pluginItemDb);
                             command.Parameters.AddWithValue("@requires_activator", plugin.RequiresActivator ? 1 : 0);
                             command.Parameters.AddWithValue("@additional_info", itemInfo != null ? itemInfo[i] : "");
-                            command.Parameters.AddWithValue("@sort_by_name", plugin.SortingOption == PluginItemSortingOption.ByName ? 1 : 0);
+                            command.Parameters.AddWithValue("@sort_by_name", plugin.SortingOption == PluginItemSortingOption.ByNameLength ? 1 : 0);
                             command.Parameters.AddWithValue("@item_name", pluginItems[i]);
                             command.Parameters.AddWithValue("@plugin_name", plugin.Name);
                             command.ExecuteNonQuery();
