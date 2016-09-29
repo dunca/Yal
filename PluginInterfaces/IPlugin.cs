@@ -16,6 +16,8 @@ namespace PluginInterfaces
         /// </summary>
         bool RequiresActivator { get; }
 
+        PluginItemSortingOption SortingOption { get; }
+
         /// <summary>
         /// Instructions on how to use the plugin
         /// </summary>
