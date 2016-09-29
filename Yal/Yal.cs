@@ -79,6 +79,11 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case IS_PLUGIN_ITEM when 1 th
             {
                 Properties.Settings.Default.DisabledPlugins = new StringCollection();
             }
+            
+            if (Properties.Settings.Default.DateFirstLaunched == "")
+            {
+                Properties.Settings.Default.DateFirstLaunched = DateTime.Now.ToShortDateString();
+            }
 
             pluginInstances = PluginLoader.InstantiatePlugins(PluginLoader.Load("plugins"));
 
@@ -257,6 +262,8 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case IS_PLUGIN_ITEM when 1 th
             {
                 optionsWindow.Focus();
             }
+
+            Properties.Settings.Default.TimesActivated += 1;
         }
 
         private void Yal_FormClosing(object sender, FormClosingEventArgs e)

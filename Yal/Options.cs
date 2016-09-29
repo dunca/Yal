@@ -20,6 +20,7 @@ namespace Yal
 
         private const string pluginEnabledTemplate = "cbEnabled";
         private List<CheckBox> pluginEnabledCheckboxes = new List<CheckBox>();
+        private const string activationStatisticsTemplate = "Since {0}, {1} was activated {2} time(s)";
 
         // this type of list signals it's modification which causes our listbox to reread it's contents
         private BindingList<string> foldersToIndex;
@@ -116,6 +117,11 @@ namespace Yal
             cbFuzzyMatchingPluginItems.Checked = Properties.Settings.Default.FuzzyMatchingPluginItems;
 
             cbShowItemIcons.Checked = Properties.Settings.Default.ShowItemIcons;
+
+            lblActivationStatistics.Text = string.Format(activationStatisticsTemplate,
+                                                         Properties.Settings.Default.DateFirstLaunched,
+                                                         MainWindow.Name, Properties.Settings.Default.TimesActivated.ToString()
+                                                         );
 
             foreach (IPlugin plugin in MainWindow.pluginInstances)
             {

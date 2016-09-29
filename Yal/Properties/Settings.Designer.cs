@@ -400,5 +400,29 @@ namespace Yal.Properties {
                 this["ShowItemIcons"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DateFirstLaunched {
+            get {
+                return ((string)(this["DateFirstLaunched"]));
+            }
+            set {
+                this["DateFirstLaunched"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long TimesActivated {
+            get {
+                return ((long)(this["TimesActivated"]));
+            }
+            set {
+                this["TimesActivated"] = value;
+            }
+        }
     }
 }
