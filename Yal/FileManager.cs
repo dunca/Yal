@@ -187,15 +187,51 @@ namespace Yal
                                SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
             var extensions = Properties.Settings.Default.Extensions.Split(',').Select(ext => string.Concat(".", ext));
 
+            var directoryStack = new Stack<string>();
             foreach (string directory in Properties.Settings.Default.FoldersToIndex)
             {
                 // Convert.ToBoolean(null) -> false; So this will work even if FoldersToExclude is null;
                 if (!Convert.ToBoolean(Properties.Settings.Default.FoldersToExclude?.Contains(directory)))
                 {
-                    UpdateIndex(Directory.EnumerateFiles(directory, "*.*", searchOption).Where(file => extensions.Contains(Path.GetExtension(file))));
+                    directoryStack.Push(directory);
                 }
             }
+
+            IEnumerable<string> currentFiles;
+            IEnumerable<string> currentSubdirs;
+            var failedToIndex = new List<string>();
+
+            while (directoryStack.Count > 0)
+            {
+                var currentDirectory = directoryStack.Pop();
+
+                try
+                {
+                    currentSubdirs = Directory.EnumerateDirectories(currentDirectory);
+                }
+                catch (Exception ex)
+                {
+                    failedToIndex.Add(string.Join(" - ", currentDirectory, ex.Message));
+                    continue;
+                }
+
+                currentFiles = Directory.EnumerateFiles(currentDirectory, "*.*").Where(file => extensions.Contains(Path.GetExtension(file)));
+
+                UpdateIndex(currentFiles);
+
+                foreach (var subdir in currentSubdirs)
+                {
+                    directoryStack.Push(subdir);
+                }
+            }
+
             Properties.Settings.Default.DateLastIndexed = DateTime.Now;
+
+            if (failedToIndex.Count > 0)
+            {
+                MessageBox.Show($"The following directories were not indexed: \n{string.Join("\n", failedToIndex)}",
+                                "Indexing finished", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
 
             //// remove items for history that are no longer in the index
             //using (var connection = GetDbConnection(historyDb))
