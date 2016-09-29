@@ -41,13 +41,6 @@ namespace Yal
         private const string historyUpdate = "update HISTORY_CATALOG set HITS = HITS + 1, LASTACCESSED = datetime('now') where SNIPPET == @snippet and OTHER_INFO == @other_info";
         private const string historyQuery = "select count(SNIPPET) from HISTORY_CATALOG where SNIPPET == @snippet and OTHER_INFO == @other_info";
 
-        private static IEnumerable<string> SearchForFiles(string path, string pattern, SearchOption searchOption = SearchOption.TopDirectoryOnly)
-        {
-            string[] patterns = pattern.Split(',');
-            return Directory.EnumerateFiles(path, "*", searchOption)
-                            .Where(file => patterns.Any(p => file.EndsWith(string.Concat(".", p))));
-        }
-
         private static void UpdateIndex(IEnumerable<string> files)
         {
             using (var connection = GetDbConnection(indexDbInfo))
@@ -188,16 +181,18 @@ namespace Yal
 
         private static void RebuildIndex()
         {
+            ClearDB(indexDbInfo);
+
             var searchOption = Properties.Settings.Default.IncludeSubdirs ?
                                SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+            var extensions = Properties.Settings.Default.Extensions.Split(',').Select(ext => string.Concat(".", ext));
 
-            ClearDB(indexDbInfo);
             foreach (string directory in Properties.Settings.Default.FoldersToIndex)
             {
                 // Convert.ToBoolean(null) -> false; So this will work even if FoldersToExclude is null;
                 if (!Convert.ToBoolean(Properties.Settings.Default.FoldersToExclude?.Contains(directory)))
                 {
-                    UpdateIndex(SearchForFiles(directory, Properties.Settings.Default.Extensions, searchOption));
+                    UpdateIndex(Directory.EnumerateFiles(directory, "*.*", searchOption).Where(file => extensions.Contains(Path.GetExtension(file))));
                 }
             }
             Properties.Settings.Default.DateLastIndexed = DateTime.Now;
