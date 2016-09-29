@@ -9,7 +9,6 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Collections.Specialized;
-using System.Text.RegularExpressions;
 
 using PluginInterfaces;
 
@@ -40,16 +39,21 @@ namespace Yal
         internal List<IPlugin> pluginInstances;
 
         private const string attachTemplate = "attach database '{0}' as {1}";
-        private const string pluginTableSchema = "create table if not exists PLUGIN_ITEM (ITEM_NAME string, PLUGIN_NAME string, ADDITIONAL_INFO string, REQUIRES_ACTIVATOR numeric)";
-        private const string pluginInsertString = "insert into PLUGIN_ITEM (ITEM_NAME, PLUGIN_NAME, ADDITIONAL_INFO, REQUIRES_ACTIVATOR) values (@item_name, @plugin_name, @additional_info, @requires_activator)";
+        private const string pluginTableSchema = "create table if not exists PLUGIN_ITEM (ITEM_NAME string, PLUGIN_NAME string, ADDITIONAL_INFO string, REQUIRES_ACTIVATOR numeric, SORT_BY_NAME numeric)";
+        private const string pluginInsertString = "insert into PLUGIN_ITEM (ITEM_NAME, PLUGIN_NAME, ADDITIONAL_INFO, REQUIRES_ACTIVATOR, SORT_BY_NAME) values (@item_name, @plugin_name, @additional_info, @requires_activator, @sort_by_name)";
         private const string itemQueryString = @"select distinct ITEM_NAME, OTHER_INFO, ADDITIONAL_INFO from 
-                                               (select ITEM_NAME, OTHER_INFO, '' as ADDITIONAL_INFO, HITS from HISTORY_CATALOG where SNIPPET like @snippet
-                                               union
-                                               select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, '' as ADDITIONAL_INFO, @file_priority as HITS from INDEX_CATALOG where NAME like @pattern
-                                               union
-                                               select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, ADDITIONAL_INFO, -1 as HITS from PLUGIN_ITEM where (REQUIRES_ACTIVATOR == 0 and (case ADDITIONAL_INFO when '' then ITEM_NAME else ADDITIONAL_INFO end) like @plugin_pattern) OR (REQUIRES_ACTIVATOR == 1 and (case ADDITIONAL_INFO when '' then ITEM_NAME else ADDITIONAL_INFO end) like @act_plugin_pattern)
-                                               order by HITS desc, NAME asc) limit @limit";
-        
+(
+select * from
+(
+	select ITEM_NAME, OTHER_INFO, '' as ADDITIONAL_INFO, HITS, 1 as SORT_BY_NAME, ROWID from HISTORY_CATALOG where SNIPPET like @snippet
+	union
+	select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, '' as ADDITIONAL_INFO, @file_priority as HITS, 1 as SORT_BY_NAME, ROWID from INDEX_CATALOG where NAME like @pattern
+	union
+	select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, ADDITIONAL_INFO, -1 as HITS, SORT_BY_NAME, ROWID from PLUGIN_ITEM where (REQUIRES_ACTIVATOR = 0 and (case ADDITIONAL_INFO when '' then ITEM_NAME else ADDITIONAL_INFO end) like @plugin_pattern) OR (REQUIRES_ACTIVATOR = 1 and (case ADDITIONAL_INFO when '' then ITEM_NAME else ADDITIONAL_INFO end) like @act_plugin_pattern)
+)
+order by HITS desc, case when SORT_BY_NAME = 1 then ITEM_NAME else -ROWID end
+) limit @limit";
+
         private SQLiteConnection pluginItemDb = new SQLiteConnection("FullUri=file::memory:?cache=shared;Version=3;");
 
         public Yal()
@@ -384,6 +388,7 @@ namespace Yal
                             var command = new SQLiteCommand(pluginInsertString, pluginItemDb);
                             command.Parameters.AddWithValue("@requires_activator", plugin.RequiresActivator ? 1 : 0);
                             command.Parameters.AddWithValue("@additional_info", itemInfo != null ? itemInfo[i] : "");
+                            command.Parameters.AddWithValue("@sort_by_name", plugin.SortingOption == PluginItemSortingOption.ByName ? 1 : 0);
                             command.Parameters.AddWithValue("@item_name", pluginItems[i]);
                             command.Parameters.AddWithValue("@plugin_name", plugin.Name);
                             command.ExecuteNonQuery();

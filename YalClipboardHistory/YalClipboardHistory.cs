@@ -13,6 +13,7 @@ namespace YalClipboardHistory
         public string Version { get; } = "1.0";
         public string Description { get; } = "Easily access your clipboard's history through Yal";
         public bool RequiresActivator { get; } = true;
+        public PluginItemSortingOption SortingOption { get; } = PluginItemSortingOption.ByOriginalPosition;
 
         public Icon PluginIcon { get; }
         public string HelpText { get; }

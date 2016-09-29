@@ -15,6 +15,7 @@ namespace YalProcessKiller
         public string Version { get; } = "1.0";
         public string Description { get; } = "Easily stop processes through Yal";
         public bool RequiresActivator { get; } = true;
+        public PluginItemSortingOption SortingOption { get; } = PluginItemSortingOption.ByName;
 
         public Icon PluginIcon { get; }
         public string HelpText { get; } = @"The plugin's description is self explanatory.";
