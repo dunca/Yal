@@ -19,7 +19,7 @@ namespace YalPath
         public string Description { get; } = "Yal plugin that allows you to view/open the contents of directories by specifying directory paths";
         public string Version { get; } = "1.0";
         public bool RequiresActivator { get; } = false;
-        public PluginItemSortingOption SortingOption { get; } = PluginItemSortingOption.ByName;
+        public PluginItemSortingOption SortingOption { get; } = PluginItemSortingOption.ByNameLength;
 
         public string HelpText { get; }
 
