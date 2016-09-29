@@ -191,7 +191,12 @@ namespace Yal
             var dialog = new FolderBrowserDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                if (!foldersToIndex.Contains(dialog.SelectedPath))
+                if (foldersToIndex.Contains(dialog.SelectedPath))
+                {
+                    MessageBox.Show($"Path '{dialog.SelectedPath}' already exists", "Error", MessageBoxButtons.OK, 
+                                    MessageBoxIcon.Error);
+                }
+                else
                 {
                     foldersToIndex.Add(dialog.SelectedPath);
                 }
