@@ -90,6 +90,7 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.btnApplyOptions = new System.Windows.Forms.Button();
             this.btnCancelOpt = new System.Windows.Forms.Button();
+            this.lblActivationStatistics = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -754,6 +755,7 @@
             // 
             // tabPageAbout
             // 
+            this.tabPageAbout.Controls.Add(this.lblActivationStatistics);
             this.tabPageAbout.Controls.Add(this.label5);
             this.tabPageAbout.Controls.Add(this.pictureBox1);
             this.tabPageAbout.Location = new System.Drawing.Point(4, 22);
@@ -806,6 +808,16 @@
             this.btnCancelOpt.UseVisualStyleBackColor = true;
             this.btnCancelOpt.Click += new System.EventHandler(this.btnCancelOpt_Click);
             // 
+            // lblActivationStatistics
+            // 
+            this.lblActivationStatistics.AutoSize = true;
+            this.lblActivationStatistics.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblActivationStatistics.Location = new System.Drawing.Point(3, 3);
+            this.lblActivationStatistics.Name = "lblActivationStatistics";
+            this.lblActivationStatistics.Size = new System.Drawing.Size(41, 13);
+            this.lblActivationStatistics.TabIndex = 2;
+            this.lblActivationStatistics.Text = "label12";
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -846,6 +858,7 @@
             this.groupBox1.PerformLayout();
             this.tabPagePlugins.ResumeLayout(false);
             this.tabPageAbout.ResumeLayout(false);
+            this.tabPageAbout.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
@@ -914,5 +927,6 @@
         private System.Windows.Forms.NumericUpDown spinMaxItems;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.CheckBox cbShowItemIcons;
+        private System.Windows.Forms.Label lblActivationStatistics;
     }
 }
