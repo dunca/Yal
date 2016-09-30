@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="User32Methods.cs" />
     <Compile Include="YalWindows.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="YalWindowsUC.cs">
