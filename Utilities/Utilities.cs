@@ -4,11 +4,14 @@ using System.Drawing;
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Runtime.InteropServices;
 
 namespace Utilities
 {
     public static class Utils
     {
+        private const byte WINDOW_RESTORE = 9;
+
         public static string GetOsVersion()
         {
             using (RegistryKey rk = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion"))
@@ -80,6 +83,28 @@ namespace Utilities
         {
             // http://stackoverflow.com/a/21558051
             return new DirectoryInfo(path).Attributes.HasFlag(FileAttributes.ReparsePoint);
+        }
+
+        // http://josephgozlan.blogspot.ro/2013/02/c-bring-another-application-to.html
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        [DllImport("user32.dll")]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        private static extern bool IsIconic(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        public static void ActivateWindowByHandle(IntPtr hWnd)
+        {
+            if (IsIconic(hWnd))
+            {
+                ShowWindow(hWnd, WINDOW_RESTORE);
+            }
+            SetForegroundWindow(hWnd);
         }
     }
 }

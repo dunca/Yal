@@ -66,7 +66,7 @@ entry switches to the underlying window";
                 return;
             }
 
-            User32Methods.ActivateWindow(matchingProcesses[0].MainWindowHandle);
+            Utils.ActivateWindowByHandle(matchingProcesses[0].MainWindowHandle);
         }
     }
 }
