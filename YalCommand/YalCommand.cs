@@ -16,7 +16,7 @@ namespace YalCommand
         public string Name { get; } = "YalCommand";
         public string Version { get; } = "1.0";
         public string Description { get; } = "Yal plugin that allows you to quickly run programs with different parameters";
-        public bool RequiresActivator { get; } = true;
+        public string Activator { get; } = "~";
         public PluginItemSortingOption SortingOption { get; } = PluginItemSortingOption.ByNameLength;
 
         public Icon PluginIcon { get; }

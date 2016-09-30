@@ -38,7 +38,7 @@ namespace YalBookmark
         public string Name { get; } = "YalBookmark";
         public string Version { get; } = "1.0";
         public string Description { get; } = "Yal plugin that allows you to easily visit your browser bookmarks";
-        public bool RequiresActivator { get; } = false;
+        public string Activator { get; } = null;
         public PluginItemSortingOption SortingOption { get; } = PluginItemSortingOption.ByNameLength;
         
         public Icon PluginIcon { get; }

@@ -373,7 +373,8 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case IS_PLUGIN_ITEM when 1 th
             {
                 foreach (var plugin in pluginInstances)
                 {
-                    if (Properties.Settings.Default.DisabledPlugins.Contains(plugin.Name))
+                    if (Properties.Settings.Default.DisabledPlugins.Contains(plugin.Name)
+                        || (plugin.Activator != null && !userInput.StartsWith(plugin.Activator)))
                     {
                         continue;
                     }
@@ -393,7 +394,7 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case IS_PLUGIN_ITEM when 1 th
                         for (int i = 0; i < pluginItems.Length; i++)
                         {
                             var command = new SQLiteCommand(pluginInsertString, pluginItemDb);
-                            command.Parameters.AddWithValue("@requires_activator", plugin.RequiresActivator ? 1 : 0);
+                            command.Parameters.AddWithValue("@requires_activator", plugin.Activator != null ? 1 : 0);
                             command.Parameters.AddWithValue("@additional_info", itemInfo != null ? itemInfo[i] : "");
                             command.Parameters.AddWithValue("@sort_by_name", plugin.SortingOption == PluginItemSortingOption.ByNameLength ? 1 : 0);
                             command.Parameters.AddWithValue("@item_name", pluginItems[i]);

@@ -10,11 +10,11 @@ namespace PluginInterfaces
         string Description { get; }
 
         /// <summary>
-        /// Should be set to 'true' by plugins that rely on special keywords to do their mojo. When this is 'true', Yal will
+        /// Should be set by plugins that rely on special keywords to do their mojo. When this is not null, Yal will
         /// always try to match the user's input against item names starting from index 0, thus it will completelly
         /// ignore the 'Match anywhere in the item's name' option.
         /// </summary>
-        bool RequiresActivator { get; }
+        string Activator { get; }
 
         PluginItemSortingOption SortingOption { get; }
 

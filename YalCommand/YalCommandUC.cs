@@ -69,7 +69,10 @@ namespace YalCommand
             {
                 errorMessage = "Command and target fields can't be empty";
             }
-
+            else if (!command.StartsWith(pluginInstance.Activator))
+            {
+                errorMessage = $"Every command name must start with the '{pluginInstance.Activator}' activator";
+            }
             else if (listViewEntries.Items.ContainsKey(command))
             {
                 errorMessage = $"A command named '{command}' already exists";
