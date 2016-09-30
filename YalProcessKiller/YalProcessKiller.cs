@@ -14,11 +14,12 @@ namespace YalProcessKiller
         public string Name { get; } = "YalProcessKiller";
         public string Version { get; } = "1.0";
         public string Description { get; } = "Easily stop processes through Yal";
-        public bool RequiresActivator { get; } = true;
+        public string Activator { get; } = "kill";
         public PluginItemSortingOption SortingOption { get; } = PluginItemSortingOption.ByNameLength;
 
         public Icon PluginIcon { get; }
-        public string HelpText { get; } = @"The plugin's description is self explanatory.";
+        public string HelpText { get; }
+
         public UserControl PluginUserControl
         {
             get
@@ -36,6 +37,11 @@ namespace YalProcessKiller
         public YalProcessKiller()
         {
             PluginIcon = Utils.GetPluginIcon(Name);
+
+            HelpText = $@"To list killable processes simply type the '{Activator}' keyword. 
+It will give you a list of processes and their names. Hitting
+Enter or double clicking an item will try killing the underlying
+process";
         }
 
         public void SaveSettings()
@@ -46,7 +52,7 @@ namespace YalProcessKiller
         public string[] GetItems(string input, out string[] itemInfo)
         {
             itemInfo = null;
-            return Process.GetProcesses().Select(process => string.Join(" ", "kill", process.ProcessName)).ToArray();
+            return Process.GetProcesses().Select(process => string.Join(" ", Activator, process.ProcessName)).ToArray();
         }
 
         public void HandleExecution(string input)

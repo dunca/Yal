@@ -48,6 +48,10 @@ namespace YalWeb
             {
                 errorMessage = "Cell values can't be empty";
             }
+            else if (!name.StartsWith(pluginInstance.Activator))
+            {
+                errorMessage = $"Every name command must start with the '{pluginInstance.Activator}' activator";
+            }
             else
             {
                 foreach (ListViewItem lvi in listViewEntries.Items)

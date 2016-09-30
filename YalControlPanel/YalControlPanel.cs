@@ -16,7 +16,7 @@ namespace YalControlPanel
         public string Name { get; } = "YalControlPanel";
         public string Version { get; } = "1.0";
         public string Description { get; } = "Access Windows control panel items using Yal";
-        public bool RequiresActivator { get; } = false;
+        public string Activator { get; } = null;
         public PluginItemSortingOption SortingOption { get; } = PluginItemSortingOption.ByNameLength;
 
         public Icon PluginIcon { get; }

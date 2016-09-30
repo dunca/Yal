@@ -12,7 +12,7 @@ namespace YalClipboardHistory
         public string Name { get; } = "YalClipboardHistory";
         public string Version { get; } = "1.0";
         public string Description { get; } = "Easily access your clipboard's history through Yal";
-        public bool RequiresActivator { get; } = true;
+        public string Activator { get; } = "cb";
         public PluginItemSortingOption SortingOption { get; } = PluginItemSortingOption.ByOriginalPosition;
 
         public Icon PluginIcon { get; }
@@ -37,7 +37,7 @@ namespace YalClipboardHistory
             PluginIcon = Utils.GetPluginIcon(Name);
 
              HelpText = $@"You can access your clipboard history by
-simplit typing 'cb'. This will provide a list of
+simplit typing '{Activator}'. This will provide a list of
 history items, with the most recent ones places at
 the top of the list. To copy an item from the history
 you can either hit Enter or double click the item.
@@ -68,7 +68,7 @@ between sessions, if the
 
             if (HistoryManager.HistoryItems.Count > 0)
             {
-                result = HistoryManager.HistoryItems.Select(item => string.Concat("cb ", item)).ToArray();
+                result = HistoryManager.HistoryItems.Select(item => string.Join(" ", Activator, item)).ToArray();
             }
 
             return result;

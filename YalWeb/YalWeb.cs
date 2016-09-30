@@ -16,7 +16,7 @@ namespace YalWeb
         public string Name { get; } = "YalWeb";
         public string Version { get; } = "1.0";
         public string Description { get; } = "Yal plugin that allows you to quickly search the web using your favorite search engine";
-        public bool RequiresActivator { get; } = true;
+        public string Activator { get; } = "!";
         public PluginItemSortingOption SortingOption { get; } = PluginItemSortingOption.ByNameLength;
 
         public Icon PluginIcon { get; }
