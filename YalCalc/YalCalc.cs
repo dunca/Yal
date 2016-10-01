@@ -54,7 +54,7 @@ namespace YalCalc
                                         Properties.Settings.Default.DecimalPlaces).ToString();
                 results = new List<PluginItem>()
                 {
-                    new PluginItem() { Name = string.Concat(userInput, "=", output) }
+                    new PluginItem() { Name = output, AlternateInfo = string.Concat(userInput, "=", output) }
                 };
             }
             catch

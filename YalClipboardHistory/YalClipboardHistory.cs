@@ -66,7 +66,7 @@ between sessions, if the
         {
            return HistoryManager.HistoryItems.Count > 0 ? HistoryManager.HistoryItems.Select(item => new PluginItem()
            {
-               Name = string.Join(" ", Activator, item)
+               Name = item, AlternateInfo = string.Join(" ", Activator, item)
            }).ToList() : null;
         }
 

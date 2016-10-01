@@ -55,7 +55,8 @@ entry switches to the underlying window";
         {
             return Process.GetProcesses().Where(process => process.MainWindowHandle != IntPtr.Zero).Select(process => new PluginItem()
             {
-                Name = string.Join(" ", Activator, process.MainWindowTitle), IconLocation = GetProcessFileLocation(process)
+                Name = process.MainWindowTitle, AlternateInfo = string.Join(" ", Activator, process.MainWindowTitle),
+                IconLocation = Utils.GetProcessFileLocation(process)
             }).ToList();
         }
 
@@ -71,20 +72,6 @@ entry switches to the underlying window";
             }
 
             Utils.ActivateWindowByHandle(matchingProcesses[0].MainWindowHandle);
-        }
-
-        private string GetProcessFileLocation(Process process)
-        {
-            try
-            {
-                return process.MainModule.FileName;
-            }
-            // when trying to access a 64 bit module from a 32 bit process or when trying to access
-            // system owned processes
-            catch (Exception ex) when (ex is Win32Exception)
-            {
-                return null;
-            }
         }
     }
 }
