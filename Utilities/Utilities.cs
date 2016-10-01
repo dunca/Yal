@@ -5,6 +5,7 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
+using System.ComponentModel;
 
 namespace Utilities
 {
@@ -65,12 +66,19 @@ namespace Utilities
 
         public static Icon GetPluginIcon(string iconName)
         {
-            var iconPath = $@"plugins\icons\{iconName}.ico";
-            if (File.Exists(iconPath))
+            return GetFileIcon($@"plugins\icons\{iconName}.ico");
+        }
+
+        public static Icon GetFileIcon(string path)
+        {
+            try
             {
-                return Icon.ExtractAssociatedIcon(iconPath);
+                return Icon.ExtractAssociatedIcon(path);
             }
-            return null;
+            catch (Exception ex) when (ex is ArgumentException) // Argument exception: the file doesn't exist
+            {
+                return null;
+            }
         }
 
         public static bool FileIsLink(string path)

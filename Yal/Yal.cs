@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Collections.Specialized;
 
+using Utilities;
 using PluginInterfaces;
 
 namespace Yal
@@ -439,9 +440,8 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then
 
                             if (Properties.Settings.Default.ShowItemIcons && pluginInstance.PluginIcon != null)
                             {
-                                UpdateImageList(iconLocation != "" && File.Exists(iconLocation) ? Icon.ExtractAssociatedIcon(iconLocation) : 
-                                                                                                  pluginInstance.PluginIcon,
-                                                lvi, ref iconIndex);
+                                var icon = Utils.GetFileIcon(iconLocation);
+                                UpdateImageList(icon != null ? icon : pluginInstance.PluginIcon, lvi, ref iconIndex);
                             }
                         }
                         else
