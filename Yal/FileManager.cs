@@ -31,9 +31,9 @@ namespace Yal
     static class FileManager
     {
         internal static DbInfo indexDbInfo = new DbInfo("index.sqlite", "INDEX_CATALOG", "FULLPATH",
-                                                        "create table if not exists INDEX_CATALOG (NAME string, FULLPATH string)");
+                                                        "create table if not exists INDEX_CATALOG (NAME text, FULLPATH text)");
         internal static DbInfo historyDbInfo = new DbInfo("history.sqlite", "HISTORY", "OTHER_INFO",
-                                                          "create table if not exists HISTORY_CATALOG (SNIPPET string, ITEM_NAME string, OTHER_INFO string, HITS integer default 1, LASTACCESSED datetime)");
+                                                          "create table if not exists HISTORY_CATALOG (SNIPPET text, ITEM_NAME text, OTHER_INFO text, HITS integer default 1, LASTACCESSED datetime)");
 
         private const string indexInsert = "insert into INDEX_CATALOG (NAME, FULLPATH) values (@name, @fullpath)";
         private const string historyInsert = "insert into HISTORY_CATALOG (SNIPPET, ITEM_NAME, OTHER_INFO, LASTACCESSED) values (@snippet, @item_name, @other_info, datetime('now'))";
