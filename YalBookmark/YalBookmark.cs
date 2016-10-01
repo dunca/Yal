@@ -38,7 +38,7 @@ namespace YalBookmark
         public string Name { get; } = "YalBookmark";
         public string Version { get; } = "1.0";
         public string Description { get; } = "Yal plugin that allows you to easily visit your browser bookmarks";
-        public string Activator { get; } = null;
+        public string Activator { get; } = "bk";
         public PluginItemSortingOption SortingOption { get; } = PluginItemSortingOption.ByNameLength;
         
         public Icon PluginIcon { get; }
@@ -89,11 +89,17 @@ namespace YalBookmark
 
             HelpText = $@"By default, bookmarks found
 in all of the detected browser profile
-folders are made available through Yal. 
-You can right click on any backend in
-the list to alter the default functionality.
+folders are made available through Yal. To
+get a list of available bookmarks simply
+type the '{Activator}' keyword. The keyword
+can be followed by other characters to narrow
+down the results.
 
-You can instruct {Name} to open bookmarks
+In the plugin option's tab you can right click
+on any backend in the list to alter the default
+functionality.
+
+You can also instruct {Name} to open bookmarks
 through the operating system's default browser,
 or through the browser that stores the 
 specific bookmark in it's bookmark database.";
@@ -216,7 +222,7 @@ specific bookmark in it's bookmark database.";
             }
             return localQueryCache.Count > 0 ? localQueryCache.Keys.Select(item => new PluginItem()
             {
-                Name = item
+                Name = item, AlternateInfo = string.Join(" ", Activator, item)
             }).ToList() : null;
         }
 
