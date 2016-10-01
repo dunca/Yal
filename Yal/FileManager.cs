@@ -166,13 +166,12 @@ namespace Yal
 
         internal static bool GetFileIcon(string fullName, out Icon icon)
         {
+            icon = null;
             if (File.Exists(fullName))
             {
                 icon = Icon.ExtractAssociatedIcon(fullName);
-                return true;
             }
-            icon = null;
-            return false;
+            return icon != null;
         }
 
         internal static Task RebuildIndexAsync()
