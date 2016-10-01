@@ -33,10 +33,10 @@ namespace Yal
         internal static DbInfo indexDbInfo = new DbInfo("index.sqlite", "INDEX_CATALOG", "FULLPATH",
                                                         "create table if not exists INDEX_CATALOG (NAME text, FULLPATH text)");
         internal static DbInfo historyDbInfo = new DbInfo("history.sqlite", "HISTORY", "OTHER_INFO",
-                                                          "create table if not exists HISTORY_CATALOG (SNIPPET text, ITEM_NAME text, OTHER_INFO text, HITS integer default 1, LASTACCESSED datetime)");
+                                                          "create table if not exists HISTORY_CATALOG (SNIPPET text, ITEM_NAME text, ADDITIONAL_INFO text, OTHER_INFO text, HITS integer default 1, LASTACCESSED datetime)");
 
         private const string indexInsert = "insert into INDEX_CATALOG (NAME, FULLPATH) values (@name, @fullpath)";
-        private const string historyInsert = "insert into HISTORY_CATALOG (SNIPPET, ITEM_NAME, OTHER_INFO, LASTACCESSED) values (@snippet, @item_name, @other_info, datetime('now'))";
+        private const string historyInsert = "insert into HISTORY_CATALOG (SNIPPET, ITEM_NAME, ADDITIONAL_INFO, OTHER_INFO, LASTACCESSED) values (@snippet, @item_name, @additional_info, @other_info, datetime('now'))";
         private const string historyTrim = "delete from HISTORY_CATALOG where LASTACCESSED in (select LASTACCESSED from HISTORY_CATALOG order by LASTACCESSED limit @limit)";
         private const string historyUpdate = "update HISTORY_CATALOG set HITS = HITS + 1, LASTACCESSED = datetime('now') where SNIPPET == @snippet and OTHER_INFO == @other_info";
         private const string historyQuery = "select count(SNIPPET) from HISTORY_CATALOG where SNIPPET == @snippet and OTHER_INFO == @other_info";
@@ -60,14 +60,14 @@ namespace Yal
             }
         }
 
-        internal static void UpdateHistory(string snippet, string itemName, string other_info)
+        internal static void UpdateHistory(string snippet, string itemName, string otherInfo, string additionalInfo = "")
         {
             using (var connection = GetDbConnection(historyDbInfo))
             {
                 SQLiteCommand nonQuery;
                 var command = new SQLiteCommand(historyQuery, connection);
                 command.Parameters.AddWithValue("@snippet", snippet);
-                command.Parameters.AddWithValue("@other_info", other_info);
+                command.Parameters.AddWithValue("@other_info", otherInfo);
                 if (Convert.ToBoolean(command.ExecuteScalar()))  // snippet + fileName combo already in DB
                 { // update the existing value
                     nonQuery = new SQLiteCommand(historyUpdate, connection);
@@ -78,7 +78,8 @@ namespace Yal
                     nonQuery.Parameters.AddWithValue("@item_name", itemName);
                 }
                 nonQuery.Parameters.AddWithValue("@snippet", snippet);
-                nonQuery.Parameters.AddWithValue("@other_info", other_info);
+                nonQuery.Parameters.AddWithValue("@other_info", otherInfo);
+                nonQuery.Parameters.AddWithValue("@additional_info", additionalInfo);
                 nonQuery.ExecuteNonQuery();
             }
         }
