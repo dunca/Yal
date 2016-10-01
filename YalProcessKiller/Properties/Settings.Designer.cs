@@ -34,5 +34,17 @@ namespace YalProcessKiller.Properties {
                 this["WarnBeforeKill"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool GetProcessIcons {
+            get {
+                return ((bool)(this["GetProcessIcons"]));
+            }
+            set {
+                this["GetProcessIcons"] = value;
+            }
+        }
     }
 }
