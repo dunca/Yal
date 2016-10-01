@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.cbWarnBeforeKill = new System.Windows.Forms.CheckBox();
+            this.cbGetProcessIcons = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // cbWarnBeforeKill
@@ -37,18 +38,30 @@
             this.cbWarnBeforeKill.Dock = System.Windows.Forms.DockStyle.Top;
             this.cbWarnBeforeKill.Location = new System.Drawing.Point(0, 0);
             this.cbWarnBeforeKill.Name = "cbWarnBeforeKill";
-            this.cbWarnBeforeKill.Size = new System.Drawing.Size(206, 17);
+            this.cbWarnBeforeKill.Size = new System.Drawing.Size(246, 17);
             this.cbWarnBeforeKill.TabIndex = 0;
             this.cbWarnBeforeKill.Text = "Warn me before killing any process";
             this.cbWarnBeforeKill.UseVisualStyleBackColor = true;
+            // 
+            // cbGetProcessIcons
+            // 
+            this.cbGetProcessIcons.AutoSize = true;
+            this.cbGetProcessIcons.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cbGetProcessIcons.Location = new System.Drawing.Point(0, 17);
+            this.cbGetProcessIcons.Name = "cbGetProcessIcons";
+            this.cbGetProcessIcons.Size = new System.Drawing.Size(246, 17);
+            this.cbGetProcessIcons.TabIndex = 1;
+            this.cbGetProcessIcons.Text = "Display process icons when available (slower)";
+            this.cbGetProcessIcons.UseVisualStyleBackColor = true;
             // 
             // YalProcessKillerUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.cbGetProcessIcons);
             this.Controls.Add(this.cbWarnBeforeKill);
             this.Name = "YalProcessKillerUC";
-            this.Size = new System.Drawing.Size(206, 174);
+            this.Size = new System.Drawing.Size(246, 174);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -57,5 +70,6 @@
         #endregion
 
         private System.Windows.Forms.CheckBox cbWarnBeforeKill;
+        private System.Windows.Forms.CheckBox cbGetProcessIcons;
     }
 }

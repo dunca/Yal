@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace YalProcessKiller.Properties {
+namespace YalWindows.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -26,24 +26,12 @@ namespace YalProcessKiller.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool WarnBeforeKill {
+        public bool GetAppIcons {
             get {
-                return ((bool)(this["WarnBeforeKill"]));
+                return ((bool)(this["GetAppIcons"]));
             }
             set {
-                this["WarnBeforeKill"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool GetProcessIcons {
-            get {
-                return ((bool)(this["GetProcessIcons"]));
-            }
-            set {
-                this["GetProcessIcons"] = value;
+                this["GetAppIcons"] = value;
             }
         }
     }
