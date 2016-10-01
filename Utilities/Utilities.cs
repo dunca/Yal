@@ -81,6 +81,20 @@ namespace Utilities
             }
         }
 
+        public static string GetProcessFileLocation(Process process)
+        {
+            try
+            {
+                return process.MainModule.FileName;
+            }
+            // when trying to access a 64 bit module from a 32 bit process or when trying to access
+            // system owned processes
+            catch (Exception ex) when (ex is Win32Exception)
+            {
+                return null;
+            }
+        }
+
         public static bool FileIsLink(string path)
         {
             // http://stackoverflow.com/a/21558051
