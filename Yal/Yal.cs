@@ -39,19 +39,19 @@ namespace Yal
         internal List<IPlugin> pluginInstances;
 
         private const string attachTemplate = "attach database '{0}' as {1}";
-        private const string pluginTableSchema = "create table if not exists PLUGIN_ITEM (ITEM_NAME string, PLUGIN_NAME string, ADDITIONAL_INFO string, REQUIRES_ACTIVATOR numeric, SORT_BY_NAME numeric)";
-        private const string pluginInsertString = "insert into PLUGIN_ITEM (ITEM_NAME, PLUGIN_NAME, ADDITIONAL_INFO, REQUIRES_ACTIVATOR, SORT_BY_NAME) values (@item_name, @plugin_name, @additional_info, @requires_activator, @sort_by_name)";
-        private const string itemQueryString = @"select distinct ITEM_NAME, OTHER_INFO, ADDITIONAL_INFO from 
+        private const string pluginTableSchema = "create table if not exists PLUGIN_ITEM (ITEM_NAME text, SUBITEM_NAME text, PLUGIN_NAME text, ADDITIONAL_INFO text, REQUIRES_ACTIVATOR numeric, SORT_BY_NAME numeric, ICON_LOCATION text)";
+        private const string pluginInsertString = "insert into PLUGIN_ITEM values (@item_name, @subitem_name, @plugin_name, @additional_info, @requires_activator, @sort_by_name, @icon_location)";
+        private const string itemQueryString = @"select distinct ITEM_NAME, OTHER_INFO, ADDITIONAL_INFO, ICON_LOCATION from 
 (
 select * from
 (
-	select ITEM_NAME, OTHER_INFO, '' as ADDITIONAL_INFO, HITS, 1 as SORT_BY_NAME, ROWID, 0 as IS_PLUGIN_ITEM from HISTORY_CATALOG where SNIPPET like @snippet
+	select ITEM_NAME, OTHER_INFO, '' as ADDITIONAL_INFO, HITS, 1 as SORT_BY_NAME, ROWID, '' as PLUGIN_NAME, '' as ICON_LOCATION from HISTORY_CATALOG where SNIPPET like @snippet
 	union
-	select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, '' as ADDITIONAL_INFO, @file_priority as HITS, 1 as SORT_BY_NAME, ROWID, 0 as IS_PLUGIN_ITEM from INDEX_CATALOG where NAME like @pattern
+	select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, '' as ADDITIONAL_INFO, @file_priority as HITS, 1 as SORT_BY_NAME, ROWID, '' as PLUGIN_NAME, '' as ICON_LOCATION from INDEX_CATALOG where NAME like @pattern
 	union
-	select ITEM_NAME, PLUGIN_NAME as OTHER_INFO, ADDITIONAL_INFO, -1 as HITS, SORT_BY_NAME, ROWID, 1 as IS_PLUGIN_ITEM from PLUGIN_ITEM where (REQUIRES_ACTIVATOR = 0 and (case ADDITIONAL_INFO when '' then ITEM_NAME else ADDITIONAL_INFO end) like @plugin_pattern) OR (REQUIRES_ACTIVATOR = 1 and (case ADDITIONAL_INFO when '' then ITEM_NAME else ADDITIONAL_INFO end) like @act_plugin_pattern)
+	select ITEM_NAME, SUBITEM_NAME as OTHER_INFO, ADDITIONAL_INFO, -1 as HITS, SORT_BY_NAME, ROWID, PLUGIN_NAME, ICON_LOCATION from PLUGIN_ITEM where (REQUIRES_ACTIVATOR = 0 and (case ADDITIONAL_INFO when '' then ITEM_NAME else ADDITIONAL_INFO end) like @plugin_pattern) OR (REQUIRES_ACTIVATOR = 1 and (case ADDITIONAL_INFO when '' then ITEM_NAME else ADDITIONAL_INFO end) like @act_plugin_pattern)
 )
-order by HITS desc, case SORT_BY_NAME when 1 then (case IS_PLUGIN_ITEM when 1 then length(ITEM_NAME) else ITEM_NAME end) else -ROWID end
+order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then ITEM_NAME else length(ITEM_NAME) end) else -ROWID end
 ) limit @limit";
 
         private SQLiteConnection pluginItemDb = new SQLiteConnection("FullUri=file::memory:?cache=shared;Version=3;");
@@ -379,26 +379,20 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case IS_PLUGIN_ITEM when 1 th
                         continue;
                     }
 
-                    string[] itemInfo;
-                    string[] pluginItems = plugin.GetItems(userInput, out itemInfo);
+                    List<PluginItem> pluginItems = plugin.GetItems(userInput);
 
                     if (pluginItems != null)
                     {
-                        // itemInfo can't have more(less) items than pluginItems since it should contain alternative info
-                        // about each plugin item
-                        if (itemInfo != null && pluginItems.Length != itemInfo.Length)
-                        {
-                            continue;
-                        }
-
-                        for (int i = 0; i < pluginItems.Length; i++)
+                        foreach (var pluginItem in pluginItems)
                         {
                             var command = new SQLiteCommand(pluginInsertString, pluginItemDb);
-                            command.Parameters.AddWithValue("@requires_activator", plugin.Activator != null ? 1 : 0);
-                            command.Parameters.AddWithValue("@additional_info", itemInfo != null ? itemInfo[i] : "");
+                            command.Parameters.AddWithValue("@subitem_name", pluginItem.SubitemName != null ? pluginItem.SubitemName : plugin.Name);
+                            command.Parameters.AddWithValue("@additional_info", pluginItem.AlternateInfo != null ? pluginItem.AlternateInfo : "");
                             command.Parameters.AddWithValue("@sort_by_name", plugin.SortingOption == PluginItemSortingOption.ByNameLength ? 1 : 0);
-                            command.Parameters.AddWithValue("@item_name", pluginItems[i]);
+                            command.Parameters.AddWithValue("@icon_location", pluginItem.IconLocation != null ? pluginItem.IconLocation : "");
+                            command.Parameters.AddWithValue("@requires_activator", plugin.Activator != null ? 1 : 0);
                             command.Parameters.AddWithValue("@plugin_name", plugin.Name);
+                            command.Parameters.AddWithValue("@item_name", pluginItem.Name);
                             command.ExecuteNonQuery();
                         }
                     }
@@ -433,11 +427,21 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case IS_PLUGIN_ITEM when 1 th
                         IPlugin pluginInstance = pluginInstances.Find(plugin => plugin.Name == otherInfo);
                         if (pluginInstance != null)
                         {
+                            if (otherInfo == "")
+                            {
+                                otherInfo = pluginInstance.Name;
+                            }
+
+                            var iconLocation = reader["ICON_LOCATION"].ToString();
+
                             var additionalItemInfo = reader["ADDITIONAL_INFO"].ToString();
-                            lvi = new ListViewItem(new string[] { itemName, otherInfo, additionalItemInfo != "" ? additionalItemInfo : itemName });
+                            lvi = new ListViewItem(new string[] { itemName, otherInfo, additionalItemInfo != "" ? additionalItemInfo : itemName, pluginInstance.Name });
+
                             if (Properties.Settings.Default.ShowItemIcons && pluginInstance.PluginIcon != null)
                             {
-                                UpdateImageList(pluginInstance.PluginIcon, lvi, ref iconIndex);
+                                UpdateImageList(iconLocation != "" && File.Exists(iconLocation) ? Icon.ExtractAssociatedIcon(iconLocation) : 
+                                                                                                  pluginInstance.PluginIcon,
+                                                lvi, ref iconIndex);
                             }
                         }
                         else
@@ -526,13 +530,10 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case IS_PLUGIN_ITEM when 1 th
             // in the row is also derived from the identifier. It's length is trimmed based on the user's preference
             string item = outputWindow.listViewOutput.SelectedItems[0].SubItems[2].Text;
 
-            // the 2nd item in each row. Usually a plugin name or a full file path
-            string subitem = outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text;
-
-            var plugin = pluginInstances.Find(pluginInstance => pluginInstance.Name == subitem);
-
-            if (plugin != null)
+            var currentLVI = outputWindow.listViewOutput.SelectedItems[0];
+            if (currentLVI.SubItems.Count == 4)
             {
+                var plugin = pluginInstances.Find(pluginInstance => pluginInstance.Name == outputWindow.listViewOutput.SelectedItems[0].SubItems[3].Text);
                 plugin.HandleExecution(item);
 
                 if (Properties.Settings.Default.PluginSelectionsInHistory)
@@ -541,6 +542,9 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case IS_PLUGIN_ITEM when 1 th
                 }
                 return;
             }
+
+            // the 2nd item in each row. Usually a full file path
+            string subitem = outputWindow.listViewOutput.SelectedItems[0].SubItems[1].Text;
 
             var startInfo = new ProcessStartInfo(subitem);
 

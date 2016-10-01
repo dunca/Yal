@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace PluginInterfaces
@@ -43,13 +44,12 @@ namespace PluginInterfaces
         void SaveSettings();
 
         /// <summary>
-        /// This method should return an array with the identifiers of all the items that the plugin can provide or 'null'
-        /// when the plugin can't provide any items
+        /// Called every time the user's input changes. For plugins that use activators this will only
+        /// get called when the user's input starts with the activator
         /// </summary>
-        /// <param name="input">the string the user inserts in the launcher's text/search box</param>
-        /// <param name="itemInfo">an optional array of additional strings, one for each of the items in the returned array</param>
-        /// <returns></returns>
-        string[] GetItems(string input, out string[] itemInfo);
+        /// <param name="userInput">the string the user inserts in the launcher's text/search box</param>
+        /// <returns>a list of the items it can provide, or 'null' (when the plugin can't provide any items)</returns>
+        List<PluginItem> GetItems(string userInput);
 
         /// <summary>
         /// This method should take care of the execution of the specified parameter

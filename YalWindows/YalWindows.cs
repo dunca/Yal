@@ -3,6 +3,7 @@ using System.Linq;
 using System.Drawing;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 using Utilities;
 using PluginInterfaces;
@@ -49,10 +50,12 @@ entry switches to the underlying window";
             pluginUserControl.SaveSettings();
         }
 
-        public string[] GetItems(string input, out string[] itemInfo)
+        public List<PluginItem> GetItems(string userInput)
         {
-            itemInfo = null;
-            return Process.GetProcesses().Where(process => process.MainWindowHandle != IntPtr.Zero).Select(process => string.Join(" ", Activator, process.MainWindowTitle)).ToArray();
+            return Process.GetProcesses().Where(process => process.MainWindowHandle != IntPtr.Zero).Select(process => new PluginItem()
+            {
+                Name = string.Join(" ", Activator, process.MainWindowTitle)
+            }).ToList();
         }
 
         public void HandleExecution(string input)

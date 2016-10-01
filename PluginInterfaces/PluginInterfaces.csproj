@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IPlugin.cs" />
+    <Compile Include="PluginItem.cs" />
     <Compile Include="PluginItemSortingOption.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

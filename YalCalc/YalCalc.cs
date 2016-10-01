@@ -3,6 +3,7 @@ using System.Data;
 using System.Drawing;
 using PluginInterfaces;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 using Utilities;
 
@@ -42,21 +43,26 @@ namespace YalCalc
             pluginUserControl.SaveSettings();
         }
 
-        public string[] GetItems(string input, out string[] itemInfo)
+        public List<PluginItem> GetItems(string userInput)
         {
-            itemInfo = null;
-            string[] result = null;
-
+            List<PluginItem> results = null;
             var dt = new DataTable();
+
             try
             {
-                double output = Convert.ToDouble(dt.Compute(input, filter: ""));
-                result = new string[] { string.Concat(input, "=", Convert.ToString(Math.Round(output, Properties.Settings.Default.DecimalPlaces))) };
+                var output = Math.Round(Convert.ToDouble(dt.Compute(userInput, filter: "")), 
+                                        Properties.Settings.Default.DecimalPlaces).ToString();
+                results = new List<PluginItem>()
+                {
+                    new PluginItem() { Name = string.Concat(userInput, "=", output) }
+                };
             }
             catch
             {
+                // the above dt.Compute will obviously fail if the input is not a (simple) mathematical expression
             }
-            return result;
+
+            return results;
         }
 
         public void HandleExecution(string input)

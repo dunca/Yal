@@ -115,10 +115,13 @@ Work Folders;Microsoft.WorkFolders;8.1,10
             pluginUserControl.SaveSettings();
         }
 
-        public string[] GetItems(string input, out string[] itemInfo)
+        public List<PluginItem> GetItems(string userInput)
         {
-            itemInfo = null;
-            return ControlPanelItems.Count > 0 ? ControlPanelItems.Keys.ToArray() : null;
+            return ControlPanelItems.Count > 0 ? ControlPanelItems.Keys.Select(item => new PluginItem()
+            {
+                Name = item
+            }
+            ).ToList() : null;
         }
 
         public void HandleExecution(string name)
