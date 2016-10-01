@@ -46,7 +46,7 @@ namespace Yal
 (
 select * from
 (
-	select ITEM_NAME, OTHER_INFO, '' as ADDITIONAL_INFO, HITS, 1 as SORT_BY_NAME, ROWID, '' as PLUGIN_NAME, '' as ICON_LOCATION from HISTORY_CATALOG where SNIPPET like @snippet
+	select ITEM_NAME, OTHER_INFO, ADDITIONAL_INFO, HITS, 1 as SORT_BY_NAME, ROWID, '' as PLUGIN_NAME, '' as ICON_LOCATION from HISTORY_CATALOG where SNIPPET like @snippet
 	union
 	select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, '' as ADDITIONAL_INFO, @file_priority as HITS, 1 as SORT_BY_NAME, ROWID, '' as PLUGIN_NAME, '' as ICON_LOCATION from INDEX_CATALOG where NAME like @pattern
 	union
@@ -526,19 +526,20 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then
                 outputWindow.Hide();
             }
 
+            var currentLVI = outputWindow.listViewOutput.SelectedItems[0];
+
             // the 3rd item in the row is the identifier of the item. The first item
             // in the row is also derived from the identifier. It's length is trimmed based on the user's preference
-            string item = outputWindow.listViewOutput.SelectedItems[0].SubItems[2].Text;
+            string item = currentLVI.SubItems[2].Text;
 
-            var currentLVI = outputWindow.listViewOutput.SelectedItems[0];
             if (currentLVI.SubItems.Count == 4)
             {
-                var plugin = pluginInstances.Find(pluginInstance => pluginInstance.Name == outputWindow.listViewOutput.SelectedItems[0].SubItems[3].Text);
+                var plugin = pluginInstances.Find(pluginInstance => pluginInstance.Name == currentLVI.SubItems[3].Text);
                 plugin.HandleExecution(item);
 
                 if (Properties.Settings.Default.PluginSelectionsInHistory)
                 {
-                    FileManager.UpdateHistory(txtSearch.Text, item, plugin.Name);
+                    FileManager.UpdateHistory(txtSearch.Text, currentLVI.SubItems[0].Text, plugin.Name, currentLVI.SubItems[2].Text);
                 }
                 return;
             }
