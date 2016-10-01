@@ -127,21 +127,14 @@ for a command '~hhh' that expects '!2-n!'
             }
         }
 
-        public string[] GetItems(string input, out string[] itemInfo)
+        public List<PluginItem> GetItems(string userInput)
         {
-            itemInfo = null;
-            string[] result = null;
-
-            var firstArgIndex = input.IndexOf(" ") + 1;
-            if (firstArgIndex != 0 && firstArgIndex < input.Length)
+            var firstArgIndex = userInput.IndexOf(" ") + 1;
+            return Entries.Count > 0 ? Entries.Keys.Select(entry => new PluginItem()
             {
-                result = Entries.Keys.Select(entry => string.Join(" ", entry, input.Substring(firstArgIndex))).ToArray();
-            }
-            else
-            {
-                result = Entries.Keys.Select(entry => string.Concat(entry, " ")).ToArray();
-            }
-            return result;
+                Name = firstArgIndex != 0 && firstArgIndex < userInput.Length ? string.Join(" ", entry, userInput.Substring(firstArgIndex)) :
+                                                                                string.Concat(entry, " ")
+            }).ToList() : null;
         }
 
         public void HandleExecution(string input)

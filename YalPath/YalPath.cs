@@ -62,65 +62,53 @@ named '{(PluginUserControl as YalPathUC).cbOpenPath.Text}' is checked.
             pluginUserControl.SaveSettings();
         }
 
-        public string[] GetItems(string input, out string[] itemInfo)
+        public List<PluginItem> GetItems(string userInput)
         {
-            itemInfo = null;
-            string[] results = null;
-
             //if (Regex.IsMatch(input, "^[a-zA-Z]:$"))
             //{
             //    return GetItems(string.Concat(input, Path.DirectorySeparatorChar), out itemInfo);
             //}
 
-            if (Directory.Exists(input))
+            List<PluginItem> results = new List<PluginItem>();
+
+            if (Directory.Exists(userInput))
             {
                 // list the dir's contents if the path ends with the directory separator
-                if (input[input.Length - 1] == Path.DirectorySeparatorChar)
+                if (userInput[userInput.Length - 1] == Path.DirectorySeparatorChar)
                 {
-                    var resultsList = new List<string>();
-                    var itemInfoList = new List<string>();
-
-                    foreach (var entry in Directory.EnumerateFileSystemEntries(input))
-                    {
-                        // it seems that EnumerateFSEntries can't deal with 'junction points' (C:\Documents and Settings -> C:\Users),
-                        // so we simply ignore those
-                        if (!Utils.FileIsLink(entry))
-                        {
-                            itemInfoList.Add(entry);
-                            resultsList.Add(Path.GetFileName(entry));
-                        }
-                    }
-                    results = resultsList.ToArray();
-                    itemInfo = itemInfoList.ToArray();
+                    // it seems that EnumerateFSEntries can't deal with 'junction points' (C:\Documents and Settings -> C:\Users),
+                    // so we simply ignore those
+                    var entries = Directory.EnumerateFileSystemEntries(userInput).Where(entry => !Utils.FileIsLink(entry));
+                    results.AddRange(entries.Select(entry => CreatePluginItem(Path.GetFileName(entry), entry)));
                 }
                 else
                 {
-                    results = new string[] { input };
+                    results.Add(CreatePluginItem(userInput));
                 }
 
             }
-            else if (File.Exists(input))
+            else if (File.Exists(userInput))
             {
-                results = new string[] { input };
+                results.Add(CreatePluginItem(userInput));
             }
             else
             {
                 // tries to return an array of items that start with the input path
                 // eg.: C:\P -> C:\Program Files, C:\Program Files x86...
-                var directory = input.TrimEnd(Path.DirectorySeparatorChar);
+                var directory = userInput.TrimEnd(Path.DirectorySeparatorChar);
                 var lastSeparatorIndex = directory.LastIndexOf(Path.DirectorySeparatorChar);
                 if (lastSeparatorIndex != -1)
                 {
                     directory = directory.Substring(0, lastSeparatorIndex + 1);
                     if (Directory.Exists(directory))
                     {
-                        results = Directory.EnumerateFileSystemEntries(directory).Where(
-                                            path => path.StartsWith(input, StringComparison.CurrentCultureIgnoreCase) && 
-                                            !Utils.FileIsLink(path)).ToArray();
+                        results.AddRange(Directory.EnumerateFileSystemEntries(directory).Where(entry => !Utils.FileIsLink(entry)
+                                            && entry.StartsWith(userInput, StringComparison.CurrentCultureIgnoreCase)
+                                            ).Select(entry => CreatePluginItem(entry)));
                     }
                 }
             }
-            return results;
+            return results.Count > 0 ? results : null;
         }
 
         public void HandleExecution(string input)
@@ -148,6 +136,15 @@ named '{(PluginUserControl as YalPathUC).cbOpenPath.Text}' is checked.
             {
                 MessageBox.Show($"'{input}' is not a valid file system path", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private PluginItem CreatePluginItem(string name, string alternativeInfo = null, string subitemName = null, string iconLocation = null)
+        {
+            return new PluginItem()
+            {
+                Name = name, AlternateInfo = alternativeInfo,
+                SubitemName = subitemName, IconLocation = iconLocation
+            };
         }
     }
 }

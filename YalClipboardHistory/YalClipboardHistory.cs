@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 using Utilities;
 using PluginInterfaces;
@@ -61,17 +62,12 @@ between sessions, if the
             pluginUserControl.SaveSettings();
         }
 
-        public string[] GetItems(string input, out string[] itemInfo)
+        public List<PluginItem> GetItems(string userInput)
         {
-            itemInfo = null;
-            string[] result = null;
-
-            if (HistoryManager.HistoryItems.Count > 0)
-            {
-                result = HistoryManager.HistoryItems.Select(item => string.Join(" ", Activator, item)).ToArray();
-            }
-
-            return result;
+           return HistoryManager.HistoryItems.Count > 0 ? HistoryManager.HistoryItems.Select(item => new PluginItem()
+           {
+               Name = string.Join(" ", Activator, item)
+           }).ToList() : null;
         }
 
         public void HandleExecution(string input)

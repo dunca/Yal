@@ -202,9 +202,8 @@ specific bookmark in it's bookmark database.";
             pluginUserControl.SaveSettings();
         }
 
-        public string[] GetItems(string input, out string[] itemInfo)
+        public List<PluginItem> GetItems(string userInput)
         {
-            itemInfo = null;
             localQueryCache.Clear();
 
             foreach (var browser in browsers)
@@ -215,7 +214,10 @@ specific bookmark in it's bookmark database.";
                 }
                 browser.Value.QueryDatabase();
             }
-            return localQueryCache.Count > 0 ? localQueryCache.Keys.ToArray() : null;
+            return localQueryCache.Count > 0 ? localQueryCache.Keys.Select(item => new PluginItem()
+            {
+                Name = item
+            }).ToList() : null;
         }
 
         public void HandleExecution(string input)

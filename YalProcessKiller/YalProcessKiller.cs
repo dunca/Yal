@@ -3,6 +3,7 @@ using System.Linq;
 using System.Drawing;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 using Utilities;
 using PluginInterfaces;
@@ -49,10 +50,13 @@ process";
             pluginUserControl.SaveSettings();
         }
 
-        public string[] GetItems(string input, out string[] itemInfo)
+        public List<PluginItem> GetItems(string userInput)
         {
-            itemInfo = null;
-            return Process.GetProcesses().Select(process => string.Join(" ", Activator, process.ProcessName)).ToArray();
+            var processes = Process.GetProcesses();
+            return processes.Length > 0 ? Process.GetProcesses().Select(process => new PluginItem()
+            {
+                Name = string.Join(" ", Activator, process.ProcessName)
+            }).ToList() : null;
         }
 
         public void HandleExecution(string input)
