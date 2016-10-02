@@ -63,15 +63,15 @@ entry switches to the underlying window";
         public void HandleExecution(string input)
         {
             var windowName = input.Substring(Activator.Length + 1);
-            var matchingProcesses = Process.GetProcesses().Where(p => p.MainWindowTitle == windowName).ToArray();
+            var matchingHandle = Utils.FindWindow(null, windowName);
 
-            if (matchingProcesses.Length == 0)
+            if (matchingHandle == IntPtr.Zero)
             {
                 MessageBox.Show($"Could not find a window named '{windowName}'", Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            Utils.ActivateWindowByHandle(matchingProcesses[0].MainWindowHandle);
+            Utils.ActivateWindowByHandle(matchingHandle);
         }
     }
 }
