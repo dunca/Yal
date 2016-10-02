@@ -86,7 +86,7 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then
                 Properties.Settings.Default.DateFirstLaunched = DateTime.Now.ToShortDateString();
             }
 
-            pluginInstances = PluginManager.InstantiatePlugins(PluginManager.Load("plugins"));
+            pluginInstances = PluginManager.InstantiatePlugins();
 
             pluginItemDb.Open();
             (new SQLiteCommand(string.Format(pluginTableSchema, "PLUGIN_ITEM"), pluginItemDb)).ExecuteNonQuery();

@@ -8,17 +8,17 @@ namespace Yal
 {
     internal static class PluginManager
     {
-        internal static List<IPlugin> InstantiatePlugins(List<Type> pluginTypes)
+        internal static List<IPlugin> InstantiatePlugins()
         {
             var pluginInstances = new List<IPlugin>();
-            foreach (var type in pluginTypes)
+            foreach (var type in LoadPluginTypes())
             {
                 pluginInstances.Add(Activator.CreateInstance(type) as IPlugin);
             }
             return pluginInstances;
         }
 
-        internal static List<Type> Load(string path)
+        private static List<Type> LoadPluginTypes(string path = "plugins")
         {
             if (!Directory.Exists(path))
             {
@@ -26,9 +26,13 @@ namespace Yal
             }
 
             var assemblies = new List<Assembly>();
-            foreach (string dll in Directory.EnumerateFiles(path, "*.dll"))
+            foreach (var dir in Directory.EnumerateDirectories(path))
             {
-                assemblies.Add(Assembly.LoadFrom(dll));
+                var pluginFilePath = Path.Combine(dir, string.Concat(Path.GetFileName(dir), ".dll"));
+                if (File.Exists(pluginFilePath))
+                {
+                    assemblies.Add(Assembly.LoadFrom(pluginFilePath));
+                }
             }
 
             var pluginTypes = new List<Type>();
