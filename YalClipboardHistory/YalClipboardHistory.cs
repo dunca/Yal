@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace YalClipboardHistory
             }
         }
 
+        private HistoryManager historyManager;
         private YalClipboardHistoryUC pluginUserControl;
         private Form clipboardListener = new ClipboardListener();
 
@@ -47,13 +49,15 @@ you can either hit Enter or double click the item.
 between sessions, if the
 '{(PluginUserControl as YalClipboardHistoryUC).cbStoreInDb.Text}' option is checked.
 ";
+
+            historyManager = new HistoryManager(Path.Combine("plugins", Name));
         }
 
         ~YalClipboardHistory()
         {
             if (Properties.Settings.Default.StoreInDb)
             {
-                HistoryManager.UpdateLocalDb();
+                historyManager.UpdateLocalDb();
             }
         }
 
