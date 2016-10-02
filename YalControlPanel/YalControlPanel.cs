@@ -119,7 +119,7 @@ Work Folders;Microsoft.WorkFolders;8.1,10
         {
             return ControlPanelItems.Count > 0 ? ControlPanelItems.Keys.Select(item => new PluginItem()
             {
-                Name = item
+                Item = item
             }
             ).ToList() : null;
         }

@@ -75,7 +75,7 @@ pick the relevant menu item.";
             var firstArgIndex = userInput.IndexOf(" ") + 1;
             return Entries.Count > 0 ? Entries.Keys.Select(entry => new PluginItem()
             {
-                Name = firstArgIndex != 0 && firstArgIndex < userInput.Length ? string.Join(" ", entry, userInput.Substring(firstArgIndex)) :
+                Item = firstArgIndex != 0 && firstArgIndex < userInput.Length ? string.Join(" ", entry, userInput.Substring(firstArgIndex)) :
                                                                                 string.Concat(entry, " ")
             }).ToList() : null;
         }

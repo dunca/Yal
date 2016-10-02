@@ -142,8 +142,8 @@ named '{(PluginUserControl as YalPathUC).cbOpenPath.Text}' is checked.
         {
             return new PluginItem()
             {
-                Name = name, AlternateInfo = alternativeInfo,
-                SubitemName = subitemName, IconLocation = iconLocation
+                Item = name, Info = alternativeInfo,
+                Subitem = subitemName, IconLocation = iconLocation
             };
         }
     }

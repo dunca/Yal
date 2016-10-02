@@ -55,8 +55,8 @@ entry switches to the underlying window";
         {
             return Process.GetProcesses().Where(process => process.MainWindowHandle != IntPtr.Zero && process.ProcessName != "explorer").Select(process => new PluginItem()
             {
-                Name = process.MainWindowTitle, AlternateInfo = string.Join(" ", Activator, process.MainWindowTitle),
-                IconLocation = Properties.Settings.Default.GetAppIcons ? Utils.GetProcessFileLocation(process) : null
+                Item = process.MainWindowTitle, Info = string.Join(" ", Activator, process.MainWindowTitle),
+                IconLocation = Properties.Settings.Default.GetAppIcons ? Utils.GetProcessFileLocation(process) : null,
             }).ToList();
         }
 

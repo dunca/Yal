@@ -222,7 +222,7 @@ specific bookmark in it's bookmark database.";
             }
             return localQueryCache.Count > 0 ? localQueryCache.Select(item => new PluginItem()
             {
-                Name = item.Key, AlternateInfo = string.Join(" ", Activator, item.Key), IconLocation = Properties.Settings.Default.UseBrowserIcon ? item.Value[2] : null
+                Item = item.Key, Info = string.Join(" ", Activator, item.Key), IconLocation = Properties.Settings.Default.UseBrowserIcon ? item.Value[2] : null
             }).ToList() : null;
         }
 
