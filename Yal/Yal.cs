@@ -409,6 +409,12 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then
                     string pluginPattern = ConstructSearchPattern(userInput, Properties.Settings.Default.FuzzyMatchingPluginItems);
                     string actPluginPattern = ConstructSearchPattern(userInput, Properties.Settings.Default.FuzzyMatchingPluginItems, true);
 
+                    var spaceIndex = actPluginPattern.IndexOf(" ");
+                    if (spaceIndex != -1 && Properties.Settings.Default.MatchAnywhere)
+                    {
+                        actPluginPattern = actPluginPattern.Insert(spaceIndex + 1, "%");
+                    }
+
                     command.Parameters.AddWithValue("@file_priority", Properties.Settings.Default.PluginItemsFirst ? -2 : 0);
                     command.Parameters.AddWithValue("@limit", Properties.Settings.Default.MaxItems);
                     command.Parameters.AddWithValue("@snippet", string.Concat(userInput, "%"));
