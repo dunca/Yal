@@ -46,5 +46,10 @@ namespace Yal
             }
             return pluginTypes;
         }
+
+        internal static bool PluginIsDisabled(IPlugin plugin)
+        {
+            return Properties.Settings.Default.DisabledPlugins.Contains(plugin.Name);
+        }
     }
 }

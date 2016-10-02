@@ -374,8 +374,7 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then
             {
                 foreach (var plugin in pluginInstances)
                 {
-                    if (Properties.Settings.Default.DisabledPlugins.Contains(plugin.Name)
-                        || (plugin.Activator != null && !userInput.StartsWith(plugin.Activator)))
+                    if (PluginLoader.PluginIsDisabled(plugin) || (plugin.Activator != null && !userInput.StartsWith(plugin.Activator)))
                     {
                         continue;
                     }
@@ -428,6 +427,12 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then
                         IPlugin pluginInstance = pluginInstances.Find(plugin => plugin.Name == otherInfo);
                         if (pluginInstance != null)
                         {
+                            if (PluginLoader.PluginIsDisabled(pluginInstance))
+                            { // The current item comes for the history database. We don't want to process it, since the plugin
+                              // that generated it is disabled
+                                continue;
+                            }
+
                             if (otherInfo == "")
                             {
                                 otherInfo = pluginInstance.Name;
