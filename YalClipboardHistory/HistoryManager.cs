@@ -5,13 +5,15 @@ using System.Collections.Generic;
 
 namespace YalClipboardHistory
 {
-    static class HistoryManager
+    class HistoryManager
     {
-        private const string historyFile = "ychdb.xml";
-        internal static List<string> HistoryItems { get; } = new List<string>();
+        private readonly string historyFile;
+        internal static List<string> HistoryItems { get; set; } = new List<string>();
 
-        static HistoryManager()
+        public HistoryManager(string pluginDirectoryPath)
         {
+            historyFile = Path.Combine(pluginDirectoryPath, "clipboard_database.xml");
+
             if (!Properties.Settings.Default.StoreInDb)
             {
                 File.Delete(historyFile);
@@ -48,7 +50,7 @@ namespace YalClipboardHistory
             }
         }
 
-        internal static void UpdateLocalDb()
+        internal void UpdateLocalDb()
         {
             using (var fs = File.Open(historyFile, FileMode.Create))
             {
