@@ -346,6 +346,12 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
+            if (txtSearch.Text != "" && txtSearch.Text == txtSearch.SelectedText)
+            {
+                // Selecting all the text seems to trigger TextChanged. We don't really want to re-query everyting in this case
+                return;
+            }
+
             if (Properties.Settings.Default.SearchDelay <= 100)
             {
                 PerformSearch();
