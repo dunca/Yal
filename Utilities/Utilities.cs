@@ -66,7 +66,7 @@ namespace Utilities
 
         public static Icon GetPluginIcon(string pluginName)
         {
-            return GetFileIcon($@"plugins\{pluginName}\{pluginName}.ico");
+            return GetFileIcon($@"plugins\{pluginName}\icon.ico");
         }
 
         public static Icon GetFileIcon(string path)

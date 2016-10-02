@@ -90,7 +90,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>if not exist "$(SolutionDir)Yal\$(OutDir)\plugins\$(ProjectName)" mkdir "$(SolutionDir)Yal\$(OutDir)\plugins\$(ProjectName)"
-if not exist "$(SolutionDir)Yal\$(OutDir)\plugins\$(ProjectName)\$(ProjectName).ico" copy /Y "$(ProjectDir)$(ProjectName).ico" "$(SolutionDir)Yal\$(OutDir)\plugins\$(ProjectName)"</PreBuildEvent>
+if not exist "$(SolutionDir)Yal\$(OutDir)\plugins\$(ProjectName)\$(ProjectName).ico" copy /Y "$(ProjectDir)$(ProjectName).ico" "$(SolutionDir)Yal\$(OutDir)\plugins\$(ProjectName)\icon.ico"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
