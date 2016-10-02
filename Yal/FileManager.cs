@@ -32,14 +32,14 @@ namespace Yal
     {
         internal static DbInfo indexDbInfo = new DbInfo("index.sqlite", "INDEX_CATALOG", "FULLPATH",
                                                         "create table if not exists INDEX_CATALOG (NAME text, FULLPATH text)");
-        internal static DbInfo historyDbInfo = new DbInfo("history.sqlite", "HISTORY", "OTHER_INFO",
-                                                          "create table if not exists HISTORY_CATALOG (SNIPPET text, ITEM_NAME text, ADDITIONAL_INFO text, OTHER_INFO text, HITS integer default 1, LASTACCESSED datetime)");
+        internal static DbInfo historyDbInfo = new DbInfo("history.sqlite", "HISTORY", "SUBITEM",
+                                                          "create table if not exists HISTORY_CATALOG (SNIPPET text, ITEM text, SUBITEM text, ITEM_INFO text, PLUGIN_NAME text, HITS integer default 1, LASTACCESSED datetime)");
 
         private const string indexInsert = "insert into INDEX_CATALOG (NAME, FULLPATH) values (@name, @fullpath)";
-        private const string historyInsert = "insert into HISTORY_CATALOG (SNIPPET, ITEM_NAME, ADDITIONAL_INFO, OTHER_INFO, LASTACCESSED) values (@snippet, @item_name, @additional_info, @other_info, datetime('now'))";
+        private const string historyInsert = "insert into HISTORY_CATALOG (SNIPPET, ITEM, SUBITEM, ITEM_INFO, PLUGIN_NAME, LASTACCESSED) values (@snippet, @item, @subitem, @item_info, @plugin_name, datetime('now'))";
         private const string historyTrim = "delete from HISTORY_CATALOG where LASTACCESSED in (select LASTACCESSED from HISTORY_CATALOG order by LASTACCESSED limit @limit)";
-        private const string historyUpdate = "update HISTORY_CATALOG set HITS = HITS + 1, LASTACCESSED = datetime('now') where SNIPPET == @snippet and OTHER_INFO == @other_info";
-        private const string historyQuery = "select count(SNIPPET) from HISTORY_CATALOG where SNIPPET == @snippet and OTHER_INFO == @other_info";
+        private const string historyUpdate = "update HISTORY_CATALOG set HITS = HITS + 1, LASTACCESSED = datetime('now') where SNIPPET = @snippet and SUBITEM = @subitem";
+        private const string historyQuery = "select count(SNIPPET) from HISTORY_CATALOG where SNIPPET = @snippet and SUBITEM == @subitem";
 
         private static void UpdateIndex(IEnumerable<string> files)
         {
@@ -60,14 +60,15 @@ namespace Yal
             }
         }
 
-        internal static void UpdateHistory(string snippet, string itemName, string otherInfo, string additionalInfo = "")
+        internal static void UpdateHistory(string snippet, string item, string subitem, string itemInfo = "", string pluginName = "")
         {
             using (var connection = GetDbConnection(historyDbInfo))
             {
                 SQLiteCommand nonQuery;
                 var command = new SQLiteCommand(historyQuery, connection);
                 command.Parameters.AddWithValue("@snippet", snippet);
-                command.Parameters.AddWithValue("@other_info", otherInfo);
+                command.Parameters.AddWithValue("@subitem", subitem);
+
                 if (Convert.ToBoolean(command.ExecuteScalar()))  // snippet + fileName combo already in DB
                 { // update the existing value
                     nonQuery = new SQLiteCommand(historyUpdate, connection);
@@ -75,11 +76,13 @@ namespace Yal
                 else
                 {
                     nonQuery = new SQLiteCommand(historyInsert, connection);
-                    nonQuery.Parameters.AddWithValue("@item_name", itemName);
+                    nonQuery.Parameters.AddWithValue("@item", item);
                 }
+
                 nonQuery.Parameters.AddWithValue("@snippet", snippet);
-                nonQuery.Parameters.AddWithValue("@other_info", otherInfo);
-                nonQuery.Parameters.AddWithValue("@additional_info", additionalInfo);
+                nonQuery.Parameters.AddWithValue("@subitem", subitem);
+                nonQuery.Parameters.AddWithValue("@item_info", itemInfo);
+                nonQuery.Parameters.AddWithValue("@plugin_name", pluginName);
                 nonQuery.ExecuteNonQuery();
             }
         }

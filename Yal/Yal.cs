@@ -41,19 +41,20 @@ namespace Yal
         private Dictionary<string, int> iconIndexMap = new Dictionary<string, int>();
 
         private const string attachTemplate = "attach database '{0}' as {1}";
-        private const string pluginTableSchema = "create table if not exists PLUGIN_ITEM (ITEM_NAME text, SUBITEM_NAME text, PLUGIN_NAME text, ADDITIONAL_INFO text, REQUIRES_ACTIVATOR numeric, SORT_BY_NAME numeric, ICON_LOCATION text)";
-        private const string pluginInsertString = "insert into PLUGIN_ITEM values (@item_name, @subitem_name, @plugin_name, @additional_info, @requires_activator, @sort_by_name, @icon_location)";
-        private const string itemQueryString = @"select distinct ITEM_NAME, OTHER_INFO, ADDITIONAL_INFO, ICON_LOCATION from 
+        private const string pluginTableSchema = "create table if not exists PLUGIN_ITEM (ITEM text, SUBITEM text, ITEM_INFO text, PLUGIN_NAME text, REQUIRES_ACTIVATOR numeric, SORT_BY_NAME numeric, ICON_PATH text)";
+        private const string pluginInsertString = "insert into PLUGIN_ITEM values (@item, @subitem, @item_info, @plugin_name, @requires_activator, @sort_by_name, @icon_path)";
+        private const string itemQueryString = @"
+select distinct ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME from 
 (
-select * from
-(
-	select ITEM_NAME, OTHER_INFO, ADDITIONAL_INFO, HITS, 1 as SORT_BY_NAME, ROWID, '' as PLUGIN_NAME, '' as ICON_LOCATION from HISTORY_CATALOG where SNIPPET like @snippet
-	union
-	select NAME as ITEM_NAME, FULLPATH as OTHER_INFO, '' as ADDITIONAL_INFO, @file_priority as HITS, 1 as SORT_BY_NAME, ROWID, '' as PLUGIN_NAME, '' as ICON_LOCATION from INDEX_CATALOG where NAME like @pattern
-	union
-	select ITEM_NAME, SUBITEM_NAME as OTHER_INFO, ADDITIONAL_INFO, -1 as HITS, SORT_BY_NAME, ROWID, PLUGIN_NAME, ICON_LOCATION from PLUGIN_ITEM where (REQUIRES_ACTIVATOR = 0 and (case ADDITIONAL_INFO when '' then ITEM_NAME else ADDITIONAL_INFO end) like @plugin_pattern) OR (REQUIRES_ACTIVATOR = 1 and (case ADDITIONAL_INFO when '' then ITEM_NAME else ADDITIONAL_INFO end) like @act_plugin_pattern)
-)
-order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then ITEM_NAME else length(ITEM_NAME) end) else -ROWID end
+    select * from
+    (
+	    select ITEM, SUBITEM, ITEM_INFO, HITS, 1 as SORT_BY_NAME, ROWID, PLUGIN_NAME, '' as ICON_PATH from HISTORY_CATALOG where SNIPPET like @snippet
+	    union
+	    select NAME as ITEM, FULLPATH as SUBITEM, '' as ITEM_INFO, @file_priority as HITS, 1 as SORT_BY_NAME, ROWID, '' as PLUGIN_NAME, '' as ICON_PATH from INDEX_CATALOG where NAME like @pattern
+	    union
+	    select ITEM, SUBITEM, ITEM_INFO, -1 as HITS, SORT_BY_NAME, ROWID, PLUGIN_NAME, ICON_PATH from PLUGIN_ITEM where (REQUIRES_ACTIVATOR = 0 and ITEM_INFO like @plugin_pattern) OR (REQUIRES_ACTIVATOR = 1 and ITEM_INFO like @activator_plugin_pattern)
+    )
+    order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then ITEM else length(ITEM) end) else -ROWID end
 ) limit @limit";
 
         private SQLiteConnection pluginItemDb = new SQLiteConnection("FullUri=file::memory:?cache=shared;Version=3;");
@@ -388,13 +389,14 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then
                         foreach (var pluginItem in pluginItems)
                         {
                             var command = new SQLiteCommand(pluginInsertString, pluginItemDb);
-                            command.Parameters.AddWithValue("@subitem_name", pluginItem.SubitemName != null ? pluginItem.SubitemName : plugin.Name);
-                            command.Parameters.AddWithValue("@additional_info", pluginItem.AlternateInfo != null ? pluginItem.AlternateInfo : "");
+                            
                             command.Parameters.AddWithValue("@sort_by_name", plugin.SortingOption == PluginItemSortingOption.ByNameLength ? 1 : 0);
-                            command.Parameters.AddWithValue("@icon_location", pluginItem.IconLocation != null ? pluginItem.IconLocation : "");
                             command.Parameters.AddWithValue("@requires_activator", plugin.Activator != null ? 1 : 0);
+                            command.Parameters.AddWithValue("@item_info", pluginItem.Info ?? pluginItem.Item);
+                            command.Parameters.AddWithValue("@subitem", pluginItem.Subitem ?? plugin.Name);
+                            command.Parameters.AddWithValue("@icon_path", pluginItem.IconLocation ?? "");
                             command.Parameters.AddWithValue("@plugin_name", plugin.Name);
-                            command.Parameters.AddWithValue("@item_name", pluginItem.Name);
+                            command.Parameters.AddWithValue("@item", pluginItem.Item);
                             command.ExecuteNonQuery();
                         }
                     }
@@ -409,18 +411,18 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then
 
                     string pattern = ConstructSearchPattern(userInput, Properties.Settings.Default.FuzzyMatching);
                     string pluginPattern = ConstructSearchPattern(userInput, Properties.Settings.Default.FuzzyMatchingPluginItems);
-                    string actPluginPattern = ConstructSearchPattern(userInput, Properties.Settings.Default.FuzzyMatchingPluginItems, true);
+                    string activatorPluginPattern = ConstructSearchPattern(userInput, Properties.Settings.Default.FuzzyMatchingPluginItems, true);
 
-                    var spaceIndex = actPluginPattern.IndexOf(" ");
+                    var spaceIndex = activatorPluginPattern.IndexOf(" ");
                     if (spaceIndex != -1 && Properties.Settings.Default.MatchAnywhere)
                     {
-                        actPluginPattern = actPluginPattern.Insert(spaceIndex + 1, "%");
+                        activatorPluginPattern = activatorPluginPattern.Insert(spaceIndex + 1, "%");
                     }
 
                     command.Parameters.AddWithValue("@file_priority", Properties.Settings.Default.PluginItemsFirst ? -2 : 0);
+                    command.Parameters.AddWithValue("@activator_plugin_pattern", activatorPluginPattern);
                     command.Parameters.AddWithValue("@limit", Properties.Settings.Default.MaxItems);
                     command.Parameters.AddWithValue("@snippet", string.Concat(userInput, "%"));
-                    command.Parameters.AddWithValue("@act_plugin_pattern", actPluginPattern);
                     command.Parameters.AddWithValue("@plugin_pattern", pluginPattern);
                     command.Parameters.AddWithValue("@pattern", pattern);
                     var reader = command.ExecuteReader();
@@ -428,43 +430,40 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then
                     int iconIndex = 0;
                     while (reader.Read())
                     {
-                        var itemName = reader["ITEM_NAME"].ToString();
-                        var otherInfo = reader["OTHER_INFO"].ToString();
+                        var item = reader["ITEM"].ToString();
+                        var subitem = reader["SUBITEM"].ToString();
+                        var pluginName = reader["PLUGIN_NAME"].ToString();
 
                         ListViewItem lvi = null;
-                        IPlugin pluginInstance = pluginInstances.Find(plugin => plugin.Name == otherInfo);
-                        if (pluginInstance != null)
+                        if (pluginName != "")
                         {
+                            IPlugin pluginInstance = pluginInstances.Find(plugin => plugin.Name == pluginName);
                             if (PluginManager.PluginIsDisabled(pluginInstance))
-                            { // The current item comes for the history database. We don't want to process it, since the plugin
+                            { 
+                              // The current item comes for the history database. We don't want to process it, since the plugin
                               // that generated it is disabled
                                 continue;
                             }
 
-                            if (otherInfo == "")
-                            {
-                                otherInfo = pluginInstance.Name;
-                            }
+                            var iconPath = reader["ICON_PATH"].ToString();
 
-                            var iconLocation = reader["ICON_LOCATION"].ToString();
-
-                            var additionalItemInfo = reader["ADDITIONAL_INFO"].ToString();
-                            lvi = new ListViewItem(new string[] { itemName, otherInfo, additionalItemInfo != "" ? additionalItemInfo : itemName, pluginInstance.Name });
+                            var itemInfo = reader["ITEM_INFO"].ToString();
+                            lvi = new ListViewItem(new string[] { item, subitem, itemInfo != "" ? itemInfo : item, pluginInstance.Name });
 
                             if (Properties.Settings.Default.ShowItemIcons && pluginInstance.PluginIcon != null)
                             {
-                                if (iconLocation != "")
+                                if (iconPath != "")
                                 {
-                                    if (iconIndexMap.ContainsKey(iconLocation))
+                                    if (iconIndexMap.ContainsKey(iconPath))
                                     {
-                                        lvi.ImageIndex = iconIndexMap[iconLocation];
+                                        lvi.ImageIndex = iconIndexMap[iconPath];
                                     }
                                     else
                                     {
-                                        var icon = Utils.GetFileIcon(iconLocation);
+                                        var icon = Utils.GetFileIcon(iconPath);
                                         if (icon != null)
                                         {
-                                            iconIndexMap.Add(iconLocation, iconIndex);
+                                            iconIndexMap.Add(iconPath, iconIndex);
                                             UpdateImageList(icon, lvi, ref iconIndex);
                                         }
                                         else
@@ -484,18 +483,18 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then
                             //  most likely a file
                             if (!Properties.Settings.Default.ExtensionInFileName)
                             {
-                                itemName = Path.GetFileNameWithoutExtension(otherInfo);
+                                item = Path.GetFileNameWithoutExtension(subitem);
                             }
 
-                            lvi = new ListViewItem(new string[] { itemName, otherInfo, itemName }) { ToolTipText = otherInfo };
+                            lvi = new ListViewItem(new string[] { item, subitem, item }) { ToolTipText = subitem };
 
                             Icon icon;
-                            if (Properties.Settings.Default.ShowItemIcons && FileManager.GetFileIcon(otherInfo, out icon))
+                            if (Properties.Settings.Default.ShowItemIcons && FileManager.GetFileIcon(subitem, out icon))
                             {
                                 UpdateImageList(icon, lvi, ref iconIndex);
                             }
                         }
-                        lvi.SubItems[0].Text = TrimStringIfNeeded(itemName);
+                        lvi.SubItems[0].Text = TrimStringIfNeeded(item);
                         outputWindow.listViewOutput.Items.Add(lvi);
                     }
 
@@ -574,20 +573,20 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then
                 outputWindow.Hide();
             }
 
-            var currentLVI = outputWindow.listViewOutput.SelectedItems[0];
+            var lvi = outputWindow.listViewOutput.SelectedItems[0];
 
             // the 3rd item in the row is the identifier of the item. The first item
             // in the row is also derived from the identifier. It's length is trimmed based on the user's preference
-            string item = currentLVI.SubItems[2].Text;
+            string item = lvi.SubItems[2].Text;
 
-            if (currentLVI.SubItems.Count == 4)
+            if (lvi.SubItems.Count == 4)
             {
-                var plugin = pluginInstances.Find(pluginInstance => pluginInstance.Name == currentLVI.SubItems[3].Text);
+                var plugin = pluginInstances.Find(p => p.Name == lvi.SubItems[3].Text);
                 plugin.HandleExecution(item);
 
                 if (Properties.Settings.Default.PluginSelectionsInHistory)
                 {
-                    FileManager.UpdateHistory(txtSearch.Text, currentLVI.SubItems[0].Text, plugin.Name, currentLVI.SubItems[2].Text);
+                    FileManager.UpdateHistory(txtSearch.Text, lvi.SubItems[0].Text, lvi.SubItems[1].Text, lvi.SubItems[2].Text, plugin.Name);
                 }
                 return;
             }

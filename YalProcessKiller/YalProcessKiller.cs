@@ -55,7 +55,7 @@ process";
             var processes = Process.GetProcesses();
             return processes.Length > 0 ? Process.GetProcesses().Select(process => new PluginItem()
             {
-                Name = process.ProcessName, AlternateInfo = string.Join(" ", Activator, process.ProcessName),
+                Item = process.ProcessName, Info = string.Join(" ", Activator, process.ProcessName),
                 IconLocation = Properties.Settings.Default.GetProcessIcons ? Utils.GetProcessFileLocation(process) : null
             }).ToList() : null;
         }
