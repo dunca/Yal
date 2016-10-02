@@ -18,16 +18,16 @@ namespace YalBookmark
     {
         public string name;
         public string queryString;
-        public string executableName;
+        public string executablePath;
         public Func<string> GetDbPath;
         public Action QueryDatabase;
 
-        public BrowserInfo(string name, string query, string exeName, Func<string> GetDbPath,
+        public BrowserInfo(string name, string query, string exePath, Func<string> GetDbPath,
                            Action QueryDatabase)
         {
             this.name = name;
             queryString = query;
-            executableName = exeName;
+            executablePath = exePath;
             this.GetDbPath = GetDbPath;
             this.QueryDatabase = QueryDatabase;
         }
@@ -173,7 +173,7 @@ specific bookmark in it's bookmark database.";
                     var title = reader["TITLE"].ToString();
                     if (!localQueryCache.ContainsKey(title))
                     {
-                        localQueryCache.Add(title, new string[] { browserInfo.name, reader["URL"].ToString() });
+                        localQueryCache.Add(title, new string[] { browserInfo.name, reader["URL"].ToString(), browserInfo.executablePath });
                     }
                 }
             }
@@ -198,7 +198,7 @@ specific bookmark in it's bookmark database.";
                 var bookmarkName = bookmark["name"];
                 if (bookmark["type"] == "url" && !localQueryCache.ContainsKey(bookmarkName))
                 {
-                    localQueryCache.Add(bookmarkName, new string[] { browserInfo.name, bookmark["url"] });
+                    localQueryCache.Add(bookmarkName, new string[] { browserInfo.name, bookmark["url"], browserInfo.executablePath });
                 }
             }
         }
@@ -220,9 +220,9 @@ specific bookmark in it's bookmark database.";
                 }
                 browser.Value.QueryDatabase();
             }
-            return localQueryCache.Count > 0 ? localQueryCache.Keys.Select(item => new PluginItem()
+            return localQueryCache.Count > 0 ? localQueryCache.Select(item => new PluginItem()
             {
-                Name = item, AlternateInfo = string.Join(" ", Activator, item)
+                Name = item.Key, AlternateInfo = string.Join(" ", Activator, item.Key), IconLocation = Properties.Settings.Default.UseBrowserIcon ? item.Value[2] : null
             }).ToList() : null;
         }
 
@@ -232,7 +232,7 @@ specific bookmark in it's bookmark database.";
             var url = localQueryCache[input][1];
             var proc = new Process();
 
-            var providingBrowserPath = GetExecutablePath(providingBrowser.executableName);
+            var providingBrowserPath = GetExecutablePath(providingBrowser.executablePath);
             if (Properties.Settings.Default.OpenWithProvider && providingBrowserPath != null)
             {
                 proc.StartInfo.FileName = providingBrowserPath;

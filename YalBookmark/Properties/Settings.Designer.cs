@@ -57,5 +57,17 @@ namespace YalBookmark.Properties {
                 this["FirstRun"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UseBrowserIcon {
+            get {
+                return ((bool)(this["UseBrowserIcon"]));
+            }
+            set {
+                this["UseBrowserIcon"] = value;
+            }
+        }
     }
 }
