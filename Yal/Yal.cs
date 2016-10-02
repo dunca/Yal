@@ -352,16 +352,9 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then
                 return;
             }
 
-            if (Properties.Settings.Default.SearchDelay <= 100)
-            {
-                PerformSearch();
-            }
-            else
-            {
-                timerSearchDelay.Stop();
-                timerSearchDelay.Interval = Properties.Settings.Default.SearchDelay;
-                timerSearchDelay.Start();
-            }
+            timerSearchDelay.Stop();
+            timerSearchDelay.Interval = Properties.Settings.Default.SearchDelay;
+            timerSearchDelay.Start();
         }
 
         private void SearchDelayTimer_Tick(object sender, EventArgs e)
