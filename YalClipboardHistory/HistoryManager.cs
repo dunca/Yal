@@ -50,7 +50,7 @@ namespace YalClipboardHistory
 
         internal static void UpdateLocalDb()
         {
-            using (var fs = File.OpenWrite(historyFile))
+            using (var fs = File.Open(historyFile, FileMode.Create))
             {
                 var serializer = new XmlSerializer(HistoryItems.GetType());
                 serializer.Serialize(fs, HistoryItems);
