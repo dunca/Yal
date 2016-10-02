@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace YalBookmark
@@ -19,7 +12,9 @@ namespace YalBookmark
         {
             InitializeComponent();
 
+            cbUseBrowserIcon.Checked = Properties.Settings.Default.UseBrowserIcon;
             cbOpenWithProvider.Checked = Properties.Settings.Default.OpenWithProvider;
+
 
             foreach (var item in YalBookmark.browsers)
             {
@@ -44,8 +39,8 @@ namespace YalBookmark
                     Properties.Settings.Default.EnabledBackends.Add(item.SubItems[0].Text);
                 }
             }
-
             Properties.Settings.Default.OpenWithProvider = cbOpenWithProvider.Checked;
+            Properties.Settings.Default.UseBrowserIcon = cbUseBrowserIcon.Checked;
             Properties.Settings.Default.Save();
         }
 

@@ -28,25 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.cbOpenWithProvider = new System.Windows.Forms.CheckBox();
+            this.cbUseBrowserIcon = new System.Windows.Forms.CheckBox();
             this.listViewBrowsers = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.cbOpenWithProvider = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // cbOpenWithProvider
+            // cbUseBrowserIcon
             // 
-            this.cbOpenWithProvider.AutoSize = true;
-            this.cbOpenWithProvider.Dock = System.Windows.Forms.DockStyle.Top;
-            this.cbOpenWithProvider.Location = new System.Drawing.Point(0, 0);
-            this.cbOpenWithProvider.Name = "cbOpenWithProvider";
-            this.cbOpenWithProvider.Size = new System.Drawing.Size(307, 17);
-            this.cbOpenWithProvider.TabIndex = 2;
-            this.cbOpenWithProvider.Text = "Try visiting the bookmark via the browser that it belongs to";
-            this.cbOpenWithProvider.UseVisualStyleBackColor = true;
+            this.cbUseBrowserIcon.AutoSize = true;
+            this.cbUseBrowserIcon.Location = new System.Drawing.Point(0, 19);
+            this.cbUseBrowserIcon.Name = "cbUseBrowserIcon";
+            this.cbUseBrowserIcon.Size = new System.Drawing.Size(377, 17);
+            this.cbUseBrowserIcon.TabIndex = 2;
+            this.cbUseBrowserIcon.Text = "Use the providing browser\'s icon instead of the generic plugin icon (slower)";
+            this.cbUseBrowserIcon.UseVisualStyleBackColor = true;
             // 
             // listViewBrowsers
             // 
@@ -56,10 +56,10 @@
             this.columnHeader3});
             this.listViewBrowsers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewBrowsers.FullRowSelect = true;
-            this.listViewBrowsers.Location = new System.Drawing.Point(0, 20);
+            this.listViewBrowsers.Location = new System.Drawing.Point(0, 39);
             this.listViewBrowsers.MultiSelect = false;
             this.listViewBrowsers.Name = "listViewBrowsers";
-            this.listViewBrowsers.Size = new System.Drawing.Size(307, 162);
+            this.listViewBrowsers.Size = new System.Drawing.Size(425, 246);
             this.listViewBrowsers.TabIndex = 3;
             this.listViewBrowsers.UseCompatibleStateImageBehavior = false;
             this.listViewBrowsers.View = System.Windows.Forms.View.Details;
@@ -83,11 +83,23 @@
             // panel1
             // 
             this.panel1.Controls.Add(this.cbOpenWithProvider);
+            this.panel1.Controls.Add(this.cbUseBrowserIcon);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(307, 20);
+            this.panel1.Size = new System.Drawing.Size(425, 39);
             this.panel1.TabIndex = 4;
+            // 
+            // cbOpenWithProvider
+            // 
+            this.cbOpenWithProvider.AutoSize = true;
+            this.cbOpenWithProvider.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cbOpenWithProvider.Location = new System.Drawing.Point(0, 0);
+            this.cbOpenWithProvider.Name = "cbOpenWithProvider";
+            this.cbOpenWithProvider.Size = new System.Drawing.Size(425, 17);
+            this.cbOpenWithProvider.TabIndex = 3;
+            this.cbOpenWithProvider.Text = "Try visiting the bookmark via the browser that it belongs to";
+            this.cbOpenWithProvider.UseVisualStyleBackColor = true;
             // 
             // YalBookmarkUC
             // 
@@ -96,7 +108,7 @@
             this.Controls.Add(this.listViewBrowsers);
             this.Controls.Add(this.panel1);
             this.Name = "YalBookmarkUC";
-            this.Size = new System.Drawing.Size(307, 182);
+            this.Size = new System.Drawing.Size(425, 285);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -109,6 +121,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.Panel panel1;
+        public System.Windows.Forms.CheckBox cbUseBrowserIcon;
         public System.Windows.Forms.CheckBox cbOpenWithProvider;
     }
 }
