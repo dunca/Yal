@@ -451,8 +451,7 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then
 
                             if (Properties.Settings.Default.ShowItemIcons && pluginInstance.PluginIcon != null)
                             {
-                                var icon = Utils.GetFileIcon(iconLocation);
-                                UpdateImageList(icon != null ? icon : pluginInstance.PluginIcon, lvi, ref iconIndex);
+                                UpdateImageList(Utils.GetFileIcon(iconLocation) ?? pluginInstance.PluginIcon, lvi, ref iconIndex);
                             }
                         }
                         else
