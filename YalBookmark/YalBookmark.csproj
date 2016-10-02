@@ -92,7 +92,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>if not exist "$(SolutionDir)Yal\$(OutDir)\plugins\$(ProjectName)" mkdir "$(SolutionDir)Yal\$(OutDir)\plugins\$(ProjectName)"
-if not exist "$(SolutionDir)Yal\$(OutDir)\plugins\$(ProjectName)\$(ProjectName).ico" copy /Y "$(ProjectDir)$(ProjectName).ico" "$(SolutionDir)Yal\$(OutDir)\plugins\$(ProjectName)"</PreBuildEvent>
+if not exist "$(SolutionDir)Yal\$(OutDir)\plugins\$(ProjectName)\$(ProjectName).ico" copy /Y "$(ProjectDir)$(ProjectName).ico" "$(SolutionDir)Yal\$(OutDir)\plugins\$(ProjectName)\icon.ico"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(TargetDir)$(ProjectName)$(TargetExt)" "$(SolutionDir)Yal\$(OutDir)\plugins\$(ProjectName)\$(ProjectName)$(TargetExt)"</PostBuildEvent>
