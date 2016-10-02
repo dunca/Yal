@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Yal
 {
-    internal static class PluginLoader
+    internal static class PluginManager
     {
         internal static List<IPlugin> InstantiatePlugins(List<Type> pluginTypes)
         {
