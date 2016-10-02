@@ -64,9 +64,9 @@ namespace Utilities
             return Directory.Exists(input) || File.Exists(input);
         }
 
-        public static Icon GetPluginIcon(string iconName)
+        public static Icon GetPluginIcon(string pluginName)
         {
-            return GetFileIcon($@"plugins\icons\{iconName}.ico");
+            return GetFileIcon($@"plugins\{pluginName}\{pluginName}.ico");
         }
 
         public static Icon GetFileIcon(string path)
