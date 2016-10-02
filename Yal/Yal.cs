@@ -38,6 +38,7 @@ namespace Yal
         private Options optionsWindow;
         internal OutputWindow outputWindow;
         internal List<IPlugin> pluginInstances;
+        private Dictionary<string, int> iconIndexMap = new Dictionary<string, int>();
 
         private const string attachTemplate = "attach database '{0}' as {1}";
         private const string pluginTableSchema = "create table if not exists PLUGIN_ITEM (ITEM_NAME text, SUBITEM_NAME text, PLUGIN_NAME text, ADDITIONAL_INFO text, REQUIRES_ACTIVATOR numeric, SORT_BY_NAME numeric, ICON_LOCATION text)";
@@ -363,8 +364,10 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then
         }
 
         private void PerformSearch()
-        {
+       {
             timerSearchDelay.Stop();
+
+            iconIndexMap.Clear();
             outputWindow.imageList1.Images.Clear();
             outputWindow.listViewOutput.Items.Clear();
 
@@ -451,7 +454,30 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then
 
                             if (Properties.Settings.Default.ShowItemIcons && pluginInstance.PluginIcon != null)
                             {
-                                UpdateImageList(Utils.GetFileIcon(iconLocation) ?? pluginInstance.PluginIcon, lvi, ref iconIndex);
+                                if (iconLocation != "")
+                                {
+                                    if (iconIndexMap.ContainsKey(iconLocation))
+                                    {
+                                        lvi.ImageIndex = iconIndexMap[iconLocation];
+                                    }
+                                    else
+                                    {
+                                        var icon = Utils.GetFileIcon(iconLocation);
+                                        if (icon != null)
+                                        {
+                                            iconIndexMap.Add(iconLocation, iconIndex);
+                                            UpdateImageList(icon, lvi, ref iconIndex);
+                                        }
+                                        else
+                                        {
+                                            UsePluginIcon(pluginInstance, lvi, ref iconIndex);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    UsePluginIcon(pluginInstance, lvi, ref iconIndex);
+                                }
                             }
                         }
                         else
@@ -501,6 +527,19 @@ order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then
             outputWindow.imageList1.Images.Add(icon);
             lvi.ImageIndex = iconIndex;
             iconIndex++;
+        }
+
+        private void UsePluginIcon(IPlugin pluginInstance, ListViewItem lvi, ref int iconIndex)
+        {
+            if (iconIndexMap.ContainsKey(pluginInstance.Name))
+            {
+                lvi.ImageIndex = iconIndexMap[pluginInstance.Name];
+            }
+            else
+            {
+                iconIndexMap.Add(pluginInstance.Name, iconIndex);
+                UpdateImageList(pluginInstance.PluginIcon, lvi, ref iconIndex);
+            }
         }
 
         private string ConstructSearchPattern(string input, bool fuzzyMatch, bool ignoreMatchAnywhere = false)
