@@ -74,7 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileManager.cs" />
-    <Compile Include="PluginLoader.cs" />
+    <Compile Include="PluginManager.cs" />
     <Compile Include="Yal.cs">
       <SubType>Form</SubType>
     </Compile>
