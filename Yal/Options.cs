@@ -4,6 +4,7 @@ using System.Linq;
 using System.Drawing;
 using Microsoft.Win32;
 using PluginInterfaces;
+using System.Diagnostics;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
@@ -399,6 +400,16 @@ namespace Yal
         private void spinMaxItems_ValueChanged(object sender, EventArgs e)
         {
             spinMaxVisible.Maximum = spinMaxPluginItems.Maximum = spinMaxItems.Value;
+        }
+
+        private void btnRestoreDefaultSettings_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show(@"This will restart Yal and restore every setting to it's default value (including plugin specific settings)", MainWindow.Name,
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Properties.Settings.Default.Reset();
+                Application.Restart();
+            }
         }
     }
 }

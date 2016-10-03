@@ -85,12 +85,13 @@
             this.tabPagePlugins = new System.Windows.Forms.TabPage();
             this.tabControlPlugins = new System.Windows.Forms.TabControl();
             this.tabPageAbout = new System.Windows.Forms.TabPage();
+            this.lblActivationStatistics = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.btnApplyOptions = new System.Windows.Forms.Button();
             this.btnCancelOpt = new System.Windows.Forms.Button();
-            this.lblActivationStatistics = new System.Windows.Forms.Label();
+            this.btnRestoreDefaultSettings = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -766,6 +767,16 @@
             this.tabPageAbout.Text = "About";
             this.tabPageAbout.UseVisualStyleBackColor = true;
             // 
+            // lblActivationStatistics
+            // 
+            this.lblActivationStatistics.AutoSize = true;
+            this.lblActivationStatistics.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblActivationStatistics.Location = new System.Drawing.Point(3, 3);
+            this.lblActivationStatistics.Name = "lblActivationStatistics";
+            this.lblActivationStatistics.Size = new System.Drawing.Size(41, 13);
+            this.lblActivationStatistics.TabIndex = 2;
+            this.lblActivationStatistics.Text = "label12";
+            // 
             // label5
             // 
             this.label5.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -790,7 +801,7 @@
             // 
             // btnApplyOptions
             // 
-            this.btnApplyOptions.Location = new System.Drawing.Point(146, 392);
+            this.btnApplyOptions.Location = new System.Drawing.Point(106, 392);
             this.btnApplyOptions.Name = "btnApplyOptions";
             this.btnApplyOptions.Size = new System.Drawing.Size(75, 23);
             this.btnApplyOptions.TabIndex = 12;
@@ -800,7 +811,7 @@
             // 
             // btnCancelOpt
             // 
-            this.btnCancelOpt.Location = new System.Drawing.Point(227, 392);
+            this.btnCancelOpt.Location = new System.Drawing.Point(187, 392);
             this.btnCancelOpt.Name = "btnCancelOpt";
             this.btnCancelOpt.Size = new System.Drawing.Size(75, 23);
             this.btnCancelOpt.TabIndex = 13;
@@ -808,21 +819,22 @@
             this.btnCancelOpt.UseVisualStyleBackColor = true;
             this.btnCancelOpt.Click += new System.EventHandler(this.btnCancelOpt_Click);
             // 
-            // lblActivationStatistics
+            // btnRestoreDefaultSettings
             // 
-            this.lblActivationStatistics.AutoSize = true;
-            this.lblActivationStatistics.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblActivationStatistics.Location = new System.Drawing.Point(3, 3);
-            this.lblActivationStatistics.Name = "lblActivationStatistics";
-            this.lblActivationStatistics.Size = new System.Drawing.Size(41, 13);
-            this.lblActivationStatistics.TabIndex = 2;
-            this.lblActivationStatistics.Text = "label12";
+            this.btnRestoreDefaultSettings.Location = new System.Drawing.Point(268, 392);
+            this.btnRestoreDefaultSettings.Name = "btnRestoreDefaultSettings";
+            this.btnRestoreDefaultSettings.Size = new System.Drawing.Size(75, 23);
+            this.btnRestoreDefaultSettings.TabIndex = 7;
+            this.btnRestoreDefaultSettings.Text = "Defaults";
+            this.btnRestoreDefaultSettings.UseVisualStyleBackColor = true;
+            this.btnRestoreDefaultSettings.Click += new System.EventHandler(this.btnRestoreDefaultSettings_Click);
             // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(448, 417);
+            this.Controls.Add(this.btnRestoreDefaultSettings);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnCancelOpt);
             this.Controls.Add(this.btnApplyOptions);
@@ -928,5 +940,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.CheckBox cbShowItemIcons;
         private System.Windows.Forms.Label lblActivationStatistics;
+        private System.Windows.Forms.Button btnRestoreDefaultSettings;
     }
 }
