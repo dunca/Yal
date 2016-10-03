@@ -40,6 +40,7 @@ namespace Yal
         internal List<IPlugin> pluginInstances;
         private Dictionary<string, int> iconIndexMap = new Dictionary<string, int>();
 
+        private bool shouldAutocomplete;
         private const string attachTemplate = "attach database '{0}' as {1}";
         private const string pluginTableSchema = "create table if not exists PLUGIN_ITEM (ITEM text, SUBITEM text, ITEM_INFO text, PLUGIN_NAME text, REQUIRES_ACTIVATOR numeric, SORT_BY_NAME numeric, ICON_PATH text)";
         private const string pluginInsertString = "insert into PLUGIN_ITEM values (@item, @subitem, @item_info, @plugin_name, @requires_activator, @sort_by_name, @icon_path)";
@@ -59,6 +60,7 @@ select distinct ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME from
         public Yal()
         {
             InitializeComponent();
+            shouldAutocomplete = StandardSearch();
 
             Directory.SetCurrentDirectory(Application.StartupPath);
             outputWindow = new OutputWindow(this);
@@ -340,6 +342,17 @@ select distinct ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME from
             {
                 outputWindow.Hide();
             }
+            else if (e.KeyCode == Keys.Back && StandardSearch())
+            {
+                if (shouldAutocomplete)
+                {
+                    shouldAutocomplete = false;
+                }
+            }
+            else if (!shouldAutocomplete && StandardSearch())
+            {
+                shouldAutocomplete = true;
+            }
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
@@ -504,7 +517,16 @@ select distinct ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME from
 
                     outputWindow.listViewOutput.Items[0].Selected = true;
                     outputWindow.ResizeToFitContent();
-                    this.txtSearch.Focus();  // Show()-ing a window focuses on it by default. We don't want that in this case;
+                    txtSearch.Focus();  // Show()-ing a window focuses on it by default. We don't want that in this case;
+
+                    if (shouldAutocomplete && StandardSearch())
+                    {
+                        txtSearch.TextChanged -= txtSearch_TextChanged;
+                        txtSearch.Text = outputWindow.listViewOutput.SelectedItems[0].SubItems[0].Text;
+                        txtSearch.SelectionStart = userInput.Length;
+                        txtSearch.SelectionLength = txtSearch.Text.Length - userInput.Length;
+                        txtSearch.TextChanged += txtSearch_TextChanged;
+                    }
                 }
                 else
                 {
@@ -656,6 +678,12 @@ select distinct ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME from
             {
                 RebuildIndex();
             }
+        }
+
+        private bool StandardSearch()
+        {
+            return !Properties.Settings.Default.MatchAnywhere && !Properties.Settings.Default.FuzzyMatching
+                   && !Properties.Settings.Default.FuzzyMatchingPluginItems;
         }
     }
 }
