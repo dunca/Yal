@@ -53,6 +53,7 @@ select distinct ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME from
 	    select NAME as ITEM, FULLPATH as SUBITEM, '' as ITEM_INFO, @file_priority as HITS, 1 as SORT_BY_NAME, ROWID, '' as PLUGIN_NAME, '' as ICON_PATH from INDEX_CATALOG where NAME like @pattern
 	    union
 	    select ITEM, SUBITEM, ITEM_INFO, -1 as HITS, SORT_BY_NAME, ROWID, PLUGIN_NAME, ICON_PATH from PLUGIN_ITEM where (REQUIRES_ACTIVATOR = 0 and ITEM_INFO like @plugin_pattern) OR (REQUIRES_ACTIVATOR = 1 and ITEM_INFO like @activator_plugin_pattern)
+        order by HITS desc
     )
     order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then ITEM else length(ITEM) end) else -ROWID end
 ) limit @limit";
