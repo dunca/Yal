@@ -519,7 +519,8 @@ select distinct ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME from
                     outputWindow.ResizeToFitContent();
                     txtSearch.Focus();  // Show()-ing a window focuses on it by default. We don't want that in this case;
 
-                    if (shouldAutocomplete && StandardSearch())
+                    if (shouldAutocomplete && StandardSearch() && (outputWindow.listViewOutput.SelectedItems[0].SubItems[0].Text == 
+                        outputWindow.listViewOutput.SelectedItems[0].SubItems[2].Text))
                     {
                         txtSearch.TextChanged -= txtSearch_TextChanged;
                         txtSearch.Text = outputWindow.listViewOutput.SelectedItems[0].SubItems[0].Text;
