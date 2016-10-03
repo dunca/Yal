@@ -45,15 +45,14 @@ namespace Yal
         private const string pluginTableSchema = "create table if not exists PLUGIN_ITEM (ITEM text, SUBITEM text, ITEM_INFO text, PLUGIN_NAME text, REQUIRES_ACTIVATOR numeric, SORT_BY_NAME numeric, ICON_PATH text)";
         private const string pluginInsertString = "insert into PLUGIN_ITEM values (@item, @subitem, @item_info, @plugin_name, @requires_activator, @sort_by_name, @icon_path)";
         private const string itemQueryString = @"
-select distinct ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME from 
+select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS from 
 (
 	select ITEM, SUBITEM, ITEM_INFO, HITS, 1 as SORT_BY_NAME, ROWID, PLUGIN_NAME, '' as ICON_PATH from HISTORY_CATALOG where SNIPPET like @snippet
 	union
 	select NAME as ITEM, FULLPATH as SUBITEM, '' as ITEM_INFO, @file_priority as HITS, 1 as SORT_BY_NAME, ROWID, '' as PLUGIN_NAME, '' as ICON_PATH from INDEX_CATALOG where NAME like @pattern
 	union
 	select ITEM, SUBITEM, ITEM_INFO, -1 as HITS, SORT_BY_NAME, ROWID, PLUGIN_NAME, ICON_PATH from PLUGIN_ITEM where (REQUIRES_ACTIVATOR = 0 and ITEM_INFO like @plugin_pattern) OR (REQUIRES_ACTIVATOR = 1 and ITEM_INFO like @activator_plugin_pattern)
-    order by HITS desc
-) order by HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then ITEM else length(ITEM) end) else -ROWID end limit @limit";
+) group by ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME order by MAX_HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then ITEM else length(ITEM) end) else -ROWID end limit @limit";
 
         private SQLiteConnection pluginItemDb = new SQLiteConnection("FullUri=file::memory:?cache=shared;Version=3;");
 
@@ -456,7 +455,6 @@ select distinct ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME from
                             }
 
                             var iconPath = reader["ICON_PATH"].ToString();
-
                             var itemInfo = reader["ITEM_INFO"].ToString();
                             lvi = new ListViewItem(new string[] { item, subitem, itemInfo != "" ? itemInfo : item, pluginInstance.Name });
 
