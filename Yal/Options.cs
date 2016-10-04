@@ -21,7 +21,7 @@ namespace Yal
 
         private const string pluginEnabledTemplate = "cbEnabled";
         private List<CheckBox> pluginEnabledCheckboxes = new List<CheckBox>();
-        private const string activationStatisticsTemplate = "Since {0}, {1} was activated {2} time(s)";
+        private const string activationStatisticsTemplate = "Since {0}, {1} has been activated {2} time(s)";
 
         // this type of list signals it's modification which causes our listbox to reread it's contents
         private BindingList<string> foldersToIndex;
