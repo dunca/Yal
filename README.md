@@ -1,6 +1,8 @@
 # Yal
 Yet Another Launcher
 
+![s0](http://i.imgur.com/XmhkR0x.png)
+
 Yal can help you **speed up the way you interact with your Windows based PC**.
 You can easily **access** your favorite **programs**, **documents**, even **browser bookmarks**.
 You don't even have to type their full name. **Yal can usually tell what you actually want, 
