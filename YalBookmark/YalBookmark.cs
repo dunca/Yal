@@ -228,8 +228,9 @@ specific bookmark in it's bookmark database.";
 
         public void HandleExecution(string input)
         {
-            var providingBrowser = browsers[localQueryCache[input][0]];
-            var url = localQueryCache[input][1];
+            var userInput = input.Substring(Activator.Length + 1);
+            var providingBrowser = browsers[localQueryCache[userInput][0]];
+            var url = localQueryCache[userInput][1];
             var proc = new Process();
 
             var providingBrowserPath = GetExecutablePath(providingBrowser.executablePath);
