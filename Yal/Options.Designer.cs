@@ -231,6 +231,11 @@
             0,
             0,
             0});
+            this.spinSearchDelay.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.spinSearchDelay.Name = "spinSearchDelay";
             this.spinSearchDelay.Size = new System.Drawing.Size(61, 20);
             this.spinSearchDelay.TabIndex = 10;
