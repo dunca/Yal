@@ -126,11 +126,19 @@ Work Folders;Microsoft.WorkFolders;8.1,10
 
         public void HandleExecution(string name)
         {
-            //string ret = GetMatchingActivator(input);
-            if (name != null)
+            if (ControlPanelItems.ContainsKey(name))
             {
                 Process.Start(controlPath, $"/name {ControlPanelItems[name]}");
             }
+            else
+            {
+                MessageBox.Show($"Unrecognized input: '{name}'", name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public bool CanHandle(string input)
+        {
+            return ControlPanelItems.Keys.Contains(input);
         }
     }
 }

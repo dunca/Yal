@@ -3,7 +3,6 @@ using System.Linq;
 using System.Drawing;
 using System.Diagnostics;
 using System.Windows.Forms;
-using System.ComponentModel;
 using System.Collections.Generic;
 
 using Utilities;
@@ -63,15 +62,25 @@ entry switches to the underlying window";
         public void HandleExecution(string input)
         {
             var windowName = input.Substring(Activator.Length + 1);
-            var matchingHandle = Utils.FindWindow(null, windowName);
+            var matchingHandle = FindWindowByName(windowName);
 
-            if (matchingHandle == IntPtr.Zero)
+            if (matchingHandle != IntPtr.Zero)
             {
                 MessageBox.Show($"Could not find a window named '{windowName}'", Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             Utils.ActivateWindowByHandle(matchingHandle);
+        }
+
+        public bool CanHandle(string input)
+        {
+            return FindWindowByName(input.Substring(Activator.Length + 1)) != IntPtr.Zero;
+        }
+
+        private IntPtr FindWindowByName(string windowName)
+        {
+            return Utils.FindWindow(null, windowName);
         }
     }
 }

@@ -54,8 +54,14 @@ namespace PluginInterfaces
         /// <summary>
         /// This method should take care of the execution of the specified parameter
         /// </summary>
-        /// <param name="input">one of the strings returned by the GetItems method, with additional user input
-        /// in case of plugins that require activators</param>
+        /// <param name="input">the Info (or Item) value of a Result object</param>
         void HandleExecution(string input);
+
+        /// <summary>
+        /// This method is called when plugin specific items are fetched from the history database. 
+        /// </summary>
+        /// <param name="input">the Info (or Item) value of a Result object</param>
+        /// <returns>If the method returns false then the item will not be displayed in the output list</returns>
+        bool CanHandle(string input);
     }
 }

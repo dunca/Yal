@@ -76,7 +76,12 @@ between sessions, if the
 
         public void HandleExecution(string input)
         {
-            Clipboard.SetText(input.Substring(input.IndexOf(" ") + 1));
+            Clipboard.SetText(input.Substring(Activator.Length + 1));
+        }
+
+        public bool CanHandle(string input)
+        {
+            return true;
         }
     }
 }
