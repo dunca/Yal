@@ -253,5 +253,10 @@ specific bookmark in it's bookmark database.";
                 MessageBox.Show(e.Message, Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        public bool CanHandle(string input)
+        {
+            return localQueryCache.ContainsKey(input.Substring(Activator.Length + 1));
+        }
     }
 }

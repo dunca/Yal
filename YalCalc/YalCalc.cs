@@ -72,5 +72,10 @@ namespace YalCalc
                 Clipboard.SetText(input);
             }
         }
+
+        public bool CanHandle(string input)
+        {
+            return true;
+        }
     }
 }

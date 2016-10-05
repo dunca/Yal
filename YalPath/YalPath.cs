@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 using Utilities;
 using PluginInterfaces;
@@ -113,28 +112,25 @@ named '{(PluginUserControl as YalPathUC).cbOpenPath.Text}' is checked.
 
         public void HandleExecution(string input)
         {
-            if (Utils.PathExists(input))
+            if (Properties.Settings.Default.CopyPath)
             {
-                if (Properties.Settings.Default.CopyPath)
-                {
-                    Clipboard.SetText(input);
-                }
-
-                if (Properties.Settings.Default.OpenPath)
-                {
-                    try
-                    {
-                        Process.Start(input);
-                    }
-                    catch (Win32Exception e) when (e.Message == "The operation was canceled by the user")
-                    {
-                        // Just ignore it. The user probably hit 'No' when prompted by UAC
-                    }
-                }
+                Clipboard.SetText(input);
             }
-            else
+
+            if (Properties.Settings.Default.OpenPath)
             {
-                MessageBox.Show($"'{input}' is not a valid file system path", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                try
+                {
+                    Process.Start(input);
+                }
+                catch (Win32Exception ex) when (ex.Message == "The operation was canceled by the user")
+                {
+                    // Just ignore it. The user probably hit 'No' when prompted by UAC
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -145,6 +141,11 @@ named '{(PluginUserControl as YalPathUC).cbOpenPath.Text}' is checked.
                 Item = name, Info = alternativeInfo,
                 Subitem = subitemName, IconLocation = iconLocation
             };
+        }
+
+        public bool CanHandle(string input)
+        {
+            return Utils.PathExists(input);
         }
     }
 }

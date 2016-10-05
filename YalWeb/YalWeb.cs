@@ -72,7 +72,7 @@ pick the relevant menu item.";
 
         public List<PluginItem> GetItems(string userInput)
         {
-            var firstArgIndex = userInput.IndexOf(" ") + 1;
+            var firstArgIndex = userInput.IndexOf(' ') + 1;
             return Entries.Count > 0 ? Entries.Keys.Select(entry => new PluginItem()
             {
                 Item = firstArgIndex != 0 && firstArgIndex < userInput.Length ? string.Join(" ", entry, userInput.Substring(firstArgIndex)) :
@@ -92,6 +92,11 @@ pick the relevant menu item.";
             {
                 MessageBox.Show(e.Message);
             }
+        }
+
+        public bool CanHandle(string input)
+        {
+            return Entries.ContainsKey(input.Substring(0, input.IndexOf(' ')));
         }
     }
 }

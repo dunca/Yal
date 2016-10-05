@@ -62,7 +62,7 @@ process";
 
         public void HandleExecution(string input)
         {
-            var processName = input.Split()[1];
+            var processName = input.Substring(Activator.Length + 1);
 
             foreach (var process in Process.GetProcessesByName(processName))
             {
@@ -83,6 +83,11 @@ process";
                     MessageBox.Show(ex.Message);
                 }
             }
+        }
+
+        public bool CanHandle(string input)
+        {
+            return Process.GetProcessesByName(input.Substring(Activator.Length + 1)).Length > 0;
         }
     }
 }

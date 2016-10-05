@@ -253,5 +253,10 @@ for a command '~hhh' that expects '!2-n!'
         {
             pluginUserControl.SaveSettings();
         }
+
+        public bool CanHandle(string input)
+        {
+            return Entries.ContainsKey(input.Substring(0, input.IndexOf(' ')));
+        }
     }
 }
