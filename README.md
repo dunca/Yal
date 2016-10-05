@@ -45,14 +45,14 @@ on Yal's border, and selecting the relevant context menu entry.
 * **Launch at system startup**: it will try to automatically run Yal when you start your PC
 * **Keep plugin items in history**: When you run something through Yal, it remembers the input keyword and the launched entry. The next time you write the same keyword, the entries that were previously launched using that keyword, will show up in the output list on top of everyting else. For plugin items this is optional. If you uncheck this option you won't get suggestions based on previously used entries.
 * **Fuzzily match file names**: if this is checked, a keyword like ffx will match 'Mozilla Firefox.lnk' (if this file exists in your PC and it's indexed), because Firefox contains all those letters, in order. If you uncheck it, Yal will try to match only exact substrings in file names.
-* **Fuzzily match plugin names**: same as above, but for plugin returned entries.
+* **Fuzzily match plugin items**: same as above, but for plugin returned entries.
 * **Match anywhere in item names**: if this is unchecked, Yal will look for entries that start with the keyword you enter, thus fox will not match 'Mozilla Firefox.lnk', but moz will.
 * **Auto indexing (minutes)**: this allows you to set an interval after which Yal will automatically re-index your files. Uncheck this option if you want to disable auto indexing. Disabling this (or setting a really high interval) is especially recommended if you've selected lots of directories to index.
 * **Total items to keep in history**: Yal will only keep that many items in the history. If the number of history items goes over the specified threshold, the oldest/least accessed history items will be removed.
 * **Max visible items**: specifies the maximum number of items to show at once in the output window. If there are more items available, as scrollbar will show up.
 * **Total number of items**: specifies the maximum number of items that will be fetched from the data sources.
 * **Trim long names to (chars)**: specifies the maximum number of characters entries can have. Entries longer than the specified value will be trimmed and an ellipsis will be appended (eg.: Super cool Firefox -> Super cool F...)
-* **Load and show icon items**: if this is enabled, each entry will be accompanied by an icon. Icons are cool, but this will have a slight impact on Yal's performance, especially on slower systems with mechanical hard drives.
+* **Load and show item icons**: if this is enabled, each entry will be accompanied by an icon. Icons are cool, but this will have a slight impact on Yal's performance, especially on slower systems with mechanical hard drives.
 * **Show extensions in file names**: uncheck this option if you don't want to see extensions in the entries provided by Yal's index reader.
 * **Plugin items have higher priority**: if checked, plugin generated items will show up first in the output list.
 
@@ -97,10 +97,10 @@ Here are some of Yal's plugins. Some of them have short help texts.
 FAQ
 ---
 **Q**: What operating systems does Yal support?
-**A**: MS Windows 7 SP1 and later, because (for now) it is compiled for .NET Framework 4.6.1
+**A**: MS Windows 7 SP1 and later, because (for now) it is compiled for .NET Framework 4.6.1.
 
 **Q**: Do you plan on adding more features?
 **A**: Yes, please suggest any (feasable) features you have in mind.
 
 **Q**: How do I manually clear the index (history) database(s)?
-**A**: Simply delete index.sqlite (history.sqlite) found within the folder in which Yal resides
+**A**: Simply delete index.sqlite (history.sqlite) found within the folder in which Yal resides.
