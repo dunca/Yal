@@ -373,7 +373,7 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
         }
 
         private void PerformSearch()
-       {
+        {
             timerSearchDelay.Stop();
 
             iconIndexMap.Clear();
@@ -393,7 +393,7 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
 
                     List<PluginItem> pluginItems = plugin.GetItems(userInput);
 
-                    if (pluginItems != null)
+                    if (pluginItems != null && pluginItems.Count > 0)
                     {
                         foreach (var pluginItem in pluginItems)
                         {
@@ -413,10 +413,8 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
 
                 using (var connection = FileManager.GetDbConnection(FileManager.historyDbInfo))
                 {
-                    (new SQLiteCommand(string.Format(attachTemplate, "file::memory:?cache=shared", "PLUGIN_ITEM"), connection)).ExecuteNonQuery();
-                    (new SQLiteCommand(string.Format(attachTemplate, FileManager.indexDbInfo.fileName, "INDEX_DB"), connection)).ExecuteNonQuery();
-
-                    var command = new SQLiteCommand(itemQueryString, connection);
+                    new SQLiteCommand(string.Format(attachTemplate, "file::memory:?cache=shared", "PLUGIN_ITEM"), connection).ExecuteNonQuery();
+                    new SQLiteCommand(string.Format(attachTemplate, FileManager.indexDbInfo.fileName, "INDEX_DB"), connection).ExecuteNonQuery();
 
                     string pattern = ConstructSearchPattern(userInput, Properties.Settings.Default.FuzzyMatching);
                     string pluginPattern = ConstructSearchPattern(userInput, Properties.Settings.Default.FuzzyMatchingPluginItems);
@@ -428,6 +426,8 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
                         activatorPluginPattern = activatorPluginPattern.Insert(spaceIndex + 1, "%");
                     }
 
+                    var command = new SQLiteCommand(itemQueryString, connection);
+
                     command.Parameters.AddWithValue("@file_priority", Properties.Settings.Default.PluginItemsFirst ? -2 : 0);
                     command.Parameters.AddWithValue("@activator_plugin_pattern", activatorPluginPattern);
                     command.Parameters.AddWithValue("@limit", Properties.Settings.Default.MaxItems);
@@ -435,6 +435,8 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
                     command.Parameters.AddWithValue("@plugin_pattern", pluginPattern);
                     command.Parameters.AddWithValue("@pattern", pattern);
                     var reader = command.ExecuteReader();
+
+                    outputWindow.listViewOutput.BeginUpdate();
 
                     int iconIndex = 0;
                     while (reader.Read())
@@ -509,7 +511,8 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
                         outputWindow.listViewOutput.Items.Add(lvi);
                     }
 
-                    (new SQLiteCommand("delete from PLUGIN_ITEM", pluginItemDb)).ExecuteNonQuery();
+                    outputWindow.listViewOutput.EndUpdate();
+                    new SQLiteCommand("delete from PLUGIN_ITEM", pluginItemDb).ExecuteNonQuery();
                 }
 
                 if (outputWindow.listViewOutput.Items.Count > 0)
