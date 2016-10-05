@@ -38,7 +38,7 @@ namespace Yal
         private const string indexInsert = "insert into INDEX_CATALOG (NAME, FULLPATH) values (@name, @fullpath)";
         private const string historyInsert = "insert into HISTORY_CATALOG (SNIPPET, ITEM, SUBITEM, ITEM_INFO, PLUGIN_NAME, ICON_PATH, LASTACCESSED) values (@snippet, @item, @subitem, @item_info, @plugin_name, @icon_path, datetime('now'))";
         private const string historyTrim = "delete from HISTORY_CATALOG where LASTACCESSED in (select LASTACCESSED from HISTORY_CATALOG order by LASTACCESSED limit @limit)";
-        private const string historyUpdate = "update HISTORY_CATALOG set HITS = HITS + 1, LASTACCESSED = datetime('now') where SNIPPET = @snippet and case PLUGIN_NAME when '' then SUBITEM = @subitem else ITEM_INFO = @item_info end";
+        private const string historyUpdate = "update HISTORY_CATALOG set HITS = HITS + 1, ICON_PATH = @icon_path, LASTACCESSED = datetime('now') where SNIPPET = @snippet and case PLUGIN_NAME when '' then SUBITEM = @subitem else ITEM_INFO = @item_info end";
         private const string historyQuery = "select count(SNIPPET) from HISTORY_CATALOG where SNIPPET = @snippet and case PLUGIN_NAME when '' then SUBITEM = @subitem else ITEM_INFO = @item_info end";
 
         private static void UpdateIndex(IEnumerable<string> files)
@@ -78,12 +78,13 @@ namespace Yal
                 {
                     nonQuery = new SQLiteCommand(historyInsert, connection);
                     nonQuery.Parameters.AddWithValue("@item", item);
-                    nonQuery.Parameters.AddWithValue("@icon_path", iconPath);
+                    
                     nonQuery.Parameters.AddWithValue("@plugin_name", pluginName);
                 }
                 nonQuery.Parameters.AddWithValue("@snippet", snippet);
                 nonQuery.Parameters.AddWithValue("@subitem", subitem);
                 nonQuery.Parameters.AddWithValue("@item_info", itemInfo);
+                nonQuery.Parameters.AddWithValue("@icon_path", iconPath);
 
                 nonQuery.ExecuteNonQuery();
             }
