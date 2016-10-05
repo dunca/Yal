@@ -419,9 +419,9 @@
             this.cbAutostart.AutoSize = true;
             this.cbAutostart.Location = new System.Drawing.Point(6, 20);
             this.cbAutostart.Name = "cbAutostart";
-            this.cbAutostart.Size = new System.Drawing.Size(141, 17);
+            this.cbAutostart.Size = new System.Drawing.Size(144, 17);
             this.cbAutostart.TabIndex = 2;
-            this.cbAutostart.Text = "Launch at system statup\r\n";
+            this.cbAutostart.Text = "Launch at system startup\r\n";
             this.cbAutostart.UseVisualStyleBackColor = true;
             // 
             // groupBox3
