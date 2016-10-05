@@ -47,7 +47,7 @@ namespace Yal
         private const string itemQueryString = @"
 select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS from 
 (
-	select ITEM, SUBITEM, ITEM_INFO, HITS, 1 as SORT_BY_NAME, ROWID, PLUGIN_NAME, '' as ICON_PATH from HISTORY_CATALOG where SNIPPET like @snippet
+	select ITEM, SUBITEM, ITEM_INFO, HITS, 1 as SORT_BY_NAME, ROWID, PLUGIN_NAME, ICON_PATH from HISTORY_CATALOG where SNIPPET like @snippet
 	union
 	select NAME as ITEM, FULLPATH as SUBITEM, '' as ITEM_INFO, @file_priority as HITS, 1 as SORT_BY_NAME, ROWID, '' as PLUGIN_NAME, '' as ICON_PATH from INDEX_CATALOG where NAME like @pattern
 	union
@@ -456,10 +456,12 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS f
 
                             var iconPath = reader["ICON_PATH"].ToString();
                             var itemInfo = reader["ITEM_INFO"].ToString();
-                            lvi = new ListViewItem(new string[] { item, subitem, itemInfo != "" ? itemInfo : item, pluginInstance.Name });
+                            lvi = new ListViewItem(new string[] { item, subitem, itemInfo != "" ? itemInfo : item, pluginInstance.Name, iconPath });
 
                             if (Properties.Settings.Default.ShowItemIcons && pluginInstance.PluginIcon != null)
                             {
+                                Icon itemIcon = null;
+
                                 if (iconPath != "")
                                 {
                                     if (iconIndexMap.ContainsKey(iconPath))
@@ -468,17 +470,14 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS f
                                     }
                                     else
                                     {
-                                        var icon = Utils.GetFileIcon(iconPath);
-                                        if (icon != null)
-                                        {
-                                            iconIndexMap.Add(iconPath, iconIndex);
-                                            UpdateImageList(icon, lvi, ref iconIndex);
-                                        }
-                                        else
-                                        {
-                                            UsePluginIcon(pluginInstance, lvi, ref iconIndex);
-                                        }
+                                        itemIcon = Utils.GetFileIcon(iconPath);
                                     }
+                                }
+
+                                if (itemIcon != null)
+                                {
+                                    iconIndexMap.Add(iconPath, iconIndex);
+                                    UpdateImageList(itemIcon, lvi, ref iconIndex);
                                 }
                                 else
                                 {
@@ -597,14 +596,14 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS f
             // in the row is also derived from the identifier. It's length is trimmed based on the user's preference
             string item = lvi.SubItems[2].Text;
 
-            if (lvi.SubItems.Count == 4)
+            if (lvi.SubItems.Count == 5)
             {
                 var plugin = pluginInstances.Find(p => p.Name == lvi.SubItems[3].Text);
                 plugin.HandleExecution(item);
 
                 if (Properties.Settings.Default.PluginSelectionsInHistory)
                 {
-                    FileManager.UpdateHistory(txtSearch.Text, lvi.SubItems[0].Text, lvi.SubItems[1].Text, lvi.SubItems[2].Text, plugin.Name);
+                    FileManager.UpdateHistory(txtSearch.Text, lvi.SubItems[0].Text, lvi.SubItems[1].Text, lvi.SubItems[2].Text, plugin.Name, lvi.SubItems[4].Text);
                 }
                 return;
             }
