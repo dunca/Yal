@@ -34,7 +34,7 @@ on Yal's border, and selecting the relevant context menu entry.
 
 **The general options tab**
 
-![general options](http://i.imgur.com/cGIYr10.png)
+![general options](http://i.imgur.com/h8PYHYp.png)
 
 * **Opacity**: lets you change Yal's opacity
 * **Pick a color**: opens a color dialog which lets you change Yal's border color
