@@ -475,14 +475,17 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
                                     }
                                 }
 
-                                if (itemIcon != null)
+                                if (lvi.ImageIndex == -1)
                                 {
-                                    iconIndexMap.Add(iconPath, iconIndex);
-                                    UpdateImageList(itemIcon, lvi, ref iconIndex);
-                                }
-                                else
-                                {
-                                    UsePluginIcon(pluginInstance, lvi, ref iconIndex);
+                                    if (itemIcon == null)
+                                    {
+                                        UsePluginIcon(pluginInstance, lvi, ref iconIndex);
+                                    }
+                                    else
+                                    {
+                                        iconIndexMap.Add(iconPath, iconIndex);
+                                        UpdateImageList(itemIcon, lvi, ref iconIndex);
+                                    }
                                 }
                             }
                         }
