@@ -33,10 +33,10 @@ namespace Yal
         internal static DbInfo indexDbInfo = new DbInfo("index.sqlite", "INDEX_CATALOG", "FULLPATH",
                                                         "create table if not exists INDEX_CATALOG (NAME text, FULLPATH text)");
         internal static DbInfo historyDbInfo = new DbInfo("history.sqlite", "HISTORY", "SUBITEM",
-                                                          "create table if not exists HISTORY_CATALOG (SNIPPET text, ITEM text, SUBITEM text, ITEM_INFO text, PLUGIN_NAME text, HITS integer default 1, LASTACCESSED datetime)");
+                                                          "create table if not exists HISTORY_CATALOG (SNIPPET text, ITEM text, SUBITEM text, ITEM_INFO text, PLUGIN_NAME text, ICON_PATH text, HITS integer default 1, LASTACCESSED datetime)");
 
         private const string indexInsert = "insert into INDEX_CATALOG (NAME, FULLPATH) values (@name, @fullpath)";
-        private const string historyInsert = "insert into HISTORY_CATALOG (SNIPPET, ITEM, SUBITEM, ITEM_INFO, PLUGIN_NAME, LASTACCESSED) values (@snippet, @item, @subitem, @item_info, @plugin_name, datetime('now'))";
+        private const string historyInsert = "insert into HISTORY_CATALOG (SNIPPET, ITEM, SUBITEM, ITEM_INFO, PLUGIN_NAME, ICON_PATH, LASTACCESSED) values (@snippet, @item, @subitem, @item_info, @plugin_name, @icon_path, datetime('now'))";
         private const string historyTrim = "delete from HISTORY_CATALOG where LASTACCESSED in (select LASTACCESSED from HISTORY_CATALOG order by LASTACCESSED limit @limit)";
         private const string historyUpdate = "update HISTORY_CATALOG set HITS = HITS + 1, LASTACCESSED = datetime('now') where SNIPPET = @snippet and SUBITEM = @subitem";
         private const string historyQuery = "select count(SNIPPET) from HISTORY_CATALOG where SNIPPET = @snippet and SUBITEM == @subitem";
@@ -60,7 +60,7 @@ namespace Yal
             }
         }
 
-        internal static void UpdateHistory(string snippet, string item, string subitem, string itemInfo = "", string pluginName = "")
+        internal static void UpdateHistory(string snippet, string item, string subitem, string itemInfo = "", string pluginName = "", string iconPath = "")
         {
             using (var connection = GetDbConnection(historyDbInfo))
             {
@@ -83,6 +83,7 @@ namespace Yal
                 nonQuery.Parameters.AddWithValue("@subitem", subitem);
                 nonQuery.Parameters.AddWithValue("@item_info", itemInfo);
                 nonQuery.Parameters.AddWithValue("@plugin_name", pluginName);
+                nonQuery.Parameters.AddWithValue("@icon_path", iconPath);
                 nonQuery.ExecuteNonQuery();
             }
         }
