@@ -75,7 +75,7 @@ namespace Utilities
             {
                 return Icon.ExtractAssociatedIcon(path);
             }
-            catch (Exception ex) when (ex is ArgumentException) // Argument exception: the file doesn't exist
+            catch (Exception ex) when (ex is ArgumentException || ex is FileNotFoundException)
             {
                 return null;
             }
