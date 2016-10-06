@@ -327,7 +327,7 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
             }
             else if (e.KeyCode == Keys.Down)
             {
-                if (!outputWindow.Visible)
+                if (!outputWindow.Visible && outputWindow.listViewOutput.Items.Count > 0)
                 {
                     outputWindow.Show();
                 }
