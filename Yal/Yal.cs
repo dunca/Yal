@@ -600,7 +600,7 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
             var lvi = outputWindow.listViewOutput.SelectedItems[0];
 
             // the 3rd item in the row is the identifier of the item. The first item
-            // in the row is also derived from the identifier. It's length is trimmed based on the user's preference
+            // in the row is also derived from the identifier. Its length is trimmed based on the user's preference
             string item = lvi.SubItems[2].Text;
 
             if (lvi.SubItems.Count == 5)

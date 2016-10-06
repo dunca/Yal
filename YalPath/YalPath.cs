@@ -41,15 +41,16 @@ namespace YalPath
         {
             PluginIcon = Utils.GetPluginIcon(Name);
 
-            HelpText = $@"With YalPath you can view the content of a directory by
-writing it's full path (you can make use of TAB completion), 
-including the directory separation character (\) at the end.
+            HelpText = $@"With YalPath you can view the contents of a directory by
+writing its full path (you can make use of TAB completion), 
+and then including the directory separation character (\)
+at the end.
 
 Eg.: C:\MyStuff\ will return a list of the files and folders
 present in the input directory
 
 If you omit the separation character at the end, you will 
-instead get just an entry in the input, and that will be
+instead get just an entry in the output, and that will be
 the content of the search box. This will allow you to easily
 open that directory by hitting Enter, if the plugin option
 named '{(PluginUserControl as YalPathUC).cbOpenPath.Text}' is checked.

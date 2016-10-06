@@ -23,7 +23,7 @@ namespace Yal
         private List<CheckBox> pluginEnabledCheckboxes = new List<CheckBox>();
         private const string activationStatisticsTemplate = "Since {0}, {1} has been activated {2} time(s)";
 
-        // this type of list signals it's modification which causes our listbox to reread it's contents
+        // this type of list signals its modification which causes our listbox to reread its contents
         private BindingList<string> foldersToIndex;
         private BindingList<string> foldersToExclude;
 
@@ -404,7 +404,7 @@ namespace Yal
 
         private void btnRestoreDefaultSettings_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show(@"This will restart Yal and restore every setting to it's default value (including plugin specific settings)", MainWindow.Name,
+            if (MessageBox.Show(@"This will restart Yal and restore every setting to its default value (including plugin specific settings)", MainWindow.Name,
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 Properties.Settings.Default.Reset();

@@ -40,7 +40,7 @@ namespace YalClipboardHistory
             PluginIcon = Utils.GetPluginIcon(Name);
 
              HelpText = $@"You can access your clipboard history by
-simplit typing '{Activator}'. This will provide a list of
+simply typing '{Activator}'. This will provide a list of
 history items, with the most recent ones places at
 the top of the list. To copy an item from the history
 you can either hit Enter or double click the item.

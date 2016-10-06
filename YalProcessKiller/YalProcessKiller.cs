@@ -41,7 +41,7 @@ namespace YalProcessKiller
 
             HelpText = $@"To list killable processes simply type the '{Activator}' keyword. 
 It will give you a list of processes and their names. Hitting
-Enter or double clicking an item will try killing the underlying
+Enter or double clicking on an item will try killing the underlying
 process";
         }
 

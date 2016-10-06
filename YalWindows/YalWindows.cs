@@ -39,7 +39,7 @@ namespace YalWindows
         {
             PluginIcon = Utils.GetPluginIcon(Name);
 
-             HelpText = $@"The plugin's lets you switch between open application
+             HelpText = $@"The plugin lets you switch between open application
 windows. Type '{Activator}', and you will get a list of detected
 windows and their titles. Hitting Enter or double clicking on an
 entry switches to the underlying window";
