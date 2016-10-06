@@ -87,6 +87,11 @@ namespace Yal
                 // the search term won't be saved in the history database
                 MainWindow.StartSelectedItem(e.Modifiers == (Keys.Shift | Keys.Control), !(e.Modifiers == Keys.Shift));
             }
+            else if (e.KeyCode == Keys.Up && listViewOutput.SelectedIndices[0] == 0)
+            {
+                MainWindow.txtSearch.Focus();
+                MainWindow.txtSearch.SelectionStart = MainWindow.txtSearch.Text.Length;
+            }
         }
 
         private void AlterSearchBoxText(string text, bool focus = true)
