@@ -64,7 +64,7 @@ entry switches to the underlying window";
             var windowName = input.Substring(Activator.Length + 1);
             var matchingHandle = FindWindowByName(windowName);
 
-            if (matchingHandle != IntPtr.Zero)
+            if (matchingHandle == IntPtr.Zero)
             {
                 MessageBox.Show($"Could not find a window named '{windowName}'", Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
