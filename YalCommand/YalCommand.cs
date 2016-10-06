@@ -44,7 +44,7 @@ namespace YalCommand
             PluginIcon = Utils.GetPluginIcon(Name);
 
             HelpText = $@"This plugin lets you run programs with one or more
-optional parameters. To run a program, type it's assigned
+optional parameters. To run a program, type its assigned
 shortcut/command followed by any necessary arguments. 
 If a command expects no arguments but the user specifies any, 
 they will be simply ignored.
@@ -53,7 +53,7 @@ To add a new command, use the functionality bellow the
 list of entries.
 If the '{(PluginUserControl as YalCommandUC).lblConfirm.Text}' option
 is set to 'True', the user will be prompted with a
-message box before the command is ran. The message box
+message box before the command is run. The message box
 will allow the user to prevent the command from running.
 
 Commands support optional parameters. Bellow are the

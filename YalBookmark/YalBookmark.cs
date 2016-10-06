@@ -95,14 +95,14 @@ type the '{Activator}' keyword. The keyword
 can be followed by other characters to narrow
 down the results.
 
-In the plugin option's tab you can right click
+In the plugin's tab you can right click
 on any backend in the list to alter the default
 functionality.
 
 You can also instruct {Name} to open bookmarks
 through the operating system's default browser,
 or through the browser that stores the 
-specific bookmark in it's bookmark database.";
+specific bookmark in its bookmark database.";
         }
 
         private static string GetExecutablePath(string programName)
