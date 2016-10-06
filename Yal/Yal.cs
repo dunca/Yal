@@ -352,6 +352,11 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
             {
                 shouldAutocomplete = true;
             }
+            else if (e.KeyCode == Keys.Up)
+            {
+                // ignore the up arrow key
+                e.Handled = true;
+            }
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
