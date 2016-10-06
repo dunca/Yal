@@ -380,9 +380,10 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
         private void PerformSearch()
         {
             timerSearchDelay.Stop();
-
+            
             iconIndexMap.Clear();
             outputWindow.imageList1.Images.Clear();
+            outputWindow.listViewOutput.BeginUpdate();
             outputWindow.listViewOutput.Items.Clear();
 
             var userInput = txtSearch.Text;
@@ -440,8 +441,6 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
                     command.Parameters.AddWithValue("@plugin_pattern", pluginPattern);
                     command.Parameters.AddWithValue("@pattern", pattern);
                     var reader = command.ExecuteReader();
-
-                    outputWindow.listViewOutput.BeginUpdate();
 
                     int iconIndex = 0;
                     while (reader.Read())
@@ -516,7 +515,6 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
                         outputWindow.listViewOutput.Items.Add(lvi);
                     }
 
-                    outputWindow.listViewOutput.EndUpdate();
                     new SQLiteCommand("delete from PLUGIN_ITEM", pluginItemDb).ExecuteNonQuery();
                 }
 
@@ -525,7 +523,7 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
                     outputWindow.Show(); // Show() it first, so that the listview's ClientSize property gets updated
 
                     outputWindow.listViewOutput.Items[0].Selected = true;
-                    outputWindow.ResizeToFitContent();
+                    
                     txtSearch.Focus();  // Show()-ing a window focuses on it by default. We don't want that in this case;
 
                     if (shouldAutocomplete && StandardSearch() && (outputWindow.listViewOutput.SelectedItems[0].SubItems[0].Text == 
@@ -546,7 +544,9 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
             else
             {
                 outputWindow.Hide();
-            }          
+            }
+            outputWindow.listViewOutput.EndUpdate();
+            outputWindow.ResizeToFitContent();
         }
 
         private void UpdateImageList(Icon icon, ListViewItem lvi, ref int iconIndex)

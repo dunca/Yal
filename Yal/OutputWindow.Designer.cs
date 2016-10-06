@@ -49,6 +49,7 @@
             this.listViewOutput.Location = new System.Drawing.Point(0, 0);
             this.listViewOutput.MultiSelect = false;
             this.listViewOutput.Name = "listViewOutput";
+            this.listViewOutput.ShowGroups = false;
             this.listViewOutput.Size = new System.Drawing.Size(265, 300);
             this.listViewOutput.TabIndex = 0;
             this.listViewOutput.TileSize = new System.Drawing.Size(248, 30);
