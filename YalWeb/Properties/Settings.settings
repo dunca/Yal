@@ -9,7 +9,7 @@
   &lt;string&gt;!b|https://www.bing.com/search?q=%1&lt;/string&gt;
   &lt;string&gt;!y|https://search.yahoo.com/search?p=%1&lt;/string&gt;
   &lt;string&gt;!ddg|https://duckduckgo.com/?q=%1&lt;/string&gt;
-  &lt;string&gt;!gm|https://www.google.ro/maps/search/%1&lt;/string&gt;
+  &lt;string&gt;!gm|https://www.google.com/maps/search/%1&lt;/string&gt;
   &lt;string&gt;!gt|https://translate.google.com/#auto/en/%1&lt;/string&gt;
   &lt;string&gt;!w|https://en.wikipedia.org/w/index.php?title=Special:Search&amp;amp;profile=default&amp;amp;fulltext=Search&amp;amp;search=%1&lt;/string&gt;
   &lt;string&gt;!a|https://www.amazon.com/s/field-keywords=%1&lt;/string&gt;
