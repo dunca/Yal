@@ -34,7 +34,7 @@ on Yal's border, and selecting the relevant context menu entry.
 
 **The general options tab**
 
-![general options](http://i.imgur.com/h8PYHYp.png)
+![general options](http://i.imgur.com/p0rjap6.png)
 
 * **Opacity**: lets you change Yal's opacity
 * **Pick a color**: opens a color dialog which lets you change Yal's border color
@@ -59,7 +59,7 @@ on Yal's border, and selecting the relevant context menu entry.
 Yal will automatically index some files by default. It does this to in order to provide faster searches.
 You can alter the indexing settings in the Indexing tab.
 
-![s2](http://i.imgur.com/ZEAb9wZ.png)
+![s2](http://i.imgur.com/2s1Kuq0.png)
 
 Make sure you apply your new settings (if any) before hitting the 'Rebuild' button.
 
@@ -76,23 +76,23 @@ For example, YalBookmark (the plugin that allows you to search through you Firef
 Other activators: **$** -> for the window switching plugin, **kill** -> for the process temination plugin, **cb** -> for the plugin that lists your clipboard history, **!a**, **!b**, **!g** and others.. for YalWeb (the plugin that let's you search using your favourite search engine).
 
 Here are some of Yal's plugins. Some of them have short help texts.
-![s3](http://i.imgur.com/RhpqfGd.png)
+![s3](http://i.imgur.com/A78Q5u2.png)
 
-![s4](http://i.imgur.com/iMKVb0E.png)
+![s4](http://i.imgur.com/3Wer0bD.png)
 
-![s5](http://i.imgur.com/tJJLjBH.png)
+![s5](http://i.imgur.com/mbBLQAF.png)
 
-![s6](http://i.imgur.com/wbkzEbv.png)
+![s6](http://i.imgur.com/Kv8QkWD.png)
 
-![s7](http://i.imgur.com/wBUJtJw.png)
+![s7](http://i.imgur.com/p0rKvm5.png)
 
-![s8](http://i.imgur.com/IfM1Ndd.png)
+![s8](http://i.imgur.com/fKrrEIB.png)
 
-![s9](http://i.imgur.com/yOlUaEd.png)
+![s9](http://i.imgur.com/aSw8QkZ.png)
 
-![s10](http://i.imgur.com/wHXC5LC.png)
+![s10](http://i.imgur.com/A30i4fJ.png)
 
-![s11](http://i.imgur.com/KQ7Gu8C.png)
+![s11](http://i.imgur.com/I0KUcHI.png)
 
 FAQ
 ---
