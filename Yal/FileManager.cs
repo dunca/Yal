@@ -193,15 +193,7 @@ namespace Yal
                                SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
             var extensions = Properties.Settings.Default.Extensions.Split(',').Select(ext => string.Concat(".", ext));
 
-            var directoryStack = new Stack<string>();
-            foreach (string directory in Properties.Settings.Default.FoldersToIndex)
-            {
-                // Convert.ToBoolean(null) -> false; So this will work even if FoldersToExclude is null;
-                if (!Convert.ToBoolean(Properties.Settings.Default.FoldersToExclude?.Contains(directory)))
-                {
-                    directoryStack.Push(directory);
-                }
-            }
+            var directoryStack = new Stack<string>(Properties.Settings.Default.FoldersToIndex.Cast<string>());
 
             IEnumerable<string> currentFiles;
             IEnumerable<string> currentSubdirs;
@@ -210,6 +202,12 @@ namespace Yal
             while (directoryStack.Count > 0)
             {
                 var currentDirectory = directoryStack.Pop();
+
+                if (Properties.Settings.Default.FoldersToExclude != null && 
+                    Properties.Settings.Default.FoldersToExclude.Contains(currentDirectory))
+                {
+                    continue;
+                }
 
                 try
                 {
