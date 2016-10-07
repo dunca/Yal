@@ -56,40 +56,48 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
 
         private SQLiteConnection pluginItemDb = new SQLiteConnection("FullUri=file::memory:?cache=shared;Version=3;");
 
-        public Yal()
+        public Yal(bool hasMutex)
         {
-            InitializeComponent();
-            shouldAutocomplete = StandardSearch();
-
-            Directory.SetCurrentDirectory(Application.StartupPath);
-            outputWindow = new OutputWindow(this);
-            ManageAutoIndexingTimer();
-            UpdateWindowLocation();
-            UpdateWindowLooks();
-                        
-            timerSearchDelay = new Timer();
-            timerSearchDelay.Tick += SearchDelayTimer_Tick;
-
-            timerTrimHistory = new Timer();
-            timerTrimHistory.Interval = 60 * 60 * 1000;  // hourly
-            timerTrimHistory.Tick += TrimHistoryTimer_Tick;
-
-            Properties.Settings.Default.FoldersToIndex = FileManager.ProcessRawPaths();
-
-            if (Properties.Settings.Default.DisabledPlugins == null)
+            if (hasMutex)
             {
-                Properties.Settings.Default.DisabledPlugins = new StringCollection();
+                InitializeComponent();
+                shouldAutocomplete = StandardSearch();
+
+                Directory.SetCurrentDirectory(Application.StartupPath);
+                outputWindow = new OutputWindow(this);
+                ManageAutoIndexingTimer();
+                UpdateWindowLocation();
+                UpdateWindowLooks();
+
+                timerSearchDelay = new Timer();
+                timerSearchDelay.Tick += SearchDelayTimer_Tick;
+
+                timerTrimHistory = new Timer();
+                timerTrimHistory.Interval = 60 * 60 * 1000;  // hourly
+                timerTrimHistory.Tick += TrimHistoryTimer_Tick;
+
+                Properties.Settings.Default.FoldersToIndex = FileManager.ProcessRawPaths();
+
+                if (Properties.Settings.Default.DisabledPlugins == null)
+                {
+                    Properties.Settings.Default.DisabledPlugins = new StringCollection();
+                }
+
+                if (Properties.Settings.Default.DateFirstLaunched == "")
+                {
+                    Properties.Settings.Default.DateFirstLaunched = DateTime.Now.ToShortDateString();
+                }
+
+                pluginInstances = PluginManager.InstantiatePlugins();
+
+                pluginItemDb.Open();
+                (new SQLiteCommand(string.Format(pluginTableSchema, "PLUGIN_ITEM"), pluginItemDb)).ExecuteNonQuery();
+            }
+            else
+            {
+                this.Load += (sender, e) => { this.Close(); };
             }
             
-            if (Properties.Settings.Default.DateFirstLaunched == "")
-            {
-                Properties.Settings.Default.DateFirstLaunched = DateTime.Now.ToShortDateString();
-            }
-
-            pluginInstances = PluginManager.InstantiatePlugins();
-
-            pluginItemDb.Open();
-            (new SQLiteCommand(string.Format(pluginTableSchema, "PLUGIN_ITEM"), pluginItemDb)).ExecuteNonQuery();
         }
 
         internal void ShowOptionsWindow()
