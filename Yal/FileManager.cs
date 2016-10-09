@@ -197,7 +197,11 @@ namespace Yal
             var folderStack = new Stack<FolderToIndex>();
             foreach (var item in Properties.Settings.Default.FoldersToIndex)
             {
-                folderStack.Push(new FolderToIndex(item));
+                var folder = new FolderToIndex(item);
+                if (folder.Extensions.Count > 0)
+                {
+                    folderStack.Push(folder);
+                }
             }
 
             IEnumerable<string> currentFiles;
