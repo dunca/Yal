@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Yal
 {
@@ -25,7 +21,7 @@ namespace Yal
             Depth = Convert.ToInt32(split[2]);
 
             Extensions = new BindingList<string>();
-            foreach (var ext in split[1].Split(','))
+            foreach (var ext in split[1].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 Extensions.Add(ext);
             }
