@@ -75,10 +75,14 @@
             this.btnRebuild = new System.Windows.Forms.Button();
             this.lblIndexStatus = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.txtExtensions = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cbIncludeSubdirs = new System.Windows.Forms.CheckBox();
+            this.txtExtension = new System.Windows.Forms.TextBox();
+            this.btnRemoveExt = new System.Windows.Forms.Button();
+            this.btnAddExt = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
+            this.listBoxExtensions = new System.Windows.Forms.ListBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.spinFolderDepth = new System.Windows.Forms.NumericUpDown();
             this.listBoxLocations = new System.Windows.Forms.ListBox();
             this.btnAddLocation = new System.Windows.Forms.Button();
             this.btnRemoveLocation = new System.Windows.Forms.Button();
@@ -107,8 +111,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarOpacity)).BeginInit();
             this.tabPageIndexing.SuspendLayout();
             this.groupBox6.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinFolderDepth)).BeginInit();
             this.tabPagePlugins.SuspendLayout();
             this.tabPageAbout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -592,7 +596,6 @@
             this.tabPageIndexing.Controls.Add(this.btnRebuild);
             this.tabPageIndexing.Controls.Add(this.lblIndexStatus);
             this.tabPageIndexing.Controls.Add(this.label1);
-            this.tabPageIndexing.Controls.Add(this.groupBox2);
             this.tabPageIndexing.Controls.Add(this.groupBox1);
             this.tabPageIndexing.Location = new System.Drawing.Point(4, 22);
             this.tabPageIndexing.Name = "tabPageIndexing";
@@ -606,7 +609,7 @@
             this.groupBox6.Controls.Add(this.listBoxExcludedLocations);
             this.groupBox6.Controls.Add(this.btnAddExcludedLocation);
             this.groupBox6.Controls.Add(this.btnRemoveExcluded);
-            this.groupBox6.Location = new System.Drawing.Point(8, 162);
+            this.groupBox6.Location = new System.Drawing.Point(8, 220);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(426, 109);
             this.groupBox6.TabIndex = 8;
@@ -670,45 +673,85 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Last indexed:";
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.txtExtensions);
-            this.groupBox2.Location = new System.Drawing.Point(8, 277);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(426, 45);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Extensions (comma separated)";
-            // 
-            // txtExtensions
-            // 
-            this.txtExtensions.Location = new System.Drawing.Point(6, 19);
-            this.txtExtensions.Name = "txtExtensions";
-            this.txtExtensions.Size = new System.Drawing.Size(414, 20);
-            this.txtExtensions.TabIndex = 6;
-            // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.cbIncludeSubdirs);
+            this.groupBox1.Controls.Add(this.txtExtension);
+            this.groupBox1.Controls.Add(this.btnRemoveExt);
+            this.groupBox1.Controls.Add(this.btnAddExt);
+            this.groupBox1.Controls.Add(this.label13);
+            this.groupBox1.Controls.Add(this.listBoxExtensions);
+            this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Controls.Add(this.spinFolderDepth);
             this.groupBox1.Controls.Add(this.listBoxLocations);
             this.groupBox1.Controls.Add(this.btnAddLocation);
             this.groupBox1.Controls.Add(this.btnRemoveLocation);
             this.groupBox1.Location = new System.Drawing.Point(8, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(426, 150);
+            this.groupBox1.Size = new System.Drawing.Size(426, 208);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Folders to index";
             // 
-            // cbIncludeSubdirs
+            // txtExtension
             // 
-            this.cbIncludeSubdirs.AutoSize = true;
-            this.cbIncludeSubdirs.Location = new System.Drawing.Point(345, 70);
-            this.cbIncludeSubdirs.Name = "cbIncludeSubdirs";
-            this.cbIncludeSubdirs.Size = new System.Drawing.Size(76, 17);
-            this.cbIncludeSubdirs.TabIndex = 5;
-            this.cbIncludeSubdirs.Text = "Subfolders";
-            this.cbIncludeSubdirs.UseVisualStyleBackColor = true;
+            this.txtExtension.Location = new System.Drawing.Point(345, 129);
+            this.txtExtension.Name = "txtExtension";
+            this.txtExtension.Size = new System.Drawing.Size(74, 20);
+            this.txtExtension.TabIndex = 12;
+            // 
+            // btnRemoveExt
+            // 
+            this.btnRemoveExt.Location = new System.Drawing.Point(393, 155);
+            this.btnRemoveExt.Name = "btnRemoveExt";
+            this.btnRemoveExt.Size = new System.Drawing.Size(27, 23);
+            this.btnRemoveExt.TabIndex = 11;
+            this.btnRemoveExt.Text = "-";
+            this.btnRemoveExt.UseVisualStyleBackColor = true;
+            this.btnRemoveExt.Click += new System.EventHandler(this.btnRemoveExt_Click);
+            // 
+            // btnAddExt
+            // 
+            this.btnAddExt.Location = new System.Drawing.Point(345, 155);
+            this.btnAddExt.Name = "btnAddExt";
+            this.btnAddExt.Size = new System.Drawing.Size(27, 23);
+            this.btnAddExt.TabIndex = 10;
+            this.btnAddExt.Text = "+";
+            this.btnAddExt.UseVisualStyleBackColor = true;
+            this.btnAddExt.Click += new System.EventHandler(this.btnAddExt_Click);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(342, 18);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(58, 13);
+            this.label13.TabIndex = 9;
+            this.label13.Text = "Extensions";
+            // 
+            // listBoxExtensions
+            // 
+            this.listBoxExtensions.FormattingEnabled = true;
+            this.listBoxExtensions.Location = new System.Drawing.Point(345, 31);
+            this.listBoxExtensions.Name = "listBoxExtensions";
+            this.listBoxExtensions.Size = new System.Drawing.Size(75, 95);
+            this.listBoxExtensions.TabIndex = 8;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(242, 186);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(36, 13);
+            this.label12.TabIndex = 7;
+            this.label12.Text = "Depth";
+            // 
+            // spinFolderDepth
+            // 
+            this.spinFolderDepth.Location = new System.Drawing.Point(284, 182);
+            this.spinFolderDepth.Name = "spinFolderDepth";
+            this.spinFolderDepth.Size = new System.Drawing.Size(55, 20);
+            this.spinFolderDepth.TabIndex = 6;
+            this.spinFolderDepth.ValueChanged += new System.EventHandler(this.spinFolderDepth_ValueChanged);
             // 
             // listBoxLocations
             // 
@@ -716,12 +759,13 @@
             this.listBoxLocations.HorizontalScrollbar = true;
             this.listBoxLocations.Location = new System.Drawing.Point(6, 18);
             this.listBoxLocations.Name = "listBoxLocations";
-            this.listBoxLocations.Size = new System.Drawing.Size(333, 121);
+            this.listBoxLocations.Size = new System.Drawing.Size(333, 160);
             this.listBoxLocations.TabIndex = 4;
+            this.listBoxLocations.SelectedIndexChanged += new System.EventHandler(this.listBoxLocations_SelectedIndexChanged);
             // 
             // btnAddLocation
             // 
-            this.btnAddLocation.Location = new System.Drawing.Point(345, 18);
+            this.btnAddLocation.Location = new System.Drawing.Point(6, 181);
             this.btnAddLocation.Name = "btnAddLocation";
             this.btnAddLocation.Size = new System.Drawing.Size(75, 23);
             this.btnAddLocation.TabIndex = 1;
@@ -731,7 +775,7 @@
             // 
             // btnRemoveLocation
             // 
-            this.btnRemoveLocation.Location = new System.Drawing.Point(345, 44);
+            this.btnRemoveLocation.Location = new System.Drawing.Point(87, 181);
             this.btnRemoveLocation.Name = "btnRemoveLocation";
             this.btnRemoveLocation.Size = new System.Drawing.Size(75, 23);
             this.btnRemoveLocation.TabIndex = 2;
@@ -869,10 +913,9 @@
             this.tabPageIndexing.ResumeLayout(false);
             this.tabPageIndexing.PerformLayout();
             this.groupBox6.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinFolderDepth)).EndInit();
             this.tabPagePlugins.ResumeLayout(false);
             this.tabPageAbout.ResumeLayout(false);
             this.tabPageAbout.PerformLayout();
@@ -889,9 +932,6 @@
         private System.Windows.Forms.Button btnRemoveLocation;
         private System.Windows.Forms.Button btnAddLocation;
         private System.Windows.Forms.ListBox listBoxLocations;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox txtExtensions;
-        private System.Windows.Forms.CheckBox cbIncludeSubdirs;
         private System.Windows.Forms.Label lblIndexStatus;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnRebuild;
@@ -946,5 +986,12 @@
         private System.Windows.Forms.CheckBox cbShowItemIcons;
         private System.Windows.Forms.Label lblActivationStatistics;
         private System.Windows.Forms.Button btnRestoreDefaultSettings;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ListBox listBoxExtensions;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.NumericUpDown spinFolderDepth;
+        private System.Windows.Forms.Button btnRemoveExt;
+        private System.Windows.Forms.Button btnAddExt;
+        private System.Windows.Forms.TextBox txtExtension;
     }
 }

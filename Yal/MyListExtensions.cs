@@ -4,9 +4,9 @@ using System.Collections.Specialized;
 
 namespace Yal
 {
-    static class MyListExtensions
+    static class MyIEnumerableExtensions
     {
-        public static StringCollection ToStringCollection(this IList<string> list)
+        public static StringCollection ToStringCollection(this IEnumerable<string> list)
         {
             var sc = new StringCollection();
             sc.AddRange(list.ToArray());

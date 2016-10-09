@@ -4,7 +4,6 @@ using System.Linq;
 using System.Drawing;
 using Microsoft.Win32;
 using PluginInterfaces;
-using System.Diagnostics;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
@@ -17,15 +16,17 @@ namespace Yal
 {
     public partial class Options : Form
     {
-        private Regex extRegex = new Regex(@"^\w+$");
+        private Regex extRegex = new Regex(@"^\.\w+$");
 
         private const string pluginEnabledTemplate = "cbEnabled";
         private List<CheckBox> pluginEnabledCheckboxes = new List<CheckBox>();
         private const string activationStatisticsTemplate = "Since {0}, {1} has been activated {2} time(s)";
 
+        FolderToIndex currentFolder;
+
         // this type of list signals its modification which causes our listbox to reread its contents
-        private BindingList<string> foldersToIndex;
         private BindingList<string> foldersToExclude;
+        private BindingList<FolderToIndex> foldersToIndex = new BindingList<FolderToIndex>();
 
         private Yal MainWindow { get; }
 
@@ -40,15 +41,15 @@ namespace Yal
 
         private void UpdateUIVariables()
         {
-            StringCollection locations = Properties.Settings.Default.FoldersToIndex;
-            if (locations == null)
+            if (Properties.Settings.Default.FoldersToIndex != null)
             {
-                foldersToIndex = new BindingList<string>();
+                foreach (var item in Properties.Settings.Default.FoldersToIndex)
+                {
+                    foldersToIndex.Add(new FolderToIndex(item));
+                }
             }
-            else
-            {
-                foldersToIndex = new BindingList<string>(locations.Cast<string>().ToList<string>());
-            }
+            listBoxLocations.ValueMember = "Path";
+            listBoxLocations.DisplayMember = "Path";
             listBoxLocations.DataSource = foldersToIndex;
 
             StringCollection excludedLocations = Properties.Settings.Default.FoldersToExclude;
@@ -69,10 +70,6 @@ namespace Yal
             cbVAlignment.Checked = Properties.Settings.Default.VAlignment;
 
             cbHAlignment.Checked = Properties.Settings.Default.HAlignment;
-
-            txtExtensions.Text = Properties.Settings.Default.Extensions;
-
-            cbIncludeSubdirs.Checked = Properties.Settings.Default.IncludeSubdirs;
 
             cbMoveWithCtrl.Checked = Properties.Settings.Default.MoveWithCtrl;
 
@@ -192,21 +189,83 @@ namespace Yal
             var dialog = new FolderBrowserDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                if (foldersToIndex.Contains(dialog.SelectedPath))
+                if (foldersToIndex.Any(item => item.Path == dialog.SelectedPath))
                 {
                     MessageBox.Show($"Path '{dialog.SelectedPath}' already exists", "Error", MessageBoxButtons.OK, 
                                     MessageBoxIcon.Error);
                 }
                 else
                 {
-                    foldersToIndex.Add(dialog.SelectedPath);
+                    foldersToIndex.Add(new FolderToIndex() { Path = dialog.SelectedPath, Extensions = new BindingList<string>(), Depth = 100 });
+                    listBoxLocations.SelectedIndex = foldersToIndex.Count - 1;
+
+                    if (foldersToIndex.Count == 1)
+                    {
+                        // it seems that the listbox's SelectedIndexChanged is not triggered when adding the first item
+                        // to the data source
+                        UpdateSelectedFolder();
+                    }
                 }
             }
         }
 
         private void btnRemoveLocation_Click(object sender, EventArgs e)
         {
-            foldersToIndex.Remove((string)listBoxLocations.SelectedItem);
+            if (currentFolder != null)
+            {
+                foldersToIndex.Remove(currentFolder);
+            }
+            UpdateSelectedFolder();
+        }
+
+        private void spinFolderDepth_ValueChanged(object sender, EventArgs e)
+        {
+            if (currentFolder != null)
+            {
+                currentFolder.Depth = (int)spinFolderDepth.Value;
+            }
+        }
+
+        private void btnAddExt_Click(object sender, EventArgs e)
+        {
+            if (extRegex.IsMatch(txtExtension.Text))
+            {
+                currentFolder?.Extensions.Add(txtExtension.Text);
+            }
+            else
+            {
+                MessageBox.Show("Invalid file extension(s). Example extension: .exe",
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnRemoveExt_Click(object sender, EventArgs e)
+        {
+            currentFolder?.Extensions.Remove((string)listBoxExtensions.SelectedItem);
+        }
+
+        private void listBoxLocations_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateSelectedFolder();
+        }
+
+        private void UpdateSelectedFolder()
+        {
+            if (listBoxLocations.SelectedIndex != -1)
+            {
+                currentFolder = foldersToIndex[listBoxLocations.SelectedIndex];
+
+                spinFolderDepth.Value = currentFolder.Depth;
+                listBoxExtensions.DataSource = currentFolder.Extensions;
+            }
+            else
+            {
+                currentFolder = null;
+                spinFolderDepth.Value = 100;
+                listBoxExtensions.DataSource = null;
+            }
+
+            spinFolderDepth.Enabled = btnAddExt.Enabled = btnRemoveExt.Enabled = currentFolder != null;
         }
 
         private void btnAddExcludedLocation_Click(object sender, EventArgs e)
@@ -220,7 +279,7 @@ namespace Yal
                 }
             }
         }
-
+        
         private void btnRemoveExcludedLocation_Click(object sender, EventArgs e)
         {
             foldersToExclude.Remove((string)listBoxExcludedLocations.SelectedItem);
@@ -269,17 +328,6 @@ namespace Yal
 
         private void btnApplyOptions_Click(object sender, EventArgs e)
         {
-            if (ValidFileExtensions())
-            {
-                Properties.Settings.Default.Extensions = txtExtensions.Text;
-            }
-            else
-            {
-                txtExtensions.Text = Properties.Settings.Default.Extensions;
-                MessageBox.Show("Invalid file extension(s). Correct format: ext or ext1,ext2,extN",
-                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
             var hotkeyMod = (FsModifier)comboBoxHKMod.SelectedItem;
             var hotkeyKey = (Keys)comboBoxHKKey.SelectedItem;
             if (hotkeyMod != Properties.Settings.Default.FocusModifier || hotkeyKey != Properties.Settings.Default.FocusKey)
@@ -300,8 +348,6 @@ namespace Yal
                 Properties.Settings.Default.Opacity = trackBarOpacity.Value;
                 MainWindow.UpdateWindowOpacity();
             }
-            
-            Properties.Settings.Default.IncludeSubdirs = cbIncludeSubdirs.Checked;
             
             if (cbVAlignment.Checked != Properties.Settings.Default.VAlignment)
             {
@@ -349,7 +395,9 @@ namespace Yal
             
             Properties.Settings.Default.MatchAnywhere = cbMatchAnywhere.Checked;
 
-            Properties.Settings.Default.FoldersToIndex = foldersToIndex.ToStringCollection();
+            Properties.Settings.Default.FoldersToIndex = foldersToIndex.Select(item => string.Join("|", item.Path, 
+                                                                                                   string.Join("," , item.Extensions),
+                                                                                                   item.Depth)).ToStringCollection();
 
             Properties.Settings.Default.FoldersToExclude = foldersToExclude.ToStringCollection();
 
@@ -383,18 +431,6 @@ namespace Yal
             }
 
             MainWindow.pluginInstances.ForEach(plugin => plugin.SaveSettings());
-        }
-
-        private bool ValidFileExtensions()
-        {
-            foreach (string ext in txtExtensions.Text.Split(','))
-            {
-                if (!extRegex.IsMatch(ext))
-                {
-                    return false;
-                }
-            }
-            return true;
         }
 
         private void spinMaxItems_ValueChanged(object sender, EventArgs e)
