@@ -187,45 +187,56 @@ namespace Yal
 
         private static void RebuildIndex()
         {
+            if (Properties.Settings.Default.FoldersToIndex == null)
+            {
+                return;
+            }
+
             ClearDB(indexDbInfo);
 
-            var searchOption = Properties.Settings.Default.IncludeSubdirs ?
-                               SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-            var extensions = Properties.Settings.Default.Extensions.Split(',').Select(ext => string.Concat(".", ext));
-
-            var directoryStack = new Stack<string>(Properties.Settings.Default.FoldersToIndex.Cast<string>());
+            var folderStack = new Stack<FolderToIndex>();
+            foreach (var item in Properties.Settings.Default.FoldersToIndex)
+            {
+                folderStack.Push(new FolderToIndex(item));
+            }
 
             IEnumerable<string> currentFiles;
-            IEnumerable<string> currentSubdirs;
             var failedToIndex = new List<string>();
 
-            while (directoryStack.Count > 0)
+            while (folderStack.Count > 0)
             {
-                var currentDirectory = directoryStack.Pop();
+                var currentFolder = folderStack.Pop();
 
                 if (Properties.Settings.Default.FoldersToExclude != null && 
-                    Properties.Settings.Default.FoldersToExclude.Contains(currentDirectory))
+                    Properties.Settings.Default.FoldersToExclude.Contains(currentFolder.Path))
                 {
                     continue;
                 }
 
                 try
                 {
-                    currentSubdirs = Directory.EnumerateDirectories(currentDirectory);
+                    currentFiles = Directory.EnumerateFiles(currentFolder.Path, "*.*").Where(file => currentFolder.Extensions.Contains(Path.GetExtension(file)));
                 }
                 catch (Exception ex)
                 {
-                    failedToIndex.Add(string.Join(" - ", currentDirectory, ex.Message));
+                    failedToIndex.Add(string.Join(" - ", currentFolder.Path, ex.Message));
                     continue;
                 }
 
-                currentFiles = Directory.EnumerateFiles(currentDirectory, "*.*").Where(file => extensions.Contains(Path.GetExtension(file)));
-
                 UpdateIndex(currentFiles);
 
-                foreach (var subdir in currentSubdirs)
+                if (currentFolder.Depth == 0)
                 {
-                    directoryStack.Push(subdir);
+                    break;
+                }
+
+                foreach (var currentSubFolder in Directory.EnumerateDirectories(currentFolder.Path))
+                {
+                    folderStack.Push(new FolderToIndex()
+                    {
+                        Path = currentSubFolder, Depth = currentFolder.Depth - 1,
+                        Extensions = currentFolder.Extensions
+                    });
                 }
             }
 
@@ -263,12 +274,14 @@ namespace Yal
         internal static StringCollection ProcessRawPaths()
         {
             var sc = new StringCollection();
-            foreach (string location in Properties.Settings.Default.FoldersToIndex)
+            foreach (string item in Properties.Settings.Default.FoldersToIndex)
             {
                 string result = null;
+                var pathEnd = item.IndexOf('|');
+                var location = item.Substring(0, pathEnd);
                 if (Utils.LocalizePath(location, out result))
                 {
-                    sc.Add(result);
+                    sc.Add(string.Concat(result, item.Substring(pathEnd)));
                 }
             }
             return sc;

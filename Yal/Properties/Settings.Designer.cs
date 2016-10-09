@@ -27,10 +27,10 @@ namespace Yal.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <string>%USERPROFILE%\Desktop</string>
-  <string>%APPDATA%\Microsoft\Windows\Start Menu</string>
-  <string>%ProgramData%\Microsoft\Windows\Start Menu\Programs</string>
-  <string>%APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar</string>
+  <string>%USERPROFILE%\Desktop|.exe,.lnk,.txt,.pdf,.mkv,.mp4,.avi,.mp3,.doc,.docx,.ppt,.pptx,.odt,.odp,.xls,.xlsx|100</string>
+  <string>%APPDATA%\Microsoft\Windows\Start Menu|.exe,.lnk,.txt,.pdf,.mkv,.mp4,.avi,.mp3,.doc,.docx,.ppt,.pptx,.odt,.odp,.xls,.xlsx|100</string>
+  <string>%ProgramData%\Microsoft\Windows\Start Menu\Programs|.exe,.lnk,.txt,.pdf,.mkv,.mp4,.avi,.mp3,.doc,.docx,.ppt,.pptx,.odt,.odp,.xls,.xlsx|100</string>
+  <string>%APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar|.exe,.lnk,.txt,.pdf,.mkv,.mp4,.avi,.mp3,.doc,.docx,.ppt,.pptx,.odt,.odp,.xls,.xlsx|100</string>
 </ArrayOfString>")]
         public global::System.Collections.Specialized.StringCollection FoldersToIndex {
             get {
@@ -38,30 +38,6 @@ namespace Yal.Properties {
             }
             set {
                 this["FoldersToIndex"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("exe,lnk,txt,pdf,mkv,mp4,avi,mp3,doc,docx,ppt,pptx,odt,odp,xls,xlsx")]
-        public string Extensions {
-            get {
-                return ((string)(this["Extensions"]));
-            }
-            set {
-                this["Extensions"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool IncludeSubdirs {
-            get {
-                return ((bool)(this["IncludeSubdirs"]));
-            }
-            set {
-                this["IncludeSubdirs"] = value;
             }
         }
         

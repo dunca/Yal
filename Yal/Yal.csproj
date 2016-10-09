@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileManager.cs" />
+    <Compile Include="FolderToIndex.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="Yal.cs">
       <SubType>Form</SubType>
