@@ -18,6 +18,7 @@ namespace Yal
     {
         private Regex extRegex = new Regex(@"^\.\w+$");
 
+        private const byte defaultFolderDepth = 30;
         private const string pluginEnabledTemplate = "cbEnabled";
         private List<CheckBox> pluginEnabledCheckboxes = new List<CheckBox>();
         private const string activationStatisticsTemplate = "Since {0}, {1} has been activated {2} time(s)";
@@ -196,7 +197,10 @@ namespace Yal
                 }
                 else
                 {
-                    foldersToIndex.Add(new FolderToIndex() { Path = dialog.SelectedPath, Extensions = new BindingList<string>(), Depth = 100 });
+                    foldersToIndex.Add(new FolderToIndex()
+                    {
+                        Path = dialog.SelectedPath, Extensions = new BindingList<string>(), Depth = defaultFolderDepth
+                    });
                     listBoxLocations.SelectedIndex = foldersToIndex.Count - 1;
 
                     if (foldersToIndex.Count == 1)
@@ -261,7 +265,7 @@ namespace Yal
             else
             {
                 currentFolder = null;
-                spinFolderDepth.Value = 100;
+                spinFolderDepth.Value = defaultFolderDepth;
                 listBoxExtensions.DataSource = null;
             }
 
