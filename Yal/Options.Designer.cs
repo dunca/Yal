@@ -730,11 +730,14 @@
             // 
             // listBoxExtensions
             // 
+            this.listBoxExtensions.AllowDrop = true;
             this.listBoxExtensions.FormattingEnabled = true;
             this.listBoxExtensions.Location = new System.Drawing.Point(345, 31);
             this.listBoxExtensions.Name = "listBoxExtensions";
             this.listBoxExtensions.Size = new System.Drawing.Size(75, 95);
             this.listBoxExtensions.TabIndex = 8;
+            this.listBoxExtensions.DragDrop += new System.Windows.Forms.DragEventHandler(this.listBoxExtensions_DragDrop);
+            this.listBoxExtensions.DragEnter += new System.Windows.Forms.DragEventHandler(this.listBoxExtensions_DragEnter);
             // 
             // label12
             // 
