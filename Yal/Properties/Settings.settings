@@ -6,9 +6,9 @@
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;string&gt;%USERPROFILE%\Desktop|.exe,.lnk,.txt,.pdf,.mkv,.mp4,.avi,.mp3,.doc,.docx,.ppt,.pptx,.odt,.odp,.xls,.xlsx|100&lt;/string&gt;
-  &lt;string&gt;%APPDATA%\Microsoft\Windows\Start Menu|.exe,.lnk,.txt,.pdf,.mkv,.mp4,.avi,.mp3,.doc,.docx,.ppt,.pptx,.odt,.odp,.xls,.xlsx|100&lt;/string&gt;
-  &lt;string&gt;%ProgramData%\Microsoft\Windows\Start Menu\Programs|.exe,.lnk,.txt,.pdf,.mkv,.mp4,.avi,.mp3,.doc,.docx,.ppt,.pptx,.odt,.odp,.xls,.xlsx|100&lt;/string&gt;
-  &lt;string&gt;%APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar|.exe,.lnk,.txt,.pdf,.mkv,.mp4,.avi,.mp3,.doc,.docx,.ppt,.pptx,.odt,.odp,.xls,.xlsx|100&lt;/string&gt;
+  &lt;string&gt;%APPDATA%\Microsoft\Windows\Start Menu|.lnk,.url|100&lt;/string&gt;
+  &lt;string&gt;%ProgramData%\Microsoft\Windows\Start Menu\Programs|.lnk,.url|100&lt;/string&gt;
+  &lt;string&gt;%APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar|.lnk,.url|100&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
     <Setting Name="DateLastIndexed" Type="System.DateTime" Scope="User">
