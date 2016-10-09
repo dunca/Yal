@@ -201,7 +201,6 @@ namespace Yal
                     {
                         Path = dialog.SelectedPath, Extensions = new BindingList<string>(), Depth = defaultFolderDepth
                     });
-                    listBoxLocations.SelectedIndex = foldersToIndex.Count - 1;
 
                     if (foldersToIndex.Count == 1)
                     {
