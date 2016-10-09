@@ -13,10 +13,6 @@ execute, thus it will always give you the best possible suggestions.
 
 You can also perform simple math calculations, **access your clipboard's history**, **termitate processes**, you can quickly **switch between opened windows**, **perform searches using your favourite search engines**...and more to come.
 
-Here's a crappy video presentation:
-[![ScreenShot](http://i.imgur.com/o7cmOwv.png)](https://vimeo.com/185518455)
-
-
 How to use:
 -----------
 * Download the latest release (https://github.com/boobcoder/Yal/releases)
