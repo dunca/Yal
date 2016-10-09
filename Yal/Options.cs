@@ -26,7 +26,7 @@ namespace Yal
         FolderToIndex currentFolder;
 
         // this type of list signals its modification which causes our listbox to reread its contents
-        private BindingList<string> foldersToExclude;
+        private BindingList<string> foldersToExclude = new BindingList<string>();
         private BindingList<FolderToIndex> foldersToIndex = new BindingList<FolderToIndex>();
 
         private Yal MainWindow { get; }
@@ -49,18 +49,15 @@ namespace Yal
                     foldersToIndex.Add(new FolderToIndex(item));
                 }
             }
-            listBoxLocations.ValueMember = "Path";
-            listBoxLocations.DisplayMember = "Path";
             listBoxLocations.DataSource = foldersToIndex;
+            listBoxLocations.ValueMember = listBoxLocations.DisplayMember = "Path";
 
-            StringCollection excludedLocations = Properties.Settings.Default.FoldersToExclude;
-            if (excludedLocations == null)
+            if (Properties.Settings.Default.FoldersToExclude != null)
             {
-                foldersToExclude = new BindingList<string>();
-            }
-            else
-            {
-                foldersToExclude = new BindingList<string>(excludedLocations.Cast<string>().ToList<string>());
+                foreach (var location in Properties.Settings.Default.FoldersToExclude)
+                {
+                    foldersToExclude.Add(location);
+                }
             }
             listBoxExcludedLocations.DataSource = foldersToExclude;
 
