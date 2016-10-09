@@ -28,9 +28,9 @@ namespace Yal.Properties {
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <string>%USERPROFILE%\Desktop|.exe,.lnk,.txt,.pdf,.mkv,.mp4,.avi,.mp3,.doc,.docx,.ppt,.pptx,.odt,.odp,.xls,.xlsx|100</string>
-  <string>%APPDATA%\Microsoft\Windows\Start Menu|.exe,.lnk,.txt,.pdf,.mkv,.mp4,.avi,.mp3,.doc,.docx,.ppt,.pptx,.odt,.odp,.xls,.xlsx|100</string>
-  <string>%ProgramData%\Microsoft\Windows\Start Menu\Programs|.exe,.lnk,.txt,.pdf,.mkv,.mp4,.avi,.mp3,.doc,.docx,.ppt,.pptx,.odt,.odp,.xls,.xlsx|100</string>
-  <string>%APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar|.exe,.lnk,.txt,.pdf,.mkv,.mp4,.avi,.mp3,.doc,.docx,.ppt,.pptx,.odt,.odp,.xls,.xlsx|100</string>
+  <string>%APPDATA%\Microsoft\Windows\Start Menu|.lnk,.url|100</string>
+  <string>%ProgramData%\Microsoft\Windows\Start Menu\Programs|.lnk,.url|100</string>
+  <string>%APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar|.lnk,.url|100</string>
 </ArrayOfString>")]
         public global::System.Collections.Specialized.StringCollection FoldersToIndex {
             get {
