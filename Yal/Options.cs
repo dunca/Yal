@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Data;
 using System.Linq;
 using System.Drawing;
@@ -446,6 +447,51 @@ namespace Yal
                 Properties.Settings.Default.Reset();
                 Application.Restart();
             }
+        }
+
+        private void listBoxExtensions_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.All;
+            }
+        }
+
+        private void listBoxExtensions_DragDrop(object sender, DragEventArgs e)
+        {
+            var data = e.Data.GetData(DataFormats.FileDrop) as string[];
+
+            string[] lines = null;
+            try
+            {
+                lines = File.ReadAllLines(data[0]);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            string errorMessage = null;
+            if (lines.Any(line => !extRegex.IsMatch(line)))
+            {
+                errorMessage = "Drag and drop a text file with the well formatted file extensions (one per line)";
+            }
+            else if (currentFolder == null)
+            {
+                errorMessage = "Make sure you select an indexing location first";
+            }
+
+            if (errorMessage != null)
+            {
+                MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            foreach (var extension in lines)
+            {
+                currentFolder.Extensions.Add(extension);
+            }
+
         }
     }
 }
