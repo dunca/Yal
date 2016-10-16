@@ -230,6 +230,7 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
                 if (this.txtSearch.Focused)
                 {
                     this.Hide();
+                    outputWindow.Hide();
                 }
                 else
                 {
