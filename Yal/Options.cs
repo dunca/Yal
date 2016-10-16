@@ -231,7 +231,7 @@ namespace Yal
         {
             if (extRegex.IsMatch(txtExtension.Text) && !currentFolder.Extensions.Contains(txtExtension.Text))
             {
-                currentFolder?.Extensions.Add(txtExtension.Text);
+                currentFolder.Extensions.Add(txtExtension.Text);
                 txtExtension.Clear();
             }
             else
@@ -243,7 +243,7 @@ namespace Yal
 
         private void btnRemoveExt_Click(object sender, EventArgs e)
         {
-            currentFolder?.Extensions.Remove((string)listBoxExtensions.SelectedItem);
+            currentFolder.Extensions.Remove((string)listBoxExtensions.SelectedItem);
         }
 
         private void listBoxLocations_SelectedIndexChanged(object sender, EventArgs e)
