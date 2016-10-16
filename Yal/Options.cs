@@ -229,14 +229,14 @@ namespace Yal
 
         private void btnAddExt_Click(object sender, EventArgs e)
         {
-            if (extRegex.IsMatch(txtExtension.Text))
+            if (extRegex.IsMatch(txtExtension.Text) && !currentFolder.Extensions.Contains(txtExtension.Text))
             {
                 currentFolder?.Extensions.Add(txtExtension.Text);
                 txtExtension.Clear();
             }
             else
             {
-                MessageBox.Show("Invalid file extension(s). Example extension: .exe",
+                MessageBox.Show("Invalid or duplicate file extension(s). Example extension: .exe",
                                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
