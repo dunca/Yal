@@ -15,7 +15,7 @@ You can also perform simple math calculations, **access your clipboard's history
 
 How to use:
 -----------
-* Download the latest release (https://github.com/boobcoder/Yal/releases)
+* Download the latest release (https://github.com/sidf/Yal/releases)
 * Extract it somewhere
 * Run Yal.exe
 * if Yal loses focus, you can either click on the system tray icon, or hit a key combination. By default,
