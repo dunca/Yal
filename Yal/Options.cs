@@ -232,6 +232,7 @@ namespace Yal
             if (extRegex.IsMatch(txtExtension.Text))
             {
                 currentFolder?.Extensions.Add(txtExtension.Text);
+                txtExtension.Clear();
             }
             else
             {
