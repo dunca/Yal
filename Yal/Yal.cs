@@ -507,6 +507,11 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
                         else
                         {
                             //  most likely a file
+                            if (!File.Exists(subitem))
+                            {
+                                continue;
+                            }
+
                             if (!Properties.Settings.Default.ExtensionInFileName)
                             {
                                 item = Path.GetFileNameWithoutExtension(subitem);
