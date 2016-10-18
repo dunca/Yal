@@ -4,6 +4,7 @@ using System.Net;
 using System.Linq;
 using System.Windows.Forms;
 using System.Web.Script.Serialization;
+using System.IO;
 
 namespace Updater
 {
@@ -12,6 +13,7 @@ namespace Updater
         private string currentApplicatioName;
         private int currentApplicationVersion;
         private string githubProjectUrl = "https://api.github.com/repos/sidf/{0}/releases";
+        private const string userAgent = "User-Agent:Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko";
 
         public ProjectUpdater(Form currentApplicationInstance)
         {
@@ -26,9 +28,8 @@ namespace Updater
             {
                 try
                 {
-                    client.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko");
-                    var releasesJson = client.DownloadString(githubProjectUrl);
-                    return releasesJson;
+                    client.Headers.Add(userAgent);
+                    return client.DownloadString(githubProjectUrl);
                 }
                 catch (WebException ex)
                 {
@@ -38,14 +39,23 @@ namespace Updater
             }
         }
 
-        private string GetLatestReleaseUrl(string releasesJson)
+        private int GetLatestReleaseVersion(dynamic parsedLastReleaseData)
+        {
+            return VersionStringToNumber(parsedLastReleaseData["name"]);
+        }
+
+        private string GetLatestReleaseUrl(dynamic parsedLastReleaseData)
+        {
+            return parsedLastReleaseData["assets"][0]["browser_download_url"];
+        }
+
+        private dynamic ParsedLastReleaseData(string releasesJson)
         {
             try
             {
                 var serializer = new JavaScriptSerializer();
                 dynamic parsedReleases = serializer.DeserializeObject(releasesJson);
-                dynamic lastestRelease = parsedReleases[0];
-                return lastestRelease["assets"][0]["browser_download_url"];
+                return parsedReleases[0];
             }
             catch
             {
@@ -55,22 +65,61 @@ namespace Updater
             return null;
         }
 
-        public bool DownloadLatestRelease()
+        public bool InstallAnyUpdates()
         {
-            var latestReleaseUrl = GetLatestReleaseUrl(FetchReleasesList());
-            
-            if (DownloadRelease(latestReleaseUrl))
+            var releasesJson = FetchReleasesList();
+
+            if (releasesJson != null)
             {
-                MessageBox.Show($"Download complete, {latestReleaseUrl}");
-                return true;
+                dynamic parsedLastReleaseData = ParsedLastReleaseData(releasesJson);
+
+                if (parsedLastReleaseData == null)
+                {
+                    return false;
+                }
+
+                if (GetLatestReleaseVersion(parsedLastReleaseData) <= currentApplicationVersion)
+                {
+                    return false;
+                }
+
+                var downloadPath = DownloadRelease(GetLatestReleaseUrl(parsedLastReleaseData));
+
+                if (downloadPath == null)
+                {
+                    return false;
+                }
+
+                ApplyUpdate();
             }
-            MessageBox.Show("Download not done");
+
             return false;
         }
 
-        private bool DownloadRelease(string releaseUrl)
+        private void ApplyUpdate()
         {
-            return true;
+            throw new NotImplementedException();
+        }
+
+        private string DownloadRelease(string releaseUrl)
+        {
+            using (var client = new WebClient())
+            {
+                client.Headers.Add(userAgent);
+
+                string downloadedFileName = Path.GetFileName(releaseUrl); ;
+
+                try
+                {
+                    client.DownloadFile(releaseUrl, downloadedFileName);
+                    return downloadedFileName;
+                }
+                catch (WebException ex)
+                {
+                    // no internet connection / dead url /etc
+                }
+                return null;
+            }
         }
 
         private static int VersionStringToNumber(string applicationVersion)
