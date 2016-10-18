@@ -11,6 +11,7 @@ namespace ProjectUpdateInstaller
     class UpdateInstaller
     {
         private const byte minArgCount = 2;
+        private static string targetProcessName;
         private static string targetExecutableFile;
         private static string currentDirectory = Directory.GetCurrentDirectory();
         private static string currentExecutableName = Assembly.GetEntryAssembly().GetName().Name;
@@ -24,6 +25,7 @@ namespace ProjectUpdateInstaller
 
             var updatePath = args[0];
             targetExecutableFile = args[1];
+            targetProcessName = Path.GetFileNameWithoutExtension(targetExecutableFile);
 
             List<string> itemsFailedToUpdate;
             var extractionDirectory = ExtractFile(updatePath);
@@ -55,7 +57,10 @@ namespace ProjectUpdateInstaller
                 extractedUpdatePath = Path.Combine(extractedUpdatePath, extractedUpdateDirs[0]);
             }
 
-            KillAssemblyVsHost();
+            KillProcessByName(targetProcessName);
+
+            // kill the <AssemblyName>.vshost process (if it's running) otherwise we won't be able to replace it with the updated one
+            KillProcessByName(string.Concat(targetProcessName, ".vshost"));
 
             var fsEntries = Directory.GetFileSystemEntries(extractedUpdatePath, "*", SearchOption.AllDirectories);
 
@@ -89,10 +94,9 @@ namespace ProjectUpdateInstaller
             return failedToUpdate.Count == 0;
         }
 
-        private static void KillAssemblyVsHost()
+        private static void KillProcessByName(string processName)
         {
-            // kill the <AssemblyName>.vshost process (if it's running) otherwise we won't be able to replace it with the updated one
-            var processes = Process.GetProcessesByName(string.Concat(Path.GetFileNameWithoutExtension(targetExecutableFile), ".vshost"));
+            var processes = Process.GetProcessesByName(processName);
             foreach (var process in processes)
             {
                 process.Kill();
