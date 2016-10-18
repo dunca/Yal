@@ -12,6 +12,7 @@ using System.Collections.Specialized;
 
 using Utilities;
 using PluginInterfaces;
+using Updater;
 
 namespace Yal
 {
@@ -31,6 +32,7 @@ namespace Yal
 
         private Timer timerSearchDelay;
         private Timer timerTrimHistory;
+        private ProjectUpdater updater;
 
         private bool lmbIsDown;
         private Point lastPointerLocation;
@@ -92,6 +94,9 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
 
                 pluginItemDb.Open();
                 (new SQLiteCommand(string.Format(pluginTableSchema, "PLUGIN_ITEM"), pluginItemDb)).ExecuteNonQuery();
+
+                updater = new ProjectUpdater(this);
+                updater.DownloadLatestRelease();
             }
             else
             {
