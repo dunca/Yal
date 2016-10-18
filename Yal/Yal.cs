@@ -32,7 +32,7 @@ namespace Yal
 
         private Timer timerSearchDelay;
         private Timer timerTrimHistory;
-        private ProjectUpdater updater;
+        private UpdateDownloader updater;
 
         private bool lmbIsDown;
         private Point lastPointerLocation;
@@ -56,6 +56,7 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
 	select ITEM, SUBITEM, ITEM_INFO, -1 as HITS, SORT_BY_NAME, ROWID, PLUGIN_NAME, ICON_PATH, 0 as IS_HISTORY_ITEM from PLUGIN_ITEM where (REQUIRES_ACTIVATOR = 0 and ITEM_INFO like @plugin_pattern) OR (REQUIRES_ACTIVATOR = 1 and ITEM_INFO like @activator_plugin_pattern)
 ) group by ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME order by MAX_HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then ITEM else length(ITEM) end) else -ROWID end limit @limit";
 
+        private const string updateInstaller = "ProjectUpdateInstaller.exe";
         private SQLiteConnection pluginItemDb = new SQLiteConnection("FullUri=file::memory:?cache=shared;Version=3;");
 
         public Yal(bool hasMutex)
@@ -95,8 +96,7 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
                 pluginItemDb.Open();
                 (new SQLiteCommand(string.Format(pluginTableSchema, "PLUGIN_ITEM"), pluginItemDb)).ExecuteNonQuery();
 
-                updater = new ProjectUpdater(this);
-                updater.InstallAnyUpdates();
+                updater = new UpdateDownloader(this);
             }
             else
             {
@@ -713,6 +713,18 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
         {
             return !Properties.Settings.Default.MatchAnywhere && !Properties.Settings.Default.FuzzyMatching
                    && !Properties.Settings.Default.FuzzyMatchingPluginItems;
+        }
+
+        private void CheckForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var updateZipFile = updater.DownloadNewUpdate();
+            if (updateZipFile != null && File.Exists(updateInstaller) && MessageBox.Show($"Update downloaded. Would you like {this.Name} to apply the update automatically ? {this.Name} will try restarting itself if everything goes right", 
+                                                                                         $"{this.Name}", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Application.Exit();
+                var process = new Process() { StartInfo = new ProcessStartInfo() { FileName = updateInstaller, Arguments = $"{updateZipFile} {Application.ExecutablePath}" } };
+                process.Start();
+            }
         }
     }
 }

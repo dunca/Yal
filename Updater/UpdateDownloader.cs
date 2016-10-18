@@ -1,22 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Linq;
 using System.Windows.Forms;
 using System.Web.Script.Serialization;
-using System.IO;
 
 namespace Updater
 {
-    public class ProjectUpdater
+    public class UpdateDownloader
     {
         private string currentApplicatioName;
         private int currentApplicationVersion;
+        private Form currentApplicationInstance;
         private string githubProjectUrl = "https://api.github.com/repos/sidf/{0}/releases";
         private const string userAgent = "User-Agent:Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko";
 
-        public ProjectUpdater(Form currentApplicationInstance)
+        public UpdateDownloader(Form currentApplicationInstance)
         {
+            this.currentApplicationInstance = currentApplicationInstance;
             currentApplicatioName = currentApplicationInstance.ProductName;
             githubProjectUrl = string.Format(githubProjectUrl, currentApplicatioName);
             currentApplicationVersion = VersionStringToNumber(currentApplicationInstance.ProductVersion);
@@ -65,7 +66,7 @@ namespace Updater
             return null;
         }
 
-        public bool InstallAnyUpdates()
+        public string DownloadNewUpdate()
         {
             var releasesJson = FetchReleasesList();
 
@@ -73,32 +74,27 @@ namespace Updater
             {
                 dynamic parsedLastReleaseData = ParsedLastReleaseData(releasesJson);
 
-                if (parsedLastReleaseData == null)
+                if (parsedLastReleaseData == null || GetLatestReleaseVersion(parsedLastReleaseData) <= currentApplicationVersion)
                 {
-                    return false;
+                    return null;
                 }
 
-                if (GetLatestReleaseVersion(parsedLastReleaseData) <= currentApplicationVersion)
+                var downloadedFilePath = DownloadRelease(GetLatestReleaseUrl(parsedLastReleaseData));
+
+                if (downloadedFilePath == null)
                 {
-                    return false;
+                    return null;
                 }
 
-                var downloadPath = DownloadRelease(GetLatestReleaseUrl(parsedLastReleaseData));
-
-                if (downloadPath == null)
-                {
-                    return false;
-                }
-
-                ApplyUpdate();
+                return downloadedFilePath;
             }
 
-            return false;
+            return null;
         }
 
-        private void ApplyUpdate()
+        public void ApplyUpdate()
         {
-            throw new NotImplementedException();
+            currentApplicationInstance.Close();
         }
 
         private string DownloadRelease(string releaseUrl)
