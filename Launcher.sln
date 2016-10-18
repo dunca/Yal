@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YalClipboardHistory", "YalC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YalWindows", "YalWindows\YalWindows.csproj", "{9F136CC8-8C4E-4607-9854-81125BCFCC08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Updater", "Updater\Updater.csproj", "{09461A67-1BAE-4052-8AAD-E0E62C4BFC2C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{9F136CC8-8C4E-4607-9854-81125BCFCC08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F136CC8-8C4E-4607-9854-81125BCFCC08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F136CC8-8C4E-4607-9854-81125BCFCC08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09461A67-1BAE-4052-8AAD-E0E62C4BFC2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09461A67-1BAE-4052-8AAD-E0E62C4BFC2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09461A67-1BAE-4052-8AAD-E0E62C4BFC2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09461A67-1BAE-4052-8AAD-E0E62C4BFC2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
