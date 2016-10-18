@@ -39,6 +39,7 @@
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.timerAutoIndexing = new System.Windows.Forms.Timer(this.components);
+            this.CheckForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.yalContextStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,19 +47,20 @@
             // 
             this.yalContextStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showYalToolStripMenuItem,
+            this.CheckForUpdatesToolStripMenuItem,
             this.optionsToolStripMenuItem,
             this.RebuildToolStripMenuItem,
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.yalContextStrip.Name = "contextMenuStrip1";
             this.yalContextStrip.ShowImageMargin = false;
-            this.yalContextStrip.Size = new System.Drawing.Size(140, 98);
+            this.yalContextStrip.Size = new System.Drawing.Size(146, 142);
             this.yalContextStrip.Opening += new System.ComponentModel.CancelEventHandler(this.yalContextStrip_Opening);
             // 
             // showYalToolStripMenuItem
             // 
             this.showYalToolStripMenuItem.Name = "showYalToolStripMenuItem";
-            this.showYalToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.showYalToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.showYalToolStripMenuItem.Text = "Show Yal";
             this.showYalToolStripMenuItem.Visible = false;
             this.showYalToolStripMenuItem.Click += new System.EventHandler(this.showYalToolStripMenuItem_Click);
@@ -67,7 +69,7 @@
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.optionsToolStripMenuItem.Text = "Options";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
@@ -75,19 +77,19 @@
             // 
             this.RebuildToolStripMenuItem.Name = "RebuildToolStripMenuItem";
             this.RebuildToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.RebuildToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.RebuildToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.RebuildToolStripMenuItem.Text = "Rebuild index";
             this.RebuildToolStripMenuItem.Click += new System.EventHandler(this.rebuildToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(136, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(142, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -108,6 +110,13 @@
             this.notifyIcon.Text = "Click to show YetAnotherLauncher";
             this.notifyIcon.Visible = true;
             this.notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseClick);
+            // 
+            // CheckForUpdatesToolStripMenuItem
+            // 
+            this.CheckForUpdatesToolStripMenuItem.Name = "CheckForUpdatesToolStripMenuItem";
+            this.CheckForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.CheckForUpdatesToolStripMenuItem.Text = "Check for updates";
+            this.CheckForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.CheckForUpdatesToolStripMenuItem_Click);
             // 
             // Yal
             // 
@@ -148,6 +157,7 @@
         public System.Windows.Forms.Timer timerAutoIndexing;
         private System.Windows.Forms.ToolStripMenuItem RebuildToolStripMenuItem;
         internal System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.ToolStripMenuItem CheckForUpdatesToolStripMenuItem;
     }
 }
 
