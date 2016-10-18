@@ -722,8 +722,7 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
                                                                                          $"{this.Name}", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 Application.Exit();
-                var process = new Process() { StartInfo = new ProcessStartInfo() { FileName = updateInstaller, Arguments = $"{updateZipFile} {Application.ExecutablePath}" } };
-                process.Start();
+                Process.Start(updateInstaller, $"{updateZipFile} {Application.ExecutablePath}");
             }
         }
     }
