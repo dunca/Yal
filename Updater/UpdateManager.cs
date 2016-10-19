@@ -99,7 +99,7 @@ namespace ProjectUpdateManager
             return Convert.ToInt32(string.Join("", applicationVersion.Where(character => char.IsDigit(character))));
         }
 
-        public void CheckNewUpdate()
+        public void CheckNewUpdate(bool onlyMessageOnAvailableUpdate = false)
         {
             string latestReleasesJson;
             string errorMessage = null;
@@ -127,7 +127,7 @@ namespace ProjectUpdateManager
                         InstallNewUpdate();
                     }
                 }
-                else
+                else if (!onlyMessageOnAvailableUpdate)
                 {
                     MessageBox.Show($"You are already using the latest version of {currentApplicationName}", currentAssemblyName);
                 }
@@ -135,7 +135,10 @@ namespace ProjectUpdateManager
                 return;
             }
 
-            MessageBox.Show($"Something went wrong when checking for updates: {errorMessage}", currentAssemblyName);
+            if (!onlyMessageOnAvailableUpdate)
+            {
+                MessageBox.Show($"Something went wrong when checking for updates: {errorMessage}", currentAssemblyName);
+            }
         }
     }
 }
