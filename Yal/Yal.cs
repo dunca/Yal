@@ -67,6 +67,12 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
                 InitializeComponent();
                 shouldAutocomplete = StandardSearch();
 
+                if (Properties.Settings.Default.UpgradeConfig)
+                {
+                    Properties.Settings.Default.Upgrade();
+                    Properties.Settings.Default.UpgradeConfig = false;
+                }
+
                 Directory.SetCurrentDirectory(Application.StartupPath);
                 outputWindow = new OutputWindow(this);
                 ManageAutoIndexingTimer();
