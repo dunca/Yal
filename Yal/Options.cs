@@ -8,7 +8,6 @@ using PluginInterfaces;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 
 using Utilities;
@@ -114,6 +113,8 @@ namespace Yal
             cbFuzzyMatchingPluginItems.Checked = Properties.Settings.Default.FuzzyMatchingPluginItems;
 
             cbShowItemIcons.Checked = Properties.Settings.Default.ShowItemIcons;
+
+            cbAutoUpdateCheck.Checked = Properties.Settings.Default.AutoUpdateCheck;
 
             lblActivationStatistics.Text = string.Format(activationStatisticsTemplate,
                                                          Properties.Settings.Default.DateFirstLaunched,
@@ -421,6 +422,12 @@ namespace Yal
             {
                 Properties.Settings.Default.ShowItemIcons = cbShowItemIcons.Checked;
                 MainWindow.outputWindow.UpdateIconState();
+            }
+
+            if (cbAutoUpdateCheck.Checked != Properties.Settings.Default.AutoUpdateCheck)
+            {
+                Properties.Settings.Default.AutoUpdateCheck = cbAutoUpdateCheck.Checked;
+
             }
 
             Properties.Settings.Default.DisabledPlugins.Clear();
