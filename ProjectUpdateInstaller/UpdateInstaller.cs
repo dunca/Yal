@@ -35,17 +35,21 @@ namespace ProjectUpdateInstaller
                 return;
             }
 
+            string message = null;
             List<string> itemsFailedToUpdate;
+
             if (!ApplyUpdate(extractionDirectory, out itemsFailedToUpdate))
             {
-                MessageBox.Show($"The following files/folders couldn't be updated:\n{string.Join("\n", itemsFailedToUpdate)}\nTry to update them manually", 
-                                currentExecutableName);
+                message = $"The following files/folders couldn't be updated:\n{string.Join("\n", itemsFailedToUpdate)}\nTry to update them manually";
             }
             else
             {
                 // starts the newly updated 'targetExecutableFile' (Yal.exe)
+                message = "Update successful";
                 Process.Start(targetExecutableFile);
             }
+
+            MessageBox.Show(message, currentExecutableName);
         }
 
         private static bool ApplyUpdate(string extractedUpdatePath, out List<string> failedToUpdate)
