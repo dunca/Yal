@@ -717,12 +717,15 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
 
         private void CheckForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var updateZipFile = updater.DownloadNewUpdate();
-            if (updateZipFile != null && File.Exists(updateInstaller) && MessageBox.Show($"Update downloaded. Would you like {this.Name} to apply the update automatically ? {this.Name} will try restarting itself if everything goes right", 
+            if (updater.CheckNewUpdate() && File.Exists(updateInstaller) && MessageBox.Show($"Update available. Would you like {this.Name} to download apply the update automatically ? {this.Name} will try restarting itself if everything goes right", 
                                                                                          $"{this.Name}", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                Application.Exit();
-                Process.Start(updateInstaller, $"{updateZipFile} {Application.ExecutablePath}");
+                var downloadedArchive = updater.DownloadNewUpdate();
+                if (downloadedArchive != null)
+                {
+                    Application.Exit();
+                    Process.Start(updateInstaller, $"{downloadedArchive} {Application.ExecutablePath}");
+                }
             }
         }
     }

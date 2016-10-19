@@ -2,13 +2,16 @@
 using System.IO;
 using System.Net;
 using System.Linq;
+using System.Diagnostics;
 using System.Windows.Forms;
 using System.Web.Script.Serialization;
+using System.Reflection;
 
 namespace Updater
 {
     public class UpdateDownloader
     {
+        private dynamic latestParsedReleaseData;
         private string currentApplicatioName;
         private int currentApplicationVersion;
         private Form currentApplicationInstance;
@@ -68,59 +71,58 @@ namespace Updater
 
         public string DownloadNewUpdate()
         {
-            var releasesJson = FetchReleasesList();
+            string downloadedFileName =  null;
 
-            if (releasesJson != null)
+            if (latestParsedReleaseData != null && !DownloadRelease(GetLatestReleaseUrl(latestParsedReleaseData), out downloadedFileName))
             {
-                dynamic parsedLastReleaseData = ParsedLastReleaseData(releasesJson);
-
-                if (parsedLastReleaseData == null || GetLatestReleaseVersion(parsedLastReleaseData) <= currentApplicationVersion)
-                {
-                    return null;
-                }
-
-                var downloadedFilePath = DownloadRelease(GetLatestReleaseUrl(parsedLastReleaseData));
-
-                if (downloadedFilePath == null)
-                {
-                    return null;
-                }
-
-                return downloadedFilePath;
+                MessageBox.Show("Something went wrong while downloading the update", $"{Assembly.GetExecutingAssembly().GetName().Name}");
+                return null;
             }
 
-            return null;
+            latestParsedReleaseData = null;
+            return downloadedFileName;
         }
 
-        public void ApplyUpdate()
-        {
-            currentApplicationInstance.Close();
-        }
-
-        private string DownloadRelease(string releaseUrl)
+        private bool DownloadRelease(string releaseUrl, out string downloadedFileName)
         {
             using (var client = new WebClient())
             {
                 client.Headers.Add(userAgent);
 
-                string downloadedFileName = Path.GetFileName(releaseUrl); ;
+                downloadedFileName = Path.GetFileName(releaseUrl);
 
                 try
                 {
                     client.DownloadFile(releaseUrl, downloadedFileName);
-                    return downloadedFileName;
+                    return true;
                 }
                 catch (WebException ex)
                 {
                     // no internet connection / dead url /etc
                 }
-                return null;
+                return false;
             }
         }
 
         private static int VersionStringToNumber(string applicationVersion)
         {
             return Convert.ToInt32(string.Join("", applicationVersion.Where(character => char.IsDigit(character))));
+        }
+
+        public bool CheckNewUpdate()
+        {
+            var latestReleasesJson = FetchReleasesList();
+
+            if (latestReleasesJson != null)
+            {
+                latestParsedReleaseData = ParsedLastReleaseData(latestReleasesJson);
+                
+                if (latestParsedReleaseData != null && GetLatestReleaseVersion(latestParsedReleaseData) > currentApplicationVersion)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
