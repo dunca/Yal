@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YalClipboardHistory", "YalC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YalWindows", "YalWindows\YalWindows.csproj", "{9F136CC8-8C4E-4607-9854-81125BCFCC08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectUpdateDownloader", "Updater\ProjectUpdateDownloader.csproj", "{09461A67-1BAE-4052-8AAD-E0E62C4BFC2C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectUpdateManager", "Updater\ProjectUpdateManager.csproj", "{09461A67-1BAE-4052-8AAD-E0E62C4BFC2C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectUpdateInstaller", "ProjectUpdateInstaller\ProjectUpdateInstaller.csproj", "{B6FD2B6A-B29D-43AC-B49A-73B0CE6758F3}"
 EndProject

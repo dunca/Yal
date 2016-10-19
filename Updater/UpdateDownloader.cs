@@ -9,16 +9,18 @@ using System.Reflection;
 
 namespace Updater
 {
-    public class UpdateDownloader
+    public class UpdateManager
     {
         private dynamic latestParsedReleaseData;
         private string currentApplicatioName;
         private int currentApplicationVersion;
         private Form currentApplicationInstance;
+
+        private const string updateInstaller = "ProjectUpdateInstaller.exe";
         private string githubProjectUrl = "https://api.github.com/repos/sidf/{0}/releases";
         private const string userAgent = "User-Agent:Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko";
 
-        public UpdateDownloader(Form currentApplicationInstance)
+        public UpdateManager(Form currentApplicationInstance)
         {
             this.currentApplicationInstance = currentApplicationInstance;
             currentApplicatioName = currentApplicationInstance.ProductName;
@@ -69,18 +71,20 @@ namespace Updater
             return null;
         }
 
-        public string DownloadNewUpdate()
+        public void InstallNewUpdate()
         {
             string downloadedFileName =  null;
 
             if (latestParsedReleaseData != null && !DownloadRelease(GetLatestReleaseUrl(latestParsedReleaseData), out downloadedFileName))
             {
                 MessageBox.Show("Something went wrong while downloading the update", $"{Assembly.GetExecutingAssembly().GetName().Name}");
-                return null;
+                return;
             }
 
             latestParsedReleaseData = null;
-            return downloadedFileName;
+
+            Application.Exit();
+            Process.Start(updateInstaller, $"{downloadedFileName} {Application.ExecutablePath}");
         }
 
         private bool DownloadRelease(string releaseUrl, out string downloadedFileName)
