@@ -20,7 +20,7 @@ namespace ProjectUpdateInstaller
         {
             if (args.Length < minArgCount)
             {
-                throw new ArgumentException($"At least {minArgCount} are required to launch {currentExecutableName}");
+                throw new ArgumentException($"At least {minArgCount} arguments are required to launch {currentExecutableName}");
             }
 
             var updatePath = args[0]; // a path to the downloaded zip file containing the new version of the application
