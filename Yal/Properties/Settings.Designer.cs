@@ -412,5 +412,17 @@ namespace Yal.Properties {
                 this["AutoUpdateCheck"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UpgradeConfig {
+            get {
+                return ((bool)(this["UpgradeConfig"]));
+            }
+            set {
+                this["UpgradeConfig"] = value;
+            }
+        }
     }
 }
