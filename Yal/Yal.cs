@@ -309,6 +309,11 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
         private void Yal_Shown(object sender, EventArgs e)
         {
             ActivateYal();
+
+            if (Properties.Settings.Default.AutoUpdateCheck)
+            {
+                updater.CheckNewUpdate(onlyMessageOnAvailableUpdate: true);
+            }
         }
 
         private void Yal_MouseMove(object sender, MouseEventArgs e)
