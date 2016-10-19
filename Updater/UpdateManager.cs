@@ -33,16 +33,8 @@ namespace Updater
         {
             using (var client = new WebClient())
             {
-                try
-                {
-                    client.Headers.Add(userAgent);
-                    return client.DownloadString(githubProjectUrl);
-                }
-                catch (WebException ex)
-                {
-                    // url down/not internet connection/etc
-                }
-                return null;
+                client.Headers.Add(userAgent);
+                return client.DownloadString(githubProjectUrl);
             }
         }
 
@@ -58,55 +50,44 @@ namespace Updater
 
         private dynamic ParsedLastReleaseData(string releasesJson)
         {
-            try
-            {
-                var serializer = new JavaScriptSerializer();
-                dynamic parsedReleases = serializer.DeserializeObject(releasesJson);
-                return parsedReleases[0];
-            }
-            catch
-            {
-                // string can't be parsed
-            }
 
-            return null;
+            var serializer = new JavaScriptSerializer();
+            dynamic parsedReleases = serializer.DeserializeObject(releasesJson);
+            return parsedReleases[0];
+
         }
 
         public void InstallNewUpdate()
         {
             string downloadedFileName =  null;
 
-            if (latestParsedReleaseData != null && !DownloadRelease(GetLatestReleaseUrl(latestParsedReleaseData), out downloadedFileName))
+            try
             {
-                MessageBox.Show("Something went wrong while downloading the update", $"{currentAssemblyName}");
+                downloadedFileName = DownloadRelease(GetLatestReleaseUrl(latestParsedReleaseData));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Something went wrong while downloading the update: {ex.Message}", currentAssemblyName);
                 return;
             }
 
+            Application.Exit();
             latestParsedReleaseData = null;
 
-            Application.Exit();
             Process.Start(updateInstaller, $"{downloadedFileName} {Application.ExecutablePath}");
         }
 
-        private bool DownloadRelease(string releaseUrl, out string downloadedFileName)
+        private string DownloadRelease(string releaseUrl)
         {
+           var downloadedFileName = Path.GetFileName(releaseUrl);
+
             using (var client = new WebClient())
             {
                 client.Headers.Add(userAgent);
-
-                downloadedFileName = Path.GetFileName(releaseUrl);
-
-                try
-                {
-                    client.DownloadFile(releaseUrl, downloadedFileName);
-                    return true;
-                }
-                catch (WebException ex)
-                {
-                    // no internet connection / dead url /etc
-                }
-                return false;
+                client.DownloadFile(releaseUrl, downloadedFileName);
             }
+
+            return downloadedFileName;
         }
 
         private static int VersionStringToNumber(string applicationVersion)
@@ -116,18 +97,29 @@ namespace Updater
 
         public bool CheckNewUpdate()
         {
-            var latestReleasesJson = FetchReleasesList();
+            string latestReleasesJson;
+            string errorMessage = null;
 
-            if (latestReleasesJson != null)
+            try
             {
+                latestReleasesJson = FetchReleasesList();
                 latestParsedReleaseData = ParsedLastReleaseData(latestReleasesJson);
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+            }
                 
-                if (latestParsedReleaseData != null && GetLatestReleaseVersion(latestParsedReleaseData) > currentApplicationVersion)
+            if (errorMessage == null)
+            {
+                if (GetLatestReleaseVersion(latestParsedReleaseData) > currentApplicationVersion)
                 {
                     return true;
                 }
+                return false;
             }
-            MessageBox.Show("Something went wrong when checking for updates", $"{currentAssemblyName}");
+
+            MessageBox.Show($"Something went wrong when checking for updates: {errorMessage}", currentAssemblyName);
             return false;
         }
     }
