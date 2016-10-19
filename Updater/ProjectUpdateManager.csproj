@@ -7,8 +7,8 @@
     <ProjectGuid>{09461A67-1BAE-4052-8AAD-E0E62C4BFC2C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Updater</RootNamespace>
-    <AssemblyName>Updater</AssemblyName>
+    <RootNamespace>ProjectUpdateManager</RootNamespace>
+    <AssemblyName>ProjectUpdateManager</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
