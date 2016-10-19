@@ -38,9 +38,9 @@ namespace Updater
             }
         }
 
-        private int GetLatestReleaseVersion(dynamic parsedLastReleaseData)
+        private string GetLatestReleaseVersion(dynamic parsedLastReleaseData)
         {
-            return VersionStringToNumber(parsedLastReleaseData["name"]);
+            return parsedLastReleaseData["name"];
         }
 
         private string GetLatestReleaseUrl(dynamic parsedLastReleaseData)
@@ -117,9 +117,12 @@ namespace Updater
                 
             if (errorMessage == null)
             {
-                if (GetLatestReleaseVersion(latestParsedReleaseData) > currentApplicationVersion)
+                var rawLatestVersion = GetLatestReleaseVersion(latestParsedReleaseData);
+                var numericLatestVersion = VersionStringToNumber(rawLatestVersion);
+
+                if (numericLatestVersion > currentApplicationVersion)
                 {
-                    if (MessageBox.Show($"Update available. Would you like to automatically apply the update? The application will try restarting itself if everything goes right", 
+                    if (MessageBox.Show($"{currentApplicationName} {rawLatestVersion} is available. Would you like to automatically apply the update? The application will try restarting itself if everything goes right", 
                                         currentAssemblyName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
                         InstallNewUpdate();
