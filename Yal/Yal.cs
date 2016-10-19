@@ -77,6 +77,7 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
 
                 timerTrimHistory.Interval = 60 * 60 * 1000;  // hourly
                 timerTrimHistory.Tick += TrimHistoryTimer_Tick;
+                timerTrimHistory.Start();
 
                 // every 6 hours
                 timerAutoUpdateCheck.Interval = 6 * 60 * 60 * 1000;

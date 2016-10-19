@@ -427,7 +427,6 @@ namespace Yal
             if (cbAutoUpdateCheck.Checked != Properties.Settings.Default.AutoUpdateCheck)
             {
                 Properties.Settings.Default.AutoUpdateCheck = cbAutoUpdateCheck.Checked;
-
             }
 
             Properties.Settings.Default.DisabledPlugins.Clear();
