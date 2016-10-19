@@ -2,12 +2,12 @@
 using System.IO;
 using System.Net;
 using System.Linq;
+using System.Reflection;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Web.Script.Serialization;
-using System.Reflection;
 
-namespace Updater
+namespace ProjectUpdateManager
 {
     public class UpdateManager
     {
