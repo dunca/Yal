@@ -181,6 +181,8 @@ namespace Yal
 
         internal void UpdateIndexingStatus()
         {
+            btnRebuild.Enabled = true;
+            progressBarIndexing.Style = ProgressBarStyle.Blocks;
             lblIndexStatus.Text = $"{FileManager.DbRowCount(FileManager.indexDbInfo)} items indexed at {Properties.Settings.Default.DateLastIndexed}";
         }
 
@@ -291,6 +293,8 @@ namespace Yal
         private void btnRebuild_Click(object sender, EventArgs e)
         {
             MainWindow.RebuildIndex();
+            btnRebuild.Enabled = false;
+            progressBarIndexing.Style = ProgressBarStyle.Marquee;
         }
 
         private void ManageAppAutoStart()
