@@ -50,11 +50,9 @@ namespace ProjectUpdateManager
 
         private dynamic ParsedLastReleaseData(string releasesJson)
         {
-
             var serializer = new JavaScriptSerializer();
             dynamic parsedReleases = serializer.DeserializeObject(releasesJson);
             return parsedReleases[0];
-
         }
 
         private void InstallNewUpdate()
