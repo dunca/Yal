@@ -12,21 +12,21 @@ namespace Updater
     public class UpdateManager
     {
         private dynamic latestParsedReleaseData;
-        private string currentApplicatioName;
+        private string currentApplicationName;
         private int currentApplicationVersion;
-        private Form currentApplicationInstance;
+        private Form mainWindow;
 
         private const string updateInstaller = "ProjectUpdateInstaller.exe";
         private string githubProjectUrl = "https://api.github.com/repos/sidf/{0}/releases";
         private string currentAssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
         private const string userAgent = "User-Agent:Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko";
 
-        public UpdateManager(Form currentApplicationInstance)
+        public UpdateManager(Form mainWindow)
         {
-            this.currentApplicationInstance = currentApplicationInstance;
-            currentApplicatioName = currentApplicationInstance.ProductName;
-            githubProjectUrl = string.Format(githubProjectUrl, currentApplicatioName);
-            currentApplicationVersion = VersionStringToNumber(currentApplicationInstance.ProductVersion);
+            this.mainWindow = mainWindow;
+            currentApplicationName = mainWindow.ProductName;
+            githubProjectUrl = string.Format(githubProjectUrl, currentApplicationName);
+            currentApplicationVersion = VersionStringToNumber(mainWindow.ProductVersion);
         }
 
         private string FetchReleasesList()
@@ -57,7 +57,7 @@ namespace Updater
 
         }
 
-        public void InstallNewUpdate()
+        private void InstallNewUpdate()
         {
             string downloadedFileName =  null;
 
@@ -100,7 +100,7 @@ namespace Updater
             return Convert.ToInt32(string.Join("", applicationVersion.Where(character => char.IsDigit(character))));
         }
 
-        public bool CheckNewUpdate()
+        public void CheckNewUpdate()
         {
             string latestReleasesJson;
             string errorMessage = null;
@@ -119,13 +119,21 @@ namespace Updater
             {
                 if (GetLatestReleaseVersion(latestParsedReleaseData) > currentApplicationVersion)
                 {
-                    return true;
+                    if (MessageBox.Show($"Update available. Would you like to automatically apply the update? The application will try restarting itself if everything goes right", 
+                                        currentAssemblyName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        InstallNewUpdate();
+                    }
                 }
-                return false;
+                else
+                {
+                    MessageBox.Show($"You are already using the latest version of {currentApplicationName}", currentAssemblyName);
+                }
+
+                return;
             }
 
             MessageBox.Show($"Something went wrong when checking for updates: {errorMessage}", currentAssemblyName);
-            return false;
         }
     }
 }
