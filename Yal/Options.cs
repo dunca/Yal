@@ -511,7 +511,7 @@ namespace Yal
         private void pictureBoxLogo_Click(object sender, EventArgs e)
         {
             // Opens the github project page in the default browser;
-            Process.Start(MainWindow.CompanyName);
+            Process.Start(Path.Combine(MainWindow.CompanyName, MainWindow.ProductName));
         }
 
         private void pictureBoxLogo_MouseEnter(object sender, EventArgs e)
