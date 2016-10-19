@@ -157,9 +157,9 @@
       <Project>{be2771f7-02da-415a-90bd-75206da36375}</Project>
       <Name>PluginInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Updater\ProjectUpdateDownloader.csproj">
+    <ProjectReference Include="..\Updater\ProjectUpdateManager.csproj">
       <Project>{09461A67-1BAE-4052-8AAD-E0E62C4BFC2C}</Project>
-      <Name>ProjectUpdateDownloader</Name>
+      <Name>ProjectUpdateManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{4c584613-e0bc-41a9-a5b1-944b96cd7915}</Project>

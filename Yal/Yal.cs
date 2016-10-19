@@ -32,7 +32,7 @@ namespace Yal
 
         private Timer timerSearchDelay;
         private Timer timerTrimHistory;
-        private UpdateDownloader updater;
+        private UpdateManager updater;
 
         private bool lmbIsDown;
         private Point lastPointerLocation;
@@ -56,7 +56,6 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
 	select ITEM, SUBITEM, ITEM_INFO, -1 as HITS, SORT_BY_NAME, ROWID, PLUGIN_NAME, ICON_PATH, 0 as IS_HISTORY_ITEM from PLUGIN_ITEM where (REQUIRES_ACTIVATOR = 0 and ITEM_INFO like @plugin_pattern) OR (REQUIRES_ACTIVATOR = 1 and ITEM_INFO like @activator_plugin_pattern)
 ) group by ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME order by MAX_HITS desc, case SORT_BY_NAME when 1 then (case PLUGIN_NAME when '' then ITEM else length(ITEM) end) else -ROWID end limit @limit";
 
-        private const string updateInstaller = "ProjectUpdateInstaller.exe";
         private SQLiteConnection pluginItemDb = new SQLiteConnection("FullUri=file::memory:?cache=shared;Version=3;");
 
         public Yal(bool hasMutex)
@@ -96,7 +95,7 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
                 pluginItemDb.Open();
                 (new SQLiteCommand(string.Format(pluginTableSchema, "PLUGIN_ITEM"), pluginItemDb)).ExecuteNonQuery();
 
-                updater = new UpdateDownloader(this);
+                updater = new UpdateManager(this);
             }
             else
             {
@@ -717,15 +716,10 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
 
         private void CheckForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (updater.CheckNewUpdate() && File.Exists(updateInstaller) && MessageBox.Show($"Update available. Would you like {this.Name} to download apply the update automatically ? {this.Name} will try restarting itself if everything goes right", 
-                                                                                         $"{this.Name}", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (updater.CheckNewUpdate() &&  MessageBox.Show($"Update available. Would you like {this.Name} to download apply the update automatically ? {this.Name} will try restarting itself if everything goes right", 
+                                                             $"{this.Name}", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                var downloadedArchive = updater.DownloadNewUpdate();
-                if (downloadedArchive != null)
-                {
-                    Application.Exit();
-                    Process.Start(updateInstaller, $"{downloadedArchive} {Application.ExecutablePath}");
-                }
+                updater.InstallNewUpdate();
             }
         }
     }
