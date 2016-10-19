@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
 
@@ -99,7 +100,12 @@ namespace ProjectUpdateManager
             return Convert.ToInt32(string.Join("", applicationVersion.Where(character => char.IsDigit(character))));
         }
 
-        public void CheckNewUpdate(bool onlyMessageOnAvailableUpdate = false)
+        public async void CheckNewUpdate(bool onlyMessageOnAvailableUpdate = false)
+        {
+            await Task.Run(() => InternalCheckNewUpdate(onlyMessageOnAvailableUpdate));
+        }
+
+        private void InternalCheckNewUpdate(bool onlyMessageOnAvailableUpdate)
         {
             string latestReleasesJson;
             string errorMessage = null;
