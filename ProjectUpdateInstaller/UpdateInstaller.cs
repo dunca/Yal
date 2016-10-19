@@ -49,6 +49,9 @@ namespace ProjectUpdateInstaller
                 Process.Start(targetExecutableFile);
             }
 
+            File.Delete(updatePath);
+            Directory.Delete(extractionDirectory, recursive: true);
+
             MessageBox.Show(message, currentExecutableName);
         }
 
