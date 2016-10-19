@@ -3,7 +3,6 @@ using System.IO;
 using System.Reflection;
 using System.Diagnostics;
 using System.Windows.Forms;
-using System.IO.Compression;
 using System.Collections.Generic;
 
 namespace ProjectUpdateInstaller
@@ -11,7 +10,9 @@ namespace ProjectUpdateInstaller
     class UpdateInstaller
     {
         private const byte minArgCount = 2;
+
         private static string targetProcessName;
+        private static string extractedUpdatePath;
         private static string targetExecutableFile;
         private static string currentDirectory = Directory.GetCurrentDirectory();
         private static string currentExecutableName = Assembly.GetEntryAssembly().GetName().Name;
@@ -23,22 +24,14 @@ namespace ProjectUpdateInstaller
                 throw new ArgumentException($"At least {minArgCount} arguments are required to launch {currentExecutableName}");
             }
 
-            var updatePath = args[0]; // a path to the downloaded zip file containing the new version of the application
+            extractedUpdatePath = args[0];
             targetExecutableFile = args[1]; // should point to the executable to launch if the update is applied correctly. Eg.: Yal.exe
             targetProcessName = Path.GetFileNameWithoutExtension(targetExecutableFile);
-
             
-            var extractionDirectory = ExtractFile(updatePath);
-
-            if (extractionDirectory == null)
-            {
-                return;
-            }
-
             string message = null;
-            List<string> itemsFailedToUpdate;
+            var itemsFailedToUpdate = ApplyUpdate();
 
-            if (!ApplyUpdate(extractionDirectory, out itemsFailedToUpdate))
+            if (itemsFailedToUpdate.Count != 0)
             {
                 message = $"The following files/folders couldn't be updated:\n{string.Join("\n", itemsFailedToUpdate)}\nTry to update them manually";
             }
@@ -49,24 +42,12 @@ namespace ProjectUpdateInstaller
                 Process.Start(targetExecutableFile);
             }
 
-            File.Delete(updatePath);
-            Directory.Delete(extractionDirectory, recursive: true);
-
             MessageBox.Show(message, currentExecutableName);
         }
 
-        private static bool ApplyUpdate(string extractedUpdatePath, out List<string> failedToUpdate)
+        private static List<string> ApplyUpdate()
         {
-            failedToUpdate = new List<string>();
-
-            // eg.: C:\Users\<User>\AppData\Local\Temp\Yal.v1.0.0.4.zip_2a3ewaiv.t4n\*
-            var extractedUpdateRoot = Directory.GetDirectories(extractedUpdatePath);
-
-            if (extractedUpdateRoot.Length == 1)
-            {
-                // eg.: C:\Users\<User>\AppData\Local\Temp\Yal.v1.0.0.4.zip_2a3ewaiv.t4n\Yal.v1.0.0.4\*
-                extractedUpdatePath = Path.Combine(extractedUpdatePath, extractedUpdateRoot[0]);
-            }
+            var failedToUpdate = new List<string>();
 
             // kill the <AssemblyName>.vshost process. Necessary when debugging through VS
             KillProcessByName(string.Concat(targetProcessName, ".vshost"));
@@ -96,7 +77,7 @@ namespace ProjectUpdateInstaller
                 }
             }
 
-            return failedToUpdate.Count == 0;
+            return failedToUpdate;
         }
 
         private static void KillProcessByName(string processName)
@@ -105,23 +86,6 @@ namespace ProjectUpdateInstaller
             {
                 process.Kill();
             }
-        }
-
-        private static string ExtractFile(string updatePath)
-        {
-            var extractionPath = Path.Combine(Path.GetTempPath(), string.Concat(updatePath, "_", Path.GetRandomFileName()));
-
-            try
-            {
-                ZipFile.ExtractToDirectory(updatePath, extractionPath);
-                return extractionPath;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, currentExecutableName);
-            }
-
-            return null;
         }
     }
 }

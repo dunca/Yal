@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
+using System.IO.Compression;
 
 namespace ProjectUpdateManager
 {
@@ -57,27 +58,46 @@ namespace ProjectUpdateManager
             return parsedReleases[0];
         }
 
+        private string ExtractUpdate(string updatePath)
+        {
+            var extractionPath = Path.Combine(Path.GetTempPath(), string.Concat(updatePath, "_", Path.GetRandomFileName()));
+            ZipFile.ExtractToDirectory(updatePath, extractionPath);
+            return extractionPath;
+        }
+
         private void InstallNewUpdate()
         {
+            string extractedUpdatePath = null;
             string downloadedFileName =  null;
 
             try
             {
                 downloadedFileName = DownloadRelease(GetLatestReleaseUrl(latestParsedReleaseData));
+                extractedUpdatePath = ExtractUpdate(downloadedFileName);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Something went wrong while downloading the update: {ex.Message}", currentAssemblyName);
+                MessageBox.Show($"Something went wrong while processing the update: {ex.Message}", currentAssemblyName);
                 return;
             }
 
+            File.Delete(downloadedFileName);
+
+            // eg.: C:\Users\<User>\AppData\Local\Temp\Yal.v1.0.0.4.zip_2a3ewaiv.t4n\*
+            var extractedUpdateRoot = Directory.GetDirectories(extractedUpdatePath);
+
+            if (extractedUpdateRoot.Length == 1)
+            {
+                // eg.: C:\Users\<User>\AppData\Local\Temp\Yal.v1.0.0.4.zip_2a3ewaiv.t4n\Yal.v1.0.0.4\*
+                extractedUpdatePath = Path.Combine(extractedUpdatePath, extractedUpdateRoot[0]);
+            }
+
             Application.Exit();
-            latestParsedReleaseData = null;
 
             var process = new Process();
-            process.StartInfo.FileName = updateInstaller;
+            process.StartInfo.FileName = Path.Combine(extractedUpdatePath, updateInstaller);
             process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            process.StartInfo.Arguments = $"{downloadedFileName} {Application.ExecutablePath}";
+            process.StartInfo.Arguments = $"{extractedUpdatePath} {Application.ExecutablePath}";
 
             process.Start();
         }
