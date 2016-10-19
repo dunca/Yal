@@ -5,16 +5,17 @@ using System.Linq;
 using System.Reflection;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Collections.Generic;
 using System.Web.Script.Serialization;
 
 namespace ProjectUpdateManager
 {
     public class UpdateManager
     {
-        private dynamic latestParsedReleaseData;
+        private Form mainWindow;
         private string currentApplicationName;
         private int currentApplicationVersion;
-        private Form mainWindow;
+        private Dictionary<string, object> latestParsedReleaseData;
 
         private const string updateInstaller = "ProjectUpdateInstaller.exe";
         private string githubProjectUrl = "https://api.github.com/repos/sidf/{0}/releases";
@@ -48,7 +49,7 @@ namespace ProjectUpdateManager
             return parsedLastReleaseData["assets"][0]["browser_download_url"];
         }
 
-        private dynamic ParsedLastReleaseData(string releasesJson)
+        private Dictionary<string, object> ParsedLastReleaseData(string releasesJson)
         {
             var serializer = new JavaScriptSerializer();
             dynamic parsedReleases = serializer.DeserializeObject(releasesJson);
