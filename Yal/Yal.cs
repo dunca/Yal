@@ -30,8 +30,10 @@ namespace Yal
         private const int HOTKEY_REG_ID = 1;
         private const int WM_HOTKEY = 0x312;  // message code that occurs when hotkeys are detected
 
-        private Timer timerSearchDelay;
-        private Timer timerTrimHistory;
+        private Timer timerSearchDelay = new Timer();
+        private Timer timerTrimHistory = new Timer();
+        private Timer timerAutoUpdateCheck = new Timer();
+
         private UpdateManager updater;
 
         private bool lmbIsDown;
@@ -71,12 +73,15 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
                 UpdateWindowLocation();
                 UpdateWindowLooks();
 
-                timerSearchDelay = new Timer();
                 timerSearchDelay.Tick += SearchDelayTimer_Tick;
 
-                timerTrimHistory = new Timer();
                 timerTrimHistory.Interval = 60 * 60 * 1000;  // hourly
                 timerTrimHistory.Tick += TrimHistoryTimer_Tick;
+
+                // every 6 hours
+                timerAutoUpdateCheck.Interval = 6 * 60 * 60 * 1000;
+                timerAutoUpdateCheck.Tick += TimerAutoUpdateCheck_Tick;
+                timerAutoUpdateCheck.Start();
 
                 Properties.Settings.Default.FoldersToIndex = FileManager.ProcessRawPaths();
 
@@ -102,6 +107,14 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
                 this.Load += (sender, e) => { this.Close(); };
             }
             
+        }
+
+        private void TimerAutoUpdateCheck_Tick(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.AutoUpdateCheck)
+            {
+                updater.CheckNewUpdate();
+            }
         }
 
         internal void ShowOptionsWindow()
