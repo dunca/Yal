@@ -203,7 +203,7 @@
             // 
             // spinMaxNameSize
             // 
-            this.spinMaxNameSize.Location = new System.Drawing.Point(151, 305);
+            this.spinMaxNameSize.Location = new System.Drawing.Point(151, 304);
             this.spinMaxNameSize.Minimum = new decimal(new int[] {
             5,
             0,
@@ -231,7 +231,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(6, 307);
+            this.label10.Location = new System.Drawing.Point(6, 306);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(131, 13);
             this.label10.TabIndex = 21;
@@ -299,7 +299,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 328);
+            this.label8.Location = new System.Drawing.Point(6, 327);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(134, 13);
             this.label8.TabIndex = 11;
@@ -327,7 +327,7 @@
             // 
             // spinSearchDelay
             // 
-            this.spinSearchDelay.Location = new System.Drawing.Point(151, 326);
+            this.spinSearchDelay.Location = new System.Drawing.Point(151, 325);
             this.spinSearchDelay.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -359,7 +359,7 @@
             // 
             // spinMaxVisible
             // 
-            this.spinMaxVisible.Location = new System.Drawing.Point(151, 263);
+            this.spinMaxVisible.Location = new System.Drawing.Point(151, 262);
             this.spinMaxVisible.Maximum = new decimal(new int[] {
             30,
             0,
@@ -391,7 +391,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 267);
+            this.label7.Location = new System.Drawing.Point(6, 266);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(86, 13);
             this.label7.TabIndex = 8;
@@ -399,7 +399,7 @@
             // 
             // spinMaxItems
             // 
-            this.spinMaxItems.Location = new System.Drawing.Point(151, 284);
+            this.spinMaxItems.Location = new System.Drawing.Point(151, 283);
             this.spinMaxItems.Minimum = new decimal(new int[] {
             1,
             0,
@@ -428,7 +428,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 288);
+            this.label6.Location = new System.Drawing.Point(6, 287);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(108, 13);
             this.label6.TabIndex = 5;
@@ -896,7 +896,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(448, 412);
+            this.ClientSize = new System.Drawing.Size(448, 413);
             this.Controls.Add(this.btnRestoreDefaultSettings);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnCancelOpt);
