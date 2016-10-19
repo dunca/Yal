@@ -42,6 +42,8 @@ namespace Yal
 
         private void UpdateUIVariables()
         {
+            lblProgramVersion.Text = $"{MainWindow.ProductName} {MainWindow.ProductVersion}";
+
             if (Properties.Settings.Default.FoldersToIndex != null)
             {
                 foreach (var item in Properties.Settings.Default.FoldersToIndex)

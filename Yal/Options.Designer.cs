@@ -90,7 +90,7 @@
             this.tabControlPlugins = new System.Windows.Forms.TabControl();
             this.tabPageAbout = new System.Windows.Forms.TabPage();
             this.lblActivationStatistics = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lblProgramVersion = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.btnApplyOptions = new System.Windows.Forms.Button();
@@ -811,7 +811,7 @@
             // tabPageAbout
             // 
             this.tabPageAbout.Controls.Add(this.lblActivationStatistics);
-            this.tabPageAbout.Controls.Add(this.label5);
+            this.tabPageAbout.Controls.Add(this.lblProgramVersion);
             this.tabPageAbout.Controls.Add(this.pictureBox1);
             this.tabPageAbout.Location = new System.Drawing.Point(4, 22);
             this.tabPageAbout.Name = "tabPageAbout";
@@ -831,15 +831,15 @@
             this.lblActivationStatistics.TabIndex = 2;
             this.lblActivationStatistics.Text = "label12";
             // 
-            // label5
+            // lblProgramVersion
             // 
-            this.label5.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label5.Location = new System.Drawing.Point(3, 345);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(436, 13);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "YetAnotherLauncher 1.0";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblProgramVersion.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lblProgramVersion.Location = new System.Drawing.Point(3, 345);
+            this.lblProgramVersion.Name = "lblProgramVersion";
+            this.lblProgramVersion.Size = new System.Drawing.Size(436, 13);
+            this.lblProgramVersion.TabIndex = 0;
+            this.lblProgramVersion.Text = "version info will be show here";
+            this.lblProgramVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pictureBox1
             // 
@@ -969,7 +969,7 @@
         private System.Windows.Forms.Button btnCancelOpt;
         private System.Windows.Forms.CheckBox cbMatchAnywhere;
         private System.Windows.Forms.TabPage tabPageAbout;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblProgramVersion;
         private System.Windows.Forms.NumericUpDown spinMaxHistorySize;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.GroupBox groupBox6;
