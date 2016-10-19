@@ -74,7 +74,12 @@ namespace Updater
             Application.Exit();
             latestParsedReleaseData = null;
 
-            Process.Start(updateInstaller, $"{downloadedFileName} {Application.ExecutablePath}");
+            var process = new Process();
+            process.StartInfo.FileName = updateInstaller;
+            process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            process.StartInfo.Arguments = $"{downloadedFileName} {Application.ExecutablePath}";
+
+            process.Start();
         }
 
         private string DownloadRelease(string releaseUrl)
