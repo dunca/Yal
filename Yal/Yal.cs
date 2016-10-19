@@ -12,7 +12,7 @@ using System.Collections.Specialized;
 
 using Utilities;
 using PluginInterfaces;
-using Updater;
+using ProjectUpdateManager;
 
 namespace Yal
 {
