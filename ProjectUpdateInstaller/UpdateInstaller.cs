@@ -23,50 +23,48 @@ namespace ProjectUpdateInstaller
                 throw new ArgumentException($"At least {minArgCount} are required to launch {currentExecutableName}");
             }
 
-            var updatePath = args[0];
-            targetExecutableFile = args[1];
+            var updatePath = args[0]; // a path to the downloaded zip file containing the new version of the application
+            targetExecutableFile = args[1]; // should point to the executable to launch if the update is applied correctly. Eg.: Yal.exe
             targetProcessName = Path.GetFileNameWithoutExtension(targetExecutableFile);
 
-            List<string> itemsFailedToUpdate;
+            
             var extractionDirectory = ExtractFile(updatePath);
 
             if (extractionDirectory == null)
             {
-                MessageBox.Show("Something went wrong while extracting the new version. Try to update manually", currentExecutableName);
-                
+                return;
             }
-            else if (!ApplyUpdate(extractionDirectory, out itemsFailedToUpdate))
+
+            List<string> itemsFailedToUpdate;
+            if (!ApplyUpdate(extractionDirectory, out itemsFailedToUpdate))
             {
                 MessageBox.Show($"The following files/folders couldn't be updated:\n{string.Join("\n", itemsFailedToUpdate)}\nTry to update them manually", 
                                 currentExecutableName);
             }
             else
             {
+                // starts the newly updated 'targetExecutableFile' (Yal.exe)
                 Process.Start(targetExecutableFile);
             }
         }
 
         private static bool ApplyUpdate(string extractedUpdatePath, out List<string> failedToUpdate)
         {
-            // eg.: C:\Users\<User>\AppData\Local\Temp\Yal.v1.0.0.4.zip\2a3ewaiv.t4n\*
-            var extractedUpdateDirs = Directory.GetDirectories(extractedUpdatePath);
-
-            if (extractedUpdateDirs.Length == 1)
-            {
-                // eg.: C:\Users\<User>\AppData\Local\Temp\Yal.v1.0.0.4.zip\2a3ewaiv.t4n\Yal.v1.0.0.4\*
-                extractedUpdatePath = Path.Combine(extractedUpdatePath, extractedUpdateDirs[0]);
-            }
-
-            KillProcessByName(targetProcessName);
-
-            // kill the <AssemblyName>.vshost process (if it's running) otherwise we won't be able to replace it with the updated one
-            KillProcessByName(string.Concat(targetProcessName, ".vshost"));
-
-            var fsEntries = Directory.GetFileSystemEntries(extractedUpdatePath, "*", SearchOption.AllDirectories);
-
             failedToUpdate = new List<string>();
 
-            foreach (var item in fsEntries)
+            // eg.: C:\Users\<User>\AppData\Local\Temp\Yal.v1.0.0.4.zip_2a3ewaiv.t4n\*
+            var extractedUpdateRoot = Directory.GetDirectories(extractedUpdatePath);
+
+            if (extractedUpdateRoot.Length == 1)
+            {
+                // eg.: C:\Users\<User>\AppData\Local\Temp\Yal.v1.0.0.4.zip_2a3ewaiv.t4n\Yal.v1.0.0.4\*
+                extractedUpdatePath = Path.Combine(extractedUpdatePath, extractedUpdateRoot[0]);
+            }
+
+            // kill the <AssemblyName>.vshost process. Necessary when debugging through VS
+            KillProcessByName(string.Concat(targetProcessName, ".vshost"));
+
+            foreach (var item in Directory.GetFileSystemEntries(extractedUpdatePath, "*", SearchOption.AllDirectories))
             {
                 var relativeItem = item.Replace(string.Concat(extractedUpdatePath, Path.DirectorySeparatorChar), "");
 
@@ -85,7 +83,7 @@ namespace ProjectUpdateInstaller
                         File.Copy(item, relativeItem);
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
                     failedToUpdate.Add(relativeItem);
                 }
@@ -96,25 +94,24 @@ namespace ProjectUpdateInstaller
 
         private static void KillProcessByName(string processName)
         {
-            var processes = Process.GetProcessesByName(processName);
-            foreach (var process in processes)
+            foreach (var process in Process.GetProcessesByName(processName))
             {
                 process.Kill();
             }
         }
 
-        private static string ExtractFile(string archiveFile)
+        private static string ExtractFile(string updatePath)
         {
-            var extractionDirectory = Path.Combine(Path.GetTempPath(), string.Concat(archiveFile, "_", Path.GetRandomFileName()));
+            var extractionPath = Path.Combine(Path.GetTempPath(), string.Concat(updatePath, "_", Path.GetRandomFileName()));
 
             try
             {
-                ZipFile.ExtractToDirectory(archiveFile, extractionDirectory);
-                return extractionDirectory;
+                ZipFile.ExtractToDirectory(updatePath, extractionPath);
+                return extractionPath;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, currentExecutableName);
             }
 
             return null;
