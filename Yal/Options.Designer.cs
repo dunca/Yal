@@ -68,6 +68,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.trackBarOpacity = new System.Windows.Forms.TrackBar();
             this.tabPageIndexing = new System.Windows.Forms.TabPage();
+            this.progressBarIndexing = new System.Windows.Forms.ProgressBar();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.listBoxExcludedLocations = new System.Windows.Forms.ListBox();
             this.btnAddExcludedLocation = new System.Windows.Forms.Button();
@@ -91,12 +92,11 @@
             this.tabPageAbout = new System.Windows.Forms.TabPage();
             this.lblActivationStatistics = new System.Windows.Forms.Label();
             this.lblProgramVersion = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.btnApplyOptions = new System.Windows.Forms.Button();
             this.btnCancelOpt = new System.Windows.Forms.Button();
             this.btnRestoreDefaultSettings = new System.Windows.Forms.Button();
-            this.progressBarIndexing = new System.Windows.Forms.ProgressBar();
             this.tabControl1.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -115,7 +115,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.spinFolderDepth)).BeginInit();
             this.tabPagePlugins.SuspendLayout();
             this.tabPageAbout.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -606,6 +606,15 @@
             this.tabPageIndexing.Text = "Indexing";
             this.tabPageIndexing.UseVisualStyleBackColor = true;
             // 
+            // progressBarIndexing
+            // 
+            this.progressBarIndexing.Location = new System.Drawing.Point(11, 332);
+            this.progressBarIndexing.Name = "progressBarIndexing";
+            this.progressBarIndexing.Size = new System.Drawing.Size(417, 23);
+            this.progressBarIndexing.Step = 1;
+            this.progressBarIndexing.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBarIndexing.TabIndex = 9;
+            // 
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.listBoxExcludedLocations);
@@ -812,7 +821,7 @@
             // 
             this.tabPageAbout.Controls.Add(this.lblActivationStatistics);
             this.tabPageAbout.Controls.Add(this.lblProgramVersion);
-            this.tabPageAbout.Controls.Add(this.pictureBox1);
+            this.tabPageAbout.Controls.Add(this.pictureBoxLogo);
             this.tabPageAbout.Location = new System.Drawing.Point(4, 22);
             this.tabPageAbout.Name = "tabPageAbout";
             this.tabPageAbout.Padding = new System.Windows.Forms.Padding(3);
@@ -841,17 +850,20 @@
             this.lblProgramVersion.Text = "version info will be show here";
             this.lblProgramVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // pictureBox1
+            // pictureBoxLogo
             // 
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Image = global::Yal.Properties.Resources.ICON;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(436, 355);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
+            this.pictureBoxLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pictureBoxLogo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBoxLogo.Image = global::Yal.Properties.Resources.ICON;
+            this.pictureBoxLogo.Location = new System.Drawing.Point(3, 3);
+            this.pictureBoxLogo.Name = "pictureBoxLogo";
+            this.pictureBoxLogo.Size = new System.Drawing.Size(436, 355);
+            this.pictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBoxLogo.TabIndex = 1;
+            this.pictureBoxLogo.TabStop = false;
+            this.pictureBoxLogo.Click += new System.EventHandler(this.pictureBoxLogo_Click);
+            this.pictureBoxLogo.MouseEnter += new System.EventHandler(this.pictureBoxLogo_MouseEnter);
+            this.pictureBoxLogo.MouseLeave += new System.EventHandler(this.pictureBoxLogo_MouseLeave);
             // 
             // btnApplyOptions
             // 
@@ -882,15 +894,6 @@
             this.btnRestoreDefaultSettings.Text = "Defaults";
             this.btnRestoreDefaultSettings.UseVisualStyleBackColor = true;
             this.btnRestoreDefaultSettings.Click += new System.EventHandler(this.btnRestoreDefaultSettings_Click);
-            // 
-            // progressBarIndexing
-            // 
-            this.progressBarIndexing.Location = new System.Drawing.Point(11, 332);
-            this.progressBarIndexing.Name = "progressBarIndexing";
-            this.progressBarIndexing.Size = new System.Drawing.Size(417, 23);
-            this.progressBarIndexing.Step = 1;
-            this.progressBarIndexing.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.progressBarIndexing.TabIndex = 9;
             // 
             // Options
             // 
@@ -931,7 +934,7 @@
             this.tabPagePlugins.ResumeLayout(false);
             this.tabPageAbout.ResumeLayout(false);
             this.tabPageAbout.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -981,7 +984,7 @@
         private System.Windows.Forms.CheckBox cbPluginSelectionsInHistory;
         private System.Windows.Forms.NumericUpDown spinMaxPluginItems;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictureBoxLogo;
         private System.Windows.Forms.CheckBox cbFuzzyMatching;
         private System.Windows.Forms.CheckBox cbFuzzyMatchingPluginItems;
         private System.Windows.Forms.NumericUpDown spinMaxNameSize;

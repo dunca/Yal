@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 using Utilities;
+using System.Diagnostics;
 
 namespace Yal
 {
@@ -505,6 +506,22 @@ namespace Yal
                 currentFolder.Extensions.Add(extension);
             }
 
+        }
+
+        private void pictureBoxLogo_Click(object sender, EventArgs e)
+        {
+            // Opens the github project page in the default browser;
+            Process.Start(MainWindow.CompanyName);
+        }
+
+        private void pictureBoxLogo_MouseEnter(object sender, EventArgs e)
+        {
+            this.Cursor = Cursors.Hand;
+        }
+
+        private void pictureBoxLogo_MouseLeave(object sender, EventArgs e)
+        {
+            this.Cursor = Cursors.Default;
         }
     }
 }
