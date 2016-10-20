@@ -19,6 +19,7 @@ namespace ProjectUpdateManager
         private int currentApplicationVersion;
         private Dictionary<string, object> latestParsedReleaseData;
 
+        private const string ignorableUpdateSuffix = "feature_testing.zip";
         private const string updateInstaller = "ProjectUpdateInstaller.exe";
         private string githubProjectUrl = "https://api.github.com/repos/sidf/{0}/releases";
         private string currentAssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
@@ -145,7 +146,7 @@ namespace ProjectUpdateManager
                 var rawLatestVersion = GetLatestReleaseVersion(latestParsedReleaseData);
                 var numericLatestVersion = VersionStringToNumber(rawLatestVersion);
 
-                if (numericLatestVersion > currentApplicationVersion)
+                if (!rawLatestVersion.EndsWith(ignorableUpdateSuffix) && numericLatestVersion > currentApplicationVersion)
                 {
                     if (MessageBox.Show($"{currentApplicationName} {rawLatestVersion} is available. Would you like to automatically apply the update? The application will try restarting itself if everything goes right", 
                                         currentAssemblyName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
