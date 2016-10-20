@@ -107,7 +107,7 @@ select ITEM, SUBITEM, ITEM_INFO, ICON_PATH, PLUGIN_NAME, MAX(HITS) as MAX_HITS, 
                 pluginItemDb.Open();
                 (new SQLiteCommand(string.Format(pluginTableSchema, "PLUGIN_ITEM"), pluginItemDb)).ExecuteNonQuery();
 
-                updater = new UpdateManager(this);
+                updater = new UpdateManager();
             }
             else
             {
