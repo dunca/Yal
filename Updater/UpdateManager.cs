@@ -14,7 +14,6 @@ namespace ProjectUpdateManager
 {
     public class UpdateManager
     {
-        private Form mainWindow;
         private string currentApplicationName;
         private int currentApplicationVersion;
         private Dictionary<string, object> latestParsedReleaseData;
@@ -25,12 +24,11 @@ namespace ProjectUpdateManager
         private string currentAssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
         private const string userAgent = "User-Agent:Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko";
 
-        public UpdateManager(Form mainWindow)
+        public UpdateManager()
         {
-            this.mainWindow = mainWindow;
-            currentApplicationName = mainWindow.ProductName;
+            currentApplicationName = Application.ProductName;
             githubProjectUrl = string.Format(githubProjectUrl, currentApplicationName);
-            currentApplicationVersion = VersionStringToNumber(mainWindow.ProductVersion);
+            currentApplicationVersion = VersionStringToNumber(Application.ProductVersion);
         }
 
         private string FetchReleasesList()

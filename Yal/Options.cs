@@ -43,7 +43,7 @@ namespace Yal
 
         private void UpdateUIVariables()
         {
-            lblProgramVersion.Text = $"{MainWindow.ProductName} {MainWindow.ProductVersion}";
+            lblProgramVersion.Text = $"{Application.ProductName} {Application.ProductVersion}";
 
             if (Properties.Settings.Default.FoldersToIndex != null)
             {
@@ -121,7 +121,7 @@ namespace Yal
 
             lblActivationStatistics.Text = string.Format(activationStatisticsTemplate,
                                                          Properties.Settings.Default.DateFirstLaunched,
-                                                         MainWindow.Name, Properties.Settings.Default.TimesActivated.ToString()
+                                                         Application.ProductName, Properties.Settings.Default.TimesActivated.ToString()
                                                          );
 
             foreach (IPlugin plugin in MainWindow.pluginInstances)
@@ -314,7 +314,7 @@ namespace Yal
 
                         if (Utils.GetOsVersion() == "10")
                         {
-                            MessageBox.Show("On Windows 10 you need to enable 'Yal' from within Task Manager/Startup",
+                            MessageBox.Show($"On Windows 10 you need to enable {Application.ProductName} from within Task Manager/Startup",
                                             "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
@@ -455,7 +455,7 @@ namespace Yal
 
         private void btnRestoreDefaultSettings_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show(@"This will restart Yal and restore every setting to its default value (including plugin specific settings)", MainWindow.Name,
+            if (MessageBox.Show($@"This will restart {Application.ProductName} and restore every setting to its default value (including plugin specific settings)", MainWindow.Name,
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 Properties.Settings.Default.Reset();
@@ -511,7 +511,7 @@ namespace Yal
         private void pictureBoxLogo_Click(object sender, EventArgs e)
         {
             // Opens the github project page in the default browser;
-            Process.Start(Path.Combine(MainWindow.CompanyName, MainWindow.ProductName));
+            Process.Start(Path.Combine(Application.CompanyName, Application.ProductName));
         }
 
         private void pictureBoxLogo_MouseEnter(object sender, EventArgs e)
