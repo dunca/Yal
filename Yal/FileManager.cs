@@ -35,11 +35,11 @@ namespace Yal
         internal static DbInfo historyDbInfo = new DbInfo("history.sqlite", "HISTORY_CATALOG", "SUBITEM",
                                                           "create table if not exists HISTORY_CATALOG (SNIPPET text, ITEM text, SUBITEM text, ITEM_INFO text, PLUGIN_NAME text, ICON_PATH text, HITS integer default 1, LASTACCESSED datetime)");
 
-        private const string indexInsert = "insert into INDEX_CATALOG (NAME, FULLPATH) values (@name, @fullpath)";
-        private const string historyInsert = "insert into HISTORY_CATALOG (SNIPPET, ITEM, SUBITEM, ITEM_INFO, PLUGIN_NAME, ICON_PATH, LASTACCESSED) values (@snippet, @item, @subitem, @item_info, @plugin_name, @icon_path, datetime('now'))";
-        private const string historyTrim = "delete from HISTORY_CATALOG where LASTACCESSED in (select LASTACCESSED from HISTORY_CATALOG order by LASTACCESSED limit @limit)";
-        private const string historyUpdate = "update HISTORY_CATALOG set HITS = HITS + 1, ICON_PATH = @icon_path, LASTACCESSED = datetime('now') where SNIPPET = @snippet and case PLUGIN_NAME when '' then SUBITEM = @subitem else ITEM_INFO = @item_info end";
-        private const string historyQuery = "select count(SNIPPET) from HISTORY_CATALOG where SNIPPET = @snippet and case PLUGIN_NAME when '' then SUBITEM = @subitem else ITEM_INFO = @item_info end";
+        private static string indexInsert = $"insert into {indexDbInfo.tableName} (NAME, FULLPATH) values (@name, @fullpath)";
+        private static string historyInsert = $"insert into {historyDbInfo.tableName} (SNIPPET, ITEM, SUBITEM, ITEM_INFO, PLUGIN_NAME, ICON_PATH, LASTACCESSED) values (@snippet, @item, @subitem, @item_info, @plugin_name, @icon_path, datetime('now'))";
+        private static string historyTrim = $"delete from {historyDbInfo.tableName} where LASTACCESSED in (select LASTACCESSED from {historyDbInfo.tableName} order by LASTACCESSED limit @limit)";
+        private static string historyUpdate = $"update {historyDbInfo.tableName} set HITS = HITS + 1, ICON_PATH = @icon_path, LASTACCESSED = datetime('now') where SNIPPET = @snippet and case PLUGIN_NAME when '' then SUBITEM = @subitem else ITEM_INFO = @item_info end";
+        private static string historyQuery = $"select count(SNIPPET) from {historyDbInfo.tableName} where SNIPPET = @snippet and case PLUGIN_NAME when '' then SUBITEM = @subitem else ITEM_INFO = @item_info end";
 
         private static void UpdateIndex(IEnumerable<string> files)
         {
