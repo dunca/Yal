@@ -32,7 +32,7 @@ namespace Yal
     {
         internal static DbInfo indexDbInfo = new DbInfo("index.sqlite", "INDEX_CATALOG", "FULLPATH",
                                                         "create table if not exists INDEX_CATALOG (NAME text, FULLPATH text)");
-        internal static DbInfo historyDbInfo = new DbInfo("history.sqlite", "HISTORY", "SUBITEM",
+        internal static DbInfo historyDbInfo = new DbInfo("history.sqlite", "HISTORY_CATALOG", "SUBITEM",
                                                           "create table if not exists HISTORY_CATALOG (SNIPPET text, ITEM text, SUBITEM text, ITEM_INFO text, PLUGIN_NAME text, ICON_PATH text, HITS integer default 1, LASTACCESSED datetime)");
 
         private const string indexInsert = "insert into INDEX_CATALOG (NAME, FULLPATH) values (@name, @fullpath)";
