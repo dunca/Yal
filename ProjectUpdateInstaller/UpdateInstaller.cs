@@ -14,6 +14,7 @@ namespace ProjectUpdateInstaller
         private static string targetProcessName;
         private static string extractedUpdatePath;
         private static string targetExecutableFile;
+        private static string targetExecutableDirectory;
         private static string currentDirectory = Directory.GetCurrentDirectory();
         private static string currentExecutableName = Assembly.GetEntryAssembly().GetName().Name;
 
@@ -27,7 +28,8 @@ namespace ProjectUpdateInstaller
             extractedUpdatePath = args[0];
             targetExecutableFile = args[1]; // should point to the executable to launch if the update is applied correctly. Eg.: Yal.exe
             targetProcessName = Path.GetFileNameWithoutExtension(targetExecutableFile);
-            
+            targetExecutableDirectory = string.Concat(Path.GetDirectoryName(targetExecutableFile), Path.DirectorySeparatorChar);
+
             string message = null;
             var itemsFailedToUpdate = ApplyUpdate();
 
@@ -54,7 +56,7 @@ namespace ProjectUpdateInstaller
 
             foreach (var item in Directory.GetFileSystemEntries(extractedUpdatePath, "*", SearchOption.AllDirectories))
             {
-                var relativeItem = item.Replace(string.Concat(extractedUpdatePath, Path.DirectorySeparatorChar), "");
+                var relativeItem = item.Replace(string.Concat(extractedUpdatePath, Path.DirectorySeparatorChar), targetExecutableDirectory);
 
                 try
                 {
